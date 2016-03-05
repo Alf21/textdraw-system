@@ -10,6 +10,8 @@ package me.alf21.textdrawsystem;
 
 import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.player.PlayerManager;
+import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import me.alf21.textdrawsystem.utils.PlayersTextdraw;
 import net.gtaun.shoebill.common.player.PlayerLifecycleHolder;
 import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.util.event.EventManager;
@@ -17,6 +19,8 @@ import net.gtaun.util.event.EventManagerNode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 
 public class TextdrawSystem extends Plugin {
 
@@ -26,6 +30,8 @@ public class TextdrawSystem extends Plugin {
 	private EventManager eventManager;
     private PlayerLifecycleHolder playerLifecycleHolder;
     private EventManagerNode eventManagerNode;
+	private static ArrayList<PlayersTextdraw> playersTextdraws;
+	private static ArrayList<PlayerTextdraw> playerTextdraws;
     
 	public static TextdrawSystem getInstance() {
 		if (instance == null)
@@ -51,6 +57,8 @@ public class TextdrawSystem extends Plugin {
         playerLifecycleHolder = new PlayerLifecycleHolder(eventManager);
         playerLifecycleHolder.registerClass(PlayerData.class);
 		playerManager = new PlayerManager();
+		playersTextdraws = new ArrayList<>();
+		playerTextdraws = new ArrayList<>();
 		System.out.println("[TEXTDRAWSYSTEM] initialized");
 	}
 
@@ -69,4 +77,12 @@ public class TextdrawSystem extends Plugin {
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
+
+	public static ArrayList<PlayersTextdraw> getPlayersTextdraws() {
+		return playersTextdraws;
+	}
+
+	public static ArrayList<PlayerTextdraw> getPlayerTextdraws() {
+		return playerTextdraws;
+	}
 }

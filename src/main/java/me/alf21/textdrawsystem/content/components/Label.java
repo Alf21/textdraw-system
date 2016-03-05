@@ -1,31 +1,29 @@
-package me.alf21.textdrawsystem.content.components.input;
+package me.alf21.textdrawsystem.content.components;
 
-import me.alf21.textdrawsystem.content.components.Component;
+import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.data.Vector2D;
 
 import java.util.ArrayList;
 
 /**
  * Created by Alf21 on 27.02.2016.
  */
-public class InputLabel extends Component {
+public class Label extends Component { //TODO Change to Label and base on Component instead of input or easily create BarLabel and ImageLabel and RadioLabel and SelectLabel and SwitcherLabel
 
-	private Player player;
-	private Input input;
+	private Component component;
 	private PlayerTextdraw playerTextdraw;
 
-	private InputLabel(Player player, String text, Input input, String name) {
-		super(name);
-		this.player = player;
-		this.input = input;
+	private Label(Content content, String text, Component component, String name) {
+		super(content, ComponentAlignment.TOP_LEFT, name);
+		this.component = component;
 		if(text.isEmpty() || text.replaceAll(" ", "").isEmpty())
 			text = "_";
 
-		playerTextdraw = PlayerTextdraw.create(player, input.getInputTextdraw().getPosition().getX()-8f, input.getInputTextdraw().getPosition().getY(), text);
+		playerTextdraw = PlayerTextdraw.create(getPlayer(), component.getComponentPosition().getX()-8f, component.getComponentPosition().getY(), text);
 		playerTextdraw.setAlignment(TextDrawAlign.RIGHT);
 		playerTextdraw.setBackgroundColor(new Color(0,0,0,255));
 		playerTextdraw.setFont(TextDrawFont.get(1));
@@ -37,26 +35,27 @@ public class InputLabel extends Component {
 		playerTextdraw.setSelectable(false);
 	}
 
-	public static InputLabel create(Player player, String text, Input input, String name) { return new InputLabel(player, text, input, name); }
+	public static Label create(Content content, String text, Component component, String name) { return new Label(content, text, component, name); }
 
-	public void attach(Input input) {
+	public void attach(Component component) {
 		detach();
-		this.input = input;
-		if(player != input.getInputTextdraw().getPlayer())
-			playerTextdraw.changePlayer(input.getInputTextdraw().getPlayer());
-		playerTextdraw.move(input.getInputTextdraw().getPosition().getX()-8f, input.getInputTextdraw().getPosition().getY());
+		this.component = component;
+		if(getPlayer() != component.getPlayerTextdraws().get(0).getPlayer())
+			playerTextdraw.changePlayer(component.getPlayerTextdraws().get(0).getPlayer());
+		playerTextdraw.move(component.getComponentPosition().getX()-8f, component.getComponentPosition().getY());
+		System.out.println("Label added to " + component.getName() + " -- " + component);
 	}
 
-	public void advancedAttach(Input input) {
+	public void advancedAttach(Component component) {
 		detach();
-		this.input = input;
+		this.component = component;
 	}
 
 	public void detach() {
-		if(input != null) {
-			Input input = this.input;
-			this.input = null;
-			input.detachLabel();
+		if(component != null) {
+			Component component = this.component;
+			this.component = null;
+			component.detachLabel();
 		}
 	}
 
@@ -64,8 +63,8 @@ public class InputLabel extends Component {
 		return playerTextdraw;
 	}
 
-	public Input getInput() {
-		return input;
+	public Component getComponent() {
+		return component;
 	}
 
 	public void setText(String text) {
@@ -106,5 +105,10 @@ public class InputLabel extends Component {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
 		playerTextdraws.add(playerTextdraw);
 		return playerTextdraws;
+	}
+
+	@Override
+	public Vector2D getComponentPosition() {
+		return playerTextdraw.getPosition();
 	}
 }

@@ -1,7 +1,10 @@
 package me.alf21.textdrawsystem.content.components;
 
+import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Destroyable;
+import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
 
@@ -11,29 +14,43 @@ import java.util.ArrayList;
 public abstract class Component implements Destroyable {
 
 	private boolean required, marked;
-	private ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>(); //TODO default initialize
 	private ComponentData componentData = new ComponentData(false);
 	private String name;
+	private ComponentAlignment componentAlignment;
+	private Label label;
+	private Player player;
+	private Content content;
 
-	protected Component(String name) {
+	protected Component(Content content, ComponentAlignment componentAlignment, String name) {
+		this.content = content;
+		this.componentAlignment = componentAlignment;
 		this.name = name;
+		player = content.getDialog().getPlayer();
 	}
 
 	public void show() {
-		playerTextdraws.forEach(PlayerTextdraw::show);
+		if(label != null && !label.isDestroyed())
+			label.show();
 	}
 
 	public void hide() {
-		playerTextdraws.forEach(PlayerTextdraw::hide);
+		if(label != null && !label.isDestroyed())
+			label.hide();
 	}
 
 	public boolean isFilled() { return true; }
 
 	public ArrayList<PlayerTextdraw> getPlayerTextdraws() {
+		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
+		if(label != null)
+			playerTextdraws = label.getPlayerTextdraws();
 		return playerTextdraws;
 	}
 
-	public void recreate() { playerTextdraws.forEach(PlayerTextdraw::recreate); }
+	public void recreate() {
+		if(label != null && label.isDestroyed())
+			label.recreate();
+	}
 
 	public void onClick() { }
 
@@ -59,16 +76,13 @@ public abstract class Component implements Destroyable {
 
 	@Override
 	public void destroy() {
-		playerTextdraws.forEach(PlayerTextdraw::destroy);
+		if(label != null && !label.isDestroyed())
+			label.destroy();
 	}
 
 	@Override
 	public boolean isDestroyed() {
-		for(PlayerTextdraw playerTextdraw : playerTextdraws) {
-			if(!playerTextdraw.isDestroyed())
-				return false;
-		}
-		return true;
+		return !(label != null && !label.isDestroyed());
 	}
 
 	public ComponentData getComponentData() {
@@ -85,5 +99,207 @@ public abstract class Component implements Destroyable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public ComponentAlignment getComponentAlignment() {
+		return componentAlignment;
+	}
+/*
+	public void setComponentAlignment(ComponentAlignment componentAlignment) {
+		this.componentAlignment = componentAlignment;
+		//TODO update position, if not there will issues occurs when using setPosition the next time
+		setHeight(getHeight());
+		setWidth(getWidth());
+	}
+
+	public void setHeight(float height) {
+		boolean showed = false;
+		if(playerTextdraw.isShowed()) {
+			showed = true;
+			playerTextdraw.hide();
+		}
+		switch (getComponentAlignment()) {
+			case TOP_LEFT:
+			case TOP_CENTER:
+			case TOP_RIGHT:
+				playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), height / 8.225f);
+				break;
+			case CENTER_LEFT:
+			case CENTER:
+			case CENTER_RIGHT:
+				height /= 16.45f;
+				playerTextdraw.move(playerTextdraw.getPosition().getX(), playerTextdraw.getPosition().getY() - height);
+				playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), height);
+				break;
+			case BOTTOM_LEFT:
+			case BOTTOM_CENTER:
+			case BOTTOM_RIGHT:
+				playerTextdraw.move(playerTextdraw.getPosition().getX(), playerTextdraw.getPosition().getY() - height);
+				playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), height / 8.225f);
+				break;
+		}
+		if(showed) {
+			playerTextdraw.show();
+		}
+	}
+
+	public void setWidth(float width) {
+		boolean showed = false;
+		if(playerTextdraw.isShowed()) {
+			showed = true;
+			playerTextdraw.hide();
+		}
+		switch (getComponentAlignment()) {
+			case TOP_LEFT:
+			case CENTER_LEFT:
+			case BOTTOM_LEFT:
+				playerTextdraw.setTextSize(playerTextdraw.getPosition().getX() + width, playerTextdraw.getTextSize().getY());
+				break;
+			case TOP_CENTER:
+			case CENTER:
+			case BOTTOM_CENTER:
+				playerTextdraw.setTextSize(playerTextdraw.getTextSize().getX(), width);
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				playerTextdraw.setTextSize(playerTextdraw.getPosition().getX() - width, playerTextdraw.getTextSize().getY());
+				break;
+		}
+		if(showed) {
+			playerTextdraw.show();
+		}
+	}
+
+	public void setPosition(float x, float y) {
+		boolean showed = false;
+		if(playerTextdraw.isShowed()) {
+			showed = true;
+			playerTextdraw.hide();
+		}
+		float width = Calculation.getWidth(playerTextdraw), height = Calculation.getHeight(playerTextdraw);
+		switch (getComponentAlignment()) {
+			case TOP_LEFT:
+				playerTextdraw.move(x, y);
+				break;
+			case TOP_CENTER:
+				playerTextdraw.move(x - width / 2f, y);
+				break;
+			case TOP_RIGHT:
+				playerTextdraw.move(x - width, y);
+				break;
+			case CENTER_LEFT:
+				playerTextdraw.move(x, y - height / 2f);
+				break;
+			case CENTER:
+				playerTextdraw.move(x - width / 2f, y - height / 2f);
+				break;
+			case CENTER_RIGHT:
+				playerTextdraw.move(x - width, y - height / 2f);
+				break;
+			case BOTTOM_LEFT:
+				playerTextdraw.move(x, y - height);
+				break;
+			case BOTTOM_CENTER:
+				playerTextdraw.move(x - width / 2f, y - height);
+				break;
+			case BOTTOM_RIGHT:
+				playerTextdraw.move(x - width, y - height);
+				break;
+		}
+		if(showed) {
+			playerTextdraw.show();
+		}
+	}
+
+	public void setPosition(Vector2D vector2D) {
+		setPosition(vector2D.getX(), vector2D.getY());
+	}
+*/
+//	/**
+//	 * @return the position of the component with ComponentAlignment calculation
+//	 */
+/*
+	public Vector2D getPosition() {
+		Vector2D position = getComponentPosition();
+		switch (getComponentAlignment()) {
+			case TOP_LEFT:
+				position = new Vector2D(position.getX(), position.getY());
+				break;
+			case TOP_CENTER:
+				position = new Vector2D(position.getX() - width / 2f, position.getY());
+				break;
+			case TOP_RIGHT:
+				position = new Vector2D(position.getX() - width, position.getY());
+				break;
+			case CENTER_LEFT:
+				position = new Vector2D(position.getX(), position.getY() - height / 2f);
+				break;
+			case CENTER:
+				position = new Vector2D(position.getX() - width / 2f, position.getY() - height / 2f);
+				break;
+			case CENTER_RIGHT:
+				position = new Vector2D(position.getX() - width, position.getY() - height / 2f);
+				break;
+			case BOTTOM_LEFT:
+				position = new Vector2D(position.getX(), position.getY() - height);
+				break;
+			case BOTTOM_CENTER:
+				position = new Vector2D(position.getX() - width / 2f, position.getY() - height);
+				break;
+			case BOTTOM_RIGHT:
+				position = new Vector2D(position.getX() - width, position.getY() - height);
+				break;
+		}
+		return position;
+	}
+*/
+	/**
+	 * @return only the main position of the component
+	 */
+	public Vector2D getComponentPosition() {
+		return new Vector2D();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+/******************************************************/
+/**                    Component                     **/
+/******************************************************/
+
+	public Label attachLabel(String text) {
+		destroyLabel();
+		label = Label.create(content, text, this, getName() + "_label");
+		return label;
+	}
+
+	public void attachLabel(Label label) {
+		destroyLabel();
+		label.attach(this);
+	}
+
+	public Label detachLabel() {
+		Label label = getLabel();
+		if (label != null) {
+			if (label.getComponent() != null)
+				label.detach();
+			this.label = null;
+		}
+		return label;
+	}
+
+	public Label getLabel() {
+		return label;
+	}
+
+	public void destroyLabel() {
+		if(label != null && !label.isDestroyed())
+			label.destroy();
+	}
+
+	public Content getContent() {
+		return content;
 	}
 }

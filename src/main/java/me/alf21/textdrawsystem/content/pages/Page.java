@@ -1,11 +1,9 @@
 package me.alf21.textdrawsystem.content.pages;
 
 import me.alf21.textdrawsystem.content.components.Component;
-import me.alf21.textdrawsystem.dialogs.interfaces.PageInterface;
 import net.gtaun.shoebill.object.Destroyable;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 /**
  * Created by Alf21 on 29.02.2016.
@@ -18,7 +16,6 @@ public class Page implements Destroyable {
 	private Page(PageInterface pageInterface) {
 		components = new ArrayList<>();
 		this.pageInterface = pageInterface;
-		this.pageInterface.setPage(this);
 	}
 
 	public static Page create(PageInterface pageInterface) {

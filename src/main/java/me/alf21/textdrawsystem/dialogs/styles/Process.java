@@ -1,6 +1,6 @@
-package me.alf21.textdrawsystem.dialogs.panel.styles;
+package me.alf21.textdrawsystem.dialogs.styles;
 
-import me.alf21.textdrawsystem.dialogs.panel.Panel;
+import me.alf21.textdrawsystem.dialogs.Dialog;
 import net.gtaun.shoebill.object.Destroyable;
 
 /**
@@ -8,10 +8,10 @@ import net.gtaun.shoebill.object.Destroyable;
  */
 public abstract class Process implements Destroyable {
 
-	private Panel panel;
+	private Dialog dialog;
 
-	public Process(Panel panel) {
-		this.panel = panel;
+	public Process(Dialog dialog) {
+		this.dialog = dialog;
 	}
 
 	public void start() {}
@@ -42,7 +42,7 @@ public abstract class Process implements Destroyable {
 		return true;
 	}
 
-	public Panel getPanel() {
-		return panel;
+	public Dialog getDialog() {
+		return dialog;
 	}
 }

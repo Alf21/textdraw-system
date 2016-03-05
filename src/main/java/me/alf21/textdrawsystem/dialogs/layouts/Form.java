@@ -1,4 +1,4 @@
-package me.alf21.textdrawsystem.dialogs.panel.layouts;
+package me.alf21.textdrawsystem.dialogs.layouts;
 
 import me.alf21.textdrawsystem.calculations.Calculation;
 import me.alf21.textdrawsystem.content.Content;

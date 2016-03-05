@@ -1,5 +1,6 @@
 package me.alf21.textdrawsystem.utils;
 
+import me.alf21.textdrawsystem.TextdrawSystem;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
@@ -30,6 +31,7 @@ public class PlayerTextdraw implements Destroyable {
 	public PlayerTextdraw(Player player, float x, float y) {
 		this.player = player;
 		playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(player, x, y);
+		TextdrawSystem.getPlayerTextdraws().add(this); //TODO
 	}
 
 	public static PlayerTextdraw create(Player player, float x, float y) {
@@ -334,6 +336,7 @@ public class PlayerTextdraw implements Destroyable {
 	@Override
 	public void destroy() {
 		playerTextdraw.destroy();
+		TextdrawSystem.getPlayerTextdraws().remove(this);
 	}
 
 	@Override

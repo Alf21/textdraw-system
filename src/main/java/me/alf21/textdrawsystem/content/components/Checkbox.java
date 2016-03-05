@@ -1,12 +1,14 @@
 package me.alf21.textdrawsystem.content.components;
 
+import me.alf21.textdrawsystem.content.Content;
+
 /**
  * Created by Alf21 on 27.02.2016.
  */
 public class Checkbox extends Component {
 
-	Checkbox(String name) {
-		super(name);
+	protected Checkbox(Content content, ComponentAlignment componentAlignment, String name) {
+		super(content, componentAlignment, name);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
-package me.alf21.textdrawsystem.dialogs.panel.styles.normal;
+package me.alf21.textdrawsystem.dialogs.styles.normal;
 
-import me.alf21.textdrawsystem.dialogs.panel.Panel;
+import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.content.Content;
-import me.alf21.textdrawsystem.dialogs.panel.styles.PanelStyle;
-import me.alf21.textdrawsystem.dialogs.panel.styles.Process;
+import me.alf21.textdrawsystem.dialogs.styles.DialogStyle;
+import me.alf21.textdrawsystem.dialogs.styles.Process;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -14,7 +14,7 @@ import net.gtaun.shoebill.object.Player;
 /**
  * Created by Alf21 on 26.02.2016.
  */
-public class Normal extends PanelStyle {
+public class Normal extends DialogStyle {
 	private static PlayerTextdraw panelBackground;
 	private static PlayerTextdraw title;
 	private static PlayerTextdraw titleBackground;
@@ -28,8 +28,8 @@ public class Normal extends PanelStyle {
 	private static Process process;
 
 	@Override
-	public void create(Panel panel) {
-		Player player = panel.getPlayer();
+	public void create(Dialog dialog) {
+		Player player = dialog.getPlayer();
 
 		panelBackground = PlayerTextdraw.create(player, 320.000000f, 120.000000f, "_");
 		panelBackground.setAlignment(TextDrawAlign.get(2));
@@ -170,20 +170,20 @@ public class Normal extends PanelStyle {
 		closeIcon.setTextSize(new Vector2D(10.000000f, 10.000000f));
 		closeIcon.setSelectable(true);
 
-		process = NormalProcess.create(panel);
+		process = NormalProcess.create(dialog);
 
-		panel.setCloseIcon(closeIcon);
-		panel.setContent(new Content(panel, contentBackground, contentText));
-		panel.setLeftButton(leftButton);
-		panel.setLeftButtonBackground(leftButtonBackground);
-		panel.setPanelBackground(panelBackground);
-		panel.setProcess(process);
-		panel.setRightButton(rightButton);
-		panel.setRightButtonBackground(rightButtonBackground);
-		panel.setTitle(title);
-		panel.setTitleBackground(titleBackground);
-		panel.setHoverColor(new Color(150,0,0,255));
-		panel.setInputColor(new Color(255,255,255,50));
-		panel.setMarkerColor(new Color(150,0,0,50));
+		dialog.setCloseIcon(closeIcon);
+		dialog.setContent(new Content(dialog, contentBackground, contentText));
+		dialog.setLeftButton(leftButton);
+		dialog.setLeftButtonBackground(leftButtonBackground);
+		dialog.setPanelBackground(panelBackground);
+		dialog.setProcess(process);
+		dialog.setRightButton(rightButton);
+		dialog.setRightButtonBackground(rightButtonBackground);
+		dialog.setTitle(title);
+		dialog.setTitleBackground(titleBackground);
+		dialog.setHoverColor(new Color(150,0,0,255));
+		dialog.setInputColor(new Color(255,255,255,50));
+		dialog.setMarkerColor(new Color(150,0,0,50));
 	}
 }

@@ -18,9 +18,9 @@ public class Text extends Component {
 	private PlayerTextdraw playerTextdraw;
 
 	protected Text(Content content, float x, float y, float width, String text, String name) {
-		super(name);
+		super(content, ComponentAlignment.TOP_LEFT, name);
 		this.content = content;
-		player = content.getPanel().getPlayer();
+		player = content.getDialog().getPlayer();
 		playerTextdraw = PlayerTextdraw.create(player, x, y, text);
 		playerTextdraw.setUseBox(true);
 		//TODO
@@ -58,33 +58,33 @@ public class Text extends Component {
 		return content;
 	}
 
-	public PlayerTextdraw getPlayerTextdraw() {
-		return playerTextdraw;
-	}
-
 	@Override
 	public void recreate() {
 		playerTextdraw.recreate();
+		super.recreate();
 	}
 
 	@Override
 	public boolean isDestroyed() {
-		return playerTextdraw.isDestroyed();
+		return !(!playerTextdraw.isDestroyed() || !super.isDestroyed());
 	}
 
 	@Override
 	public void destroy() {
+		super.destroy();
 		playerTextdraw.destroy();
 	}
 
 	@Override
 	public void hide() {
+		super.hide();
 		playerTextdraw.hide();
 	}
 
 	@Override
 	public void show() {
 		playerTextdraw.show();
+		super.show();
 	}
 
 	public void setText(String text) {
@@ -95,5 +95,10 @@ public class Text extends Component {
 
 	public String getText() {
 		return playerTextdraw.getText();
+	}
+
+	@Override
+	public Vector2D getComponentPosition() {
+		return playerTextdraw.getPosition();
 	}
 }

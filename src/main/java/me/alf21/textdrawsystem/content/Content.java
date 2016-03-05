@@ -1,10 +1,10 @@
 package me.alf21.textdrawsystem.content;
 
-import me.alf21.textdrawsystem.dialogs.panel.Panel;
+import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.content.pages.Page;
-import me.alf21.textdrawsystem.dialogs.panel.styles.Process;
+import me.alf21.textdrawsystem.dialogs.styles.Process;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.object.Destroyable;
 
@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
  */
 public class Content implements Destroyable {
 
-	private Panel panel;
+	private Dialog dialog;
 	private PlayerTextdraw contentText, contentBackground;
 	private ArrayList<Page> pages;
 	private ArrayList<Component> components;
 	private Page currentPage;
 
-	public Content(Panel panel, PlayerTextdraw contentBackground, PlayerTextdraw contentText) {
-		this.panel = panel;
+	public Content(Dialog dialog, PlayerTextdraw contentBackground, PlayerTextdraw contentText) {
+		this.dialog = dialog;
 		this.contentBackground = contentBackground;
 		this.contentText = contentText;
 		this.pages = new ArrayList<>();
@@ -91,8 +91,8 @@ public class Content implements Destroyable {
 		return !(!contentBackground.isDestroyed() || !contentText.isDestroyed());
 	}
 
-	public Panel getPanel() {
-		return panel;
+	public Dialog getDialog() {
+		return dialog;
 	}
 
 	public ArrayList<Component> getComponents() { return components; }
@@ -166,26 +166,24 @@ public class Content implements Destroyable {
 		if(!pages.contains(currentPage))
 			pages.add(currentPage);
 		this.currentPage = currentPage;
-		if(this.currentPage.getPageInterface().getContent() == null)
-			this.currentPage.getPageInterface().setContent(this);
-		Process process = panel.getProcess();
+		Process process = dialog.getProcess();
 		process.setMaxProcess((double) getPages().size());
 		process.setProcess(getPageValue(currentPage)+1);
 		process.process();
-		panel.getTitle().setText("Page (" + (int) process.getProcess() + " / " + (int) process.getMaxProcess() + ")");
+		dialog.getTitle().setText("Page (" + (int) process.getProcess() + " / " + (int) process.getMaxProcess() + ")");
 
 		pages.forEach(page -> {
 			if(page == currentPage && page.isDestroyed())
 				page.recreate();
 			else if(!page.isDestroyed()) {
-				page.getPageInterface().onLeave();
+				page.getPageInterface().onLeave(this, page);
 				if(!page.isDestroyed()) {
 					page.hide();
 					page.destroy();
 				}
 			}
 		});
-		currentPage.getPageInterface().onReach();
+		currentPage.getPageInterface().onReach(this, currentPage);
 
 		currentPage.show();
 
@@ -197,7 +195,7 @@ public class Content implements Destroyable {
 	}
 
 	public void nextPage() {
-		currentPage.getPageInterface().onLeave();
+		currentPage.getPageInterface().onLeave(this, currentPage);
 		if(!currentPage.isDestroyed()) {
 			currentPage.hide();
 			currentPage.destroy();
@@ -212,7 +210,7 @@ public class Content implements Destroyable {
 	}
 
 	public void previousPage() {
-		currentPage.getPageInterface().onLeave();
+		currentPage.getPageInterface().onLeave(this, currentPage);
 		if(!currentPage.isDestroyed()) {
 			currentPage.hide();
 			currentPage.destroy();
@@ -241,7 +239,6 @@ public class Content implements Destroyable {
 	}
 
 	public void addPage(Page page) {
-		page.getPageInterface().setContent(this);
 		getPages().add(page);
 	}
 

@@ -1,9 +1,9 @@
-package me.alf21.textdrawsystem.dialogs.panel.layouts;
+package me.alf21.textdrawsystem.dialogs.layouts;
 
 /**
  * Created by Alf21 on 26.02.2016.
  */
-public enum PanelLayout {
+public enum DialogLayout {
 	TABLE(Table.class),
 	LIST(List.class),
 	FORM(Form.class),
@@ -11,7 +11,7 @@ public enum PanelLayout {
 
 	private Class<?> layoutClass;
 
-	PanelLayout(Class<?> layoutClass) {
+	DialogLayout(Class<?> layoutClass) {
 		this.layoutClass = layoutClass;
 	}
 

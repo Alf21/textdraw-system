@@ -3,17 +3,21 @@ package me.alf21.textdrawsystem.player;
 import java.io.IOException;
 
 import me.alf21.textdrawsystem.TextdrawSystem;
-import me.alf21.textdrawsystem.dialogs.interfaces.PageInterface;
-import me.alf21.textdrawsystem.dialogs.interfaces.PanelInterface;
+import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.content.components.bar.Bar;
+import me.alf21.textdrawsystem.content.components.bar.BarInterface;
+import me.alf21.textdrawsystem.content.pages.PageInterface;
+import me.alf21.textdrawsystem.dialogs.layouts.DialogLayout;
 import me.alf21.textdrawsystem.dialogs.panel.Panel;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.Text;
 import me.alf21.textdrawsystem.content.components.input.Input;
 import me.alf21.textdrawsystem.content.components.input.InputType;
 import me.alf21.textdrawsystem.content.pages.Page;
-import me.alf21.textdrawsystem.dialogs.panel.layouts.PanelLayout;
-import me.alf21.textdrawsystem.dialogs.panel.types.PanelType;
+import me.alf21.textdrawsystem.dialogs.types.DialogType;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.event.player.*;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.util.event.EventManager;
@@ -35,9 +39,9 @@ public class PlayerManager
 				panel.hide();
 				panel.destroy();
 			}
-			panel = new Panel(player);
-			if(panel.getPanelType() == PanelType.PAGE) {
-				panel.setPanelLayout(PanelLayout.FORM);
+			panel = Panel.create(player);
+			if(panel.getDialogType() == DialogType.PAGE) {
+				panel.setDialogLayout(DialogLayout.FORM);
 				panel.getLeftButton().setText("BACK");
 				panel.getRightButton().setText("NEXT");
 
@@ -66,24 +70,44 @@ public class PlayerManager
 				input4.setInputTypes(InputType.TEXT);
 				input4.toggleRequired(false);
 
+				Bar playerTextdrawBar = Bar.create(
+						panel.getContent(),
+						panel.getLayout().getSlot(panel.getContent(), 2, 2),
+						10, 10,
+						0, 100,
+						new Color(150, 0, 0, 255),
+						new BarInterface() {
+
+							@Override
+							public void onProcess(Content content, Bar bar) {
+								bar.setProcess((double) Shoebill.get().getSampObjectManager().getPlayerTextdraws(content.getDialog().getPlayer()).size() / 360.0);
+							}
+						},
+						"playerTextdrawBar"
+				);
+				playerTextdrawBar.attachLabel("PlayerTextdraws (" + Shoebill.get().getSampObjectManager().getPlayerTextdraws(player).size() + " / 360)");
+
 				Page page2 = Page.create();
 				page2.getComponents().add(input4);
+				page2.getComponents().add(playerTextdrawBar);
 
 				Page page3 = Page.create(new PageInterface() {
+
 					@Override
-					public void onReach() {
-						Text text = Text.create(getContent(), getContent().getContentBackground().getPosition(), "text");
-						String string = "Email: " + getContent().getComponentData("email").getString();
-						string += "~n~Name: " + getContent().getComponentData("name").getString();
-						string += "~n~Password: " + getContent().getComponentData("password").getString();
-						string += "~n~Description: " + getContent().getComponentData("description").getString();
+					public void onReach(Content content, Page page) {
+						Text text = Text.create(content, content.getContentBackground().getPosition(), "text");
+						String string = "Email: " + content.getComponentData("email").getString();
+						string += "~n~Name: " + content.getComponentData("name").getString();
+						string += "~n~Password: " + content.getComponentData("password").getString();
+						string += "~n~Description: " + content.getComponentData("description").getString();
 						text.setText(string);
-						getPage().getComponents().add(text);
+						text.attachLabel("Some infos");
+						page.getComponents().add(text);
 					}
 
 					@Override
-					public void onLeave() {
-						getPage().clear();
+					public void onLeave(Content content, Page page) {
+						page.clear();
 					}
 				});
 

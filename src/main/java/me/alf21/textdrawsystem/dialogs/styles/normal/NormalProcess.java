@@ -1,8 +1,8 @@
-package me.alf21.textdrawsystem.dialogs.panel.styles.normal;
+package me.alf21.textdrawsystem.dialogs.styles.normal;
 
 import me.alf21.textdrawsystem.calculations.Calculation;
-import me.alf21.textdrawsystem.dialogs.panel.Panel;
-import me.alf21.textdrawsystem.dialogs.panel.styles.Process;
+import me.alf21.textdrawsystem.dialogs.Dialog;
+import me.alf21.textdrawsystem.dialogs.styles.Process;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -20,12 +20,12 @@ public class NormalProcess extends Process implements Destroyable {
 
 	private static float max_width = 410f;
 
-	private NormalProcess(Panel panel) {
-		super(panel);
-	}
+	private NormalProcess(Dialog dialog) {
+		super(dialog);
+	} //TODO REMOVE THIS CLASS AND USE Bar.class AS CONTENT COMPONENT
 
-	public static Process create(Panel panel) {
-		processBarBackground = PlayerTextdraw.create(panel.getPlayer(), 320.000000f, 133.500000f, "_");
+	public static Process create(Dialog dialog) {
+		processBarBackground = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 133.500000f, "_");
 		processBarBackground.setAlignment(TextDrawAlign.get(2));
 		processBarBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		processBarBackground.setFont(TextDrawFont.get(1));
@@ -39,7 +39,7 @@ public class NormalProcess extends Process implements Destroyable {
 		processBarBackground.setTextSize(new Vector2D(0.000000f, max_width));
 		processBarBackground.setSelectable(false);
 
-		processBar = PlayerTextdraw.create(panel.getPlayer(), 320.000000f, 133.500000f, "_");
+		processBar = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 133.500000f, "_");
 		processBar.setAlignment(TextDrawAlign.get(2));
 		processBar.setBackgroundColor(new Color(0, 0, 0, 255));
 		processBar.setFont(TextDrawFont.get(1));
@@ -53,7 +53,7 @@ public class NormalProcess extends Process implements Destroyable {
 		processBar.setTextSize(new Vector2D(0.000000f, max_width));
 		processBar.setSelectable(false);
 
-		return new NormalProcess(panel);
+		return new NormalProcess(dialog);
 	}
 
 	@Override
