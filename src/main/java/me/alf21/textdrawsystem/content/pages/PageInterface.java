@@ -3,17 +3,15 @@ package me.alf21.textdrawsystem.content.pages;
 import me.alf21.textdrawsystem.content.Content;
 
 /**
- * Created by Alf21 on 02.03.2016.
+ * Created by Alf21 on 02.03.2016 in the project 'textdraw-system'.
  */
-public abstract class PageInterface {
+public interface PageInterface {
 
-	public PageInterface() { }
-
-	public void onReach(Content content, Page page) {
+	default void onReach(Content content, Page page) {
 
 	}
 
-	public void onLeave(Content content, Page page) {
+	default void onLeave(Content content, Page page) {
 
 	}
 }

@@ -15,11 +15,14 @@ import net.gtaun.shoebill.object.Player;
 import java.util.ArrayList;
 
 /**
- * Created by Alf21 on 04.03.2016.
+ * Created by Alf21 on 04.03.2016 in the project 'textdraw-system'.
  */
 public abstract class Dialog implements Destroyable {
 
 	public static final String TEXT_EMPTY = "Click me";
+
+	//Colors
+	private Color inputColor = Color.GRAY, markerColor = Color.RED, hoverColor = Color.GREEN;
 
 	private Player player;
 	private Content content;
@@ -32,17 +35,9 @@ public abstract class Dialog implements Destroyable {
 	private PlayerTextdraw panelBackground;
 	private PlayerTextdraw title;
 	private PlayerTextdraw titleBackground;
-	private PlayerTextdraw leftButtonBackground;
-	private PlayerTextdraw rightButtonBackground;
-	private PlayerTextdraw leftButton;
-	private PlayerTextdraw rightButton;
 	private PlayerTextdraw closeIcon;
 	private Process process;
 	private ArrayList<PlayerTextdraw> preAddons, afterAddons;
-	private Color hoverColor = Color.GREEN;
-
-	//Colors
-	private Color inputColor, markerColor;
 
 	protected Dialog(Player player, DialogStyles dialogStyles, DialogInterface dialogInterface) {
 		this.player = player;
@@ -71,10 +66,6 @@ public abstract class Dialog implements Destroyable {
 			panelBackground.show();
 			titleBackground.show();
 			title.show();
-			leftButtonBackground.show();
-			leftButton.show();
-			rightButtonBackground.show();
-			rightButton.show();
 			content.show();
 			closeIcon.show();
 			process.show();
@@ -90,10 +81,6 @@ public abstract class Dialog implements Destroyable {
 			panelBackground.hide();
 			titleBackground.hide();
 			title.hide();
-			leftButtonBackground.hide();
-			rightButtonBackground.hide();
-			leftButton.hide();
-			rightButton.hide();
 			content.hide();
 			closeIcon.hide();
 			process.hide();
@@ -107,10 +94,6 @@ public abstract class Dialog implements Destroyable {
 		panelBackground.destroy();
 		titleBackground.destroy();
 		title.destroy();
-		leftButtonBackground.destroy();
-		leftButton.destroy();
-		rightButtonBackground.destroy();
-		rightButton.destroy();
 		content.destroy();
 		closeIcon.destroy();
 		process.destroy();
@@ -126,10 +109,6 @@ public abstract class Dialog implements Destroyable {
 				|| !panelBackground.isDestroyed()
 				|| !titleBackground.isDestroyed()
 				|| !title.isDestroyed()
-				|| !leftButtonBackground.isDestroyed()
-				|| !leftButton.isDestroyed()
-				|| !rightButtonBackground.isDestroyed()
-				|| !rightButton.isDestroyed()
 				|| !content.isDestroyed()
 				|| !closeIcon.isDestroyed()
 				|| !process.isDestroyed());
@@ -156,22 +135,6 @@ public abstract class Dialog implements Destroyable {
 		return titleBackground;
 	}
 
-	public PlayerTextdraw getLeftButtonBackground() {
-		return leftButtonBackground;
-	}
-
-	public PlayerTextdraw getRightButtonBackground() {
-		return rightButtonBackground;
-	}
-
-	public PlayerTextdraw getLeftButton() {
-		return leftButton;
-	}
-
-	public PlayerTextdraw getRightButton() {
-		return rightButton;
-	}
-
 	public PlayerTextdraw getCloseIcon() {
 		return closeIcon;
 	}
@@ -190,18 +153,6 @@ public abstract class Dialog implements Destroyable {
 
 	public void setTitleBackground(PlayerTextdraw titleBackground) {
 		this.titleBackground = titleBackground;
-	}
-
-	public void setLeftButtonBackground(PlayerTextdraw leftButtonBackground) { this.leftButtonBackground = leftButtonBackground; }
-
-	public void setRightButtonBackground(PlayerTextdraw rightButtonBackground) { this.rightButtonBackground = rightButtonBackground; }
-
-	public void setLeftButton(PlayerTextdraw leftButton) {
-		this.leftButton = leftButton;
-	}
-
-	public void setRightButton(PlayerTextdraw rightButton) {
-		this.rightButton = rightButton;
 	}
 
 	public void setCloseIcon(PlayerTextdraw closeIcon) {
@@ -231,7 +182,6 @@ public abstract class Dialog implements Destroyable {
 	public void setHoverColor(Color hoverColor) {
 		this.hoverColor = hoverColor;
 	}
-
 
 	public void setContent(Content content) {
 		this.content = content;
@@ -291,8 +241,6 @@ public abstract class Dialog implements Destroyable {
 	}
 
 // Page handling
-
-
 	public void onClickCloseIcon() {
 		getDialogInterface().onClose(this);
 	}

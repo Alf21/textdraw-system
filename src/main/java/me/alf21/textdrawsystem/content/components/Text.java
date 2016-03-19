@@ -1,6 +1,8 @@
 package me.alf21.textdrawsystem.content.components;
 
 import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.content.attachments.Attachment;
+import me.alf21.textdrawsystem.content.attachments.Box;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -8,27 +10,25 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Player;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 /**
- * Created by Alf21 on 02.03.2016.
+ * Created by Alf21 on 02.03.2016 in the project 'textdraw-system'.
  */
 public class Text extends Component {
 
-	private Content content;
-	private Player player;
 	private PlayerTextdraw playerTextdraw;
 
 	protected Text(Content content, float x, float y, float width, String text, String name) {
 		super(content, ComponentAlignment.TOP_LEFT, name);
-		this.content = content;
-		player = content.getDialog().getPlayer();
-		playerTextdraw = PlayerTextdraw.create(player, x, y, text);
-		playerTextdraw.setUseBox(true);
+		playerTextdraw = PlayerTextdraw.create(super.getPlayer(), x, y, text);
+	//	playerTextdraw.setUseBox(true);
 		//TODO
 	//	if(width != Float.NaN)
 	//		width = Calculation.getBoxSize(width);
 	//  calc width from pos
 
-		playerTextdraw = PlayerTextdraw.create(player, x, y, text);
 		playerTextdraw.setAlignment(TextDrawAlign.LEFT);
 		playerTextdraw.setBackgroundColor(new Color(0,0,0,255));
 		playerTextdraw.setFont(TextDrawFont.get(1));
@@ -46,22 +46,32 @@ public class Text extends Component {
 		return new Text(content, x, y, width, text, name);
 	}
 
-	public static Text create(Content content, float x, float y, String name) { return create(content, x, y, Float.NaN, "_", name); }
+	public static Text create(Content content, float x, float y, String name) {
+		return create(content, x, y, Float.NaN, "_", name);
+	}
 
-	public static Text create(Content content, Vector2D vector2D, float width, String text, String name) { return create(content, vector2D.getX(), vector2D.getY(), width, text, name); }
+	public static Text create(Content content, Vector2D vector2D, float width, String text, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), width, text, name);
+	}
 
-	public static Text create(Content content, Vector2D vector2D, String text, String name) { return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, text, name); }
+	public static Text create(Content content, Vector2D vector2D, String text, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, text, name);
+	}
 
-	public static Text create(Content content, Vector2D vector2D, String name) { return create(content, vector2D, "_", name); }
-
-	public Content getContent() {
-		return content;
+	public static Text create(Content content, Vector2D vector2D, String name) {
+		return create(content, vector2D, "_", name);
 	}
 
 	@Override
-	public void recreate() {
-		playerTextdraw.recreate();
-		super.recreate();
+	public void show() {
+		super.show();
+		playerTextdraw.show();
+	}
+
+	@Override
+	public void hide() {
+		playerTextdraw.hide();
+		super.hide();
 	}
 
 	@Override
@@ -76,21 +86,16 @@ public class Text extends Component {
 	}
 
 	@Override
-	public void hide() {
-		super.hide();
-		playerTextdraw.hide();
-	}
-
-	@Override
-	public void show() {
-		playerTextdraw.show();
-		super.show();
+	public void recreate() {
+		super.recreate();
+		playerTextdraw.recreate();
 	}
 
 	public void setText(String text) {
 		if(text.isEmpty() || text.replaceAll(" ", "").isEmpty())
 			text = "_";
 		playerTextdraw.setText(text);
+		super.getAttachments().stream().filter(attachment -> attachment instanceof Box).map(attachment -> (Box) attachment).forEach(Box::update);
 	}
 
 	public String getText() {
@@ -100,5 +105,23 @@ public class Text extends Component {
 	@Override
 	public Vector2D getComponentPosition() {
 		return playerTextdraw.getPosition();
+	}
+
+	@Override
+	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
+		ArrayList<PlayerTextdraw> playerTextdraws = super.getAllPlayerTextdraws();
+		playerTextdraws.add(playerTextdraw);
+		return playerTextdraws;
+	}
+
+	@Override
+	public ArrayList<PlayerTextdraw> getComponentTextdraws() {
+		ArrayList<PlayerTextdraw> playerTextdraws = super.getComponentTextdraws();
+		playerTextdraws.add(playerTextdraw);
+		return playerTextdraws;
+	}
+
+	public PlayerTextdraw getPlayerTextdraw() {
+		return playerTextdraw;
 	}
 }

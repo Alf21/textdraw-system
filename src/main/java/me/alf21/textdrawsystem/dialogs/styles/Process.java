@@ -4,7 +4,7 @@ import me.alf21.textdrawsystem.dialogs.Dialog;
 import net.gtaun.shoebill.object.Destroyable;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
 public abstract class Process implements Destroyable {
 

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by Alf21 on 01.03.2016.
+ * Created by Alf21 on 01.03.2016 in the project 'textdraw-system'.
  */
 public class ComponentData {
 
@@ -82,6 +82,12 @@ public class ComponentData {
 		if(data instanceof Long)
 			return (Long) getData();
 		return null;
+	}
+
+	public short getShort() {
+		if(data instanceof Short)
+			return (Short) getData();
+		return 0;
 	}
 
 	public BigInteger getBigInteger() {

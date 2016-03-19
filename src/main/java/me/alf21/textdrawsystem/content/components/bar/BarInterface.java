@@ -3,15 +3,15 @@ package me.alf21.textdrawsystem.content.components.bar;
 import me.alf21.textdrawsystem.content.Content;
 
 /**
- * Created by Alf21 on 04.03.2016.
+ * Created by Alf21 on 04.03.2016 in the project 'textdraw-system'.
  */
-public abstract class BarInterface {
+public interface BarInterface {
 
-	public void onInit(Content content, Bar bar) {
+	default void onInit(Content content, Bar bar) {
 		bar.setProcess(0);
 	}
 
-	public void onProcess(Content content, Bar bar) {
+	default void onProcess(Content content, Bar bar) {
 
 	}
 }

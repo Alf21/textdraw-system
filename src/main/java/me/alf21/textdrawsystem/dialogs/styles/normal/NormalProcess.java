@@ -11,7 +11,7 @@ import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Destroyable;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
 public class NormalProcess extends Process implements Destroyable {
 	private static PlayerTextdraw processBarBackground;

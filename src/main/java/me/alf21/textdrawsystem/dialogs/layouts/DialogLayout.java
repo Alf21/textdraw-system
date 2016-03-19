@@ -1,7 +1,7 @@
 package me.alf21.textdrawsystem.dialogs.layouts;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
 public enum DialogLayout {
 	TABLE(Table.class),

@@ -1,10 +1,13 @@
 package me.alf21.textdrawsystem.player;
 
-import me.alf21.textdrawsystem.dialogs.panel.Panel;
+import me.alf21.textdrawsystem.dialogs.types.Panel;
 import net.gtaun.shoebill.common.player.PlayerLifecycleObject;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.util.event.EventManager;
 
+/**
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
+ */
 public class PlayerData extends PlayerLifecycleObject {
 	private Player player;
 	private Panel panel;
@@ -14,7 +17,7 @@ public class PlayerData extends PlayerLifecycleObject {
         player = p;
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
 	 * @see net.gtaun.shoebill.common.player.PlayerLifecycleObject#getPlayer()
 	 */
 	@Override

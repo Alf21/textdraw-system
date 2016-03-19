@@ -1,5 +1,6 @@
 package me.alf21.textdrawsystem.content;
 
+import me.alf21.textdrawsystem.content.components.list.List;
 import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentData;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
 public class Content implements Destroyable {
 
@@ -100,14 +101,14 @@ public class Content implements Destroyable {
 	public Component getComponent(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
-				for (PlayerTextdraw playerTextdraws : component.getPlayerTextdraws()) {
+				for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
 					if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
 						return component;
 				}
 			}
 		}
 		for (Component component : components) {
-			for (PlayerTextdraw playerTextdraws : component.getPlayerTextdraws()) {
+			for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
 				if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
 					return component;
 			}
@@ -195,13 +196,14 @@ public class Content implements Destroyable {
 	}
 
 	public void nextPage() {
+		currentPage.getComponents().stream().filter(component -> component instanceof List).forEach(component -> ((List) component).getSelectedListItem().getListItemInterface().onSelect((List) component, ((List) component).getSelectedListItem()));
 		currentPage.getPageInterface().onLeave(this, currentPage);
-		if(!currentPage.isDestroyed()) {
+		if (!currentPage.isDestroyed()) {
 			currentPage.hide();
 			currentPage.destroy();
 		}
 		int i = 1;
-		for(Page page : getPages()) {
+		for (Page page : getPages()) {
 			if(page == getCurrentPage())
 				break;
 			i++;
@@ -210,14 +212,15 @@ public class Content implements Destroyable {
 	}
 
 	public void previousPage() {
+		currentPage.getComponents().stream().filter(component -> component instanceof List).forEach(component -> ((List) component).setSelectedListItem(null));
 		currentPage.getPageInterface().onLeave(this, currentPage);
-		if(!currentPage.isDestroyed()) {
+		if (!currentPage.isDestroyed()) {
 			currentPage.hide();
 			currentPage.destroy();
 		}
 		int i = -1;
-		for(Page page : getPages()) {
-			if(page == getCurrentPage())
+		for (Page page : getPages()) {
+			if (page == getCurrentPage())
 				break;
 			i++;
 		}
@@ -226,8 +229,8 @@ public class Content implements Destroyable {
 
 	public int getPageValue(Page page) {
 		int i = 0;
-		for(Page pages : getPages()) {
-			if(page == pages)
+		for (Page pages : getPages()) {
+			if (page == pages)
 				return i;
 			i++;
 		}

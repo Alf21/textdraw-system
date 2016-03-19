@@ -4,7 +4,7 @@ import me.alf21.textdrawsystem.content.Content;
 import net.gtaun.shoebill.data.Vector2D;
 
 /**
- * Created by Alf21 on 27.02.2016.
+ * Created by Alf21 on 27.02.2016 in the project 'textdraw-system'.
  */
 public class FreeStyle implements Layout {
 

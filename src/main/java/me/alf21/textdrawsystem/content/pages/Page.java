@@ -6,7 +6,7 @@ import net.gtaun.shoebill.object.Destroyable;
 import java.util.ArrayList;
 
 /**
- * Created by Alf21 on 29.02.2016.
+ * Created by Alf21 on 29.02.2016 in the project 'textdraw-system'.
  */
 public class Page implements Destroyable {
 

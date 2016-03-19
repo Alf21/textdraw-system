@@ -1,15 +1,20 @@
 package me.alf21.textdrawsystem.content.components;
 
 import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.content.attachments.Attachment;
+import me.alf21.textdrawsystem.content.attachments.Box;
+import me.alf21.textdrawsystem.content.attachments.Label;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
- * Created by Alf21 on 27.02.2016.
+ * Created by Alf21 on 27.02.2016 in the project 'textdraw-system'.
  */
 public abstract class Component implements Destroyable {
 
@@ -17,7 +22,7 @@ public abstract class Component implements Destroyable {
 	private ComponentData componentData = new ComponentData(false);
 	private String name;
 	private ComponentAlignment componentAlignment;
-	private Label label;
+	private ArrayList<Attachment> attachments;
 	private Player player;
 	private Content content;
 
@@ -26,33 +31,34 @@ public abstract class Component implements Destroyable {
 		this.componentAlignment = componentAlignment;
 		this.name = name;
 		player = content.getDialog().getPlayer();
+		attachments = new ArrayList<>();
 	}
 
 	public void show() {
-		if(label != null && !label.isDestroyed())
-			label.show();
+		attachments.stream().forEach(Attachment::show);
 	}
 
 	public void hide() {
-		if(label != null && !label.isDestroyed())
-			label.hide();
+		attachments.stream().forEach(Attachment::hide);
 	}
 
 	public boolean isFilled() { return true; }
 
-	public ArrayList<PlayerTextdraw> getPlayerTextdraws() {
+	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
-		if(label != null)
-			playerTextdraws = label.getPlayerTextdraws();
+		attachments.stream().forEach(attachment -> playerTextdraws.addAll(attachment.getPlayerTextdraws().stream().collect(Collectors.toList())));
 		return playerTextdraws;
 	}
 
-	public void recreate() {
-		if(label != null && label.isDestroyed())
-			label.recreate();
+	public ArrayList<PlayerTextdraw> getComponentTextdraws() {
+		return new ArrayList<>();
 	}
 
-	public void onClick() { }
+	public void recreate() {
+		attachments.stream().filter(Attachment::isDestroyed).forEach(Attachment::recreate);
+	}
+
+	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw clickedPlayerTextdraw) { }
 
 	public boolean isRequired() {
 		return required;
@@ -76,13 +82,16 @@ public abstract class Component implements Destroyable {
 
 	@Override
 	public void destroy() {
-		if(label != null && !label.isDestroyed())
-			label.destroy();
+		attachments.stream().filter(attachment -> !attachment.isDestroyed()).forEach(Attachment::destroy);
 	}
 
 	@Override
 	public boolean isDestroyed() {
-		return !(label != null && !label.isDestroyed());
+		for (Attachment attachment : attachments) {
+			if (!attachment.isDestroyed())
+				return false;
+		}
+		return true;
 	}
 
 	public ComponentData getComponentData() {
@@ -270,33 +279,50 @@ public abstract class Component implements Destroyable {
 /******************************************************/
 
 	public Label attachLabel(String text) {
-		destroyLabel();
-		label = Label.create(content, text, this, getName() + "_label");
+		Label label = Label.create(content, text, getName() + "_label");
+		attach(label);
 		return label;
 	}
 
-	public void attachLabel(Label label) {
-		destroyLabel();
-		label.attach(this);
+	public Box attachBox(Color color) {
+		Box box = Box.create(content, color, getName() + "_box");
+		attach(box);
+		return box;
 	}
 
-	public Label detachLabel() {
-		Label label = getLabel();
-		if (label != null) {
-			if (label.getComponent() != null)
-				label.detach();
-			this.label = null;
+	public void attach(Attachment attachment) {
+		Attachment oldAttachment = getAttachment(attachment.getName());
+		if (oldAttachment != null) {
+			detach(oldAttachment);
+			oldAttachment.hide();
+			oldAttachment.destroy();
 		}
-		return label;
+		attachment.attach(this);
 	}
 
-	public Label getLabel() {
-		return label;
+	public Attachment detach(Attachment attachment) {
+		if (attachment != null) {
+			if (attachment.getComponent() != null)
+				attachment.detach();
+		}
+		return attachment;
 	}
 
-	public void destroyLabel() {
-		if(label != null && !label.isDestroyed())
-			label.destroy();
+	public void detachAll() {
+		attachments.forEach(this::detach);
+		attachments.clear();
+	}
+
+	public ArrayList<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	public Attachment getAttachment(String name) {
+		for (Attachment attachment : attachments) {
+			if (attachment.getName().equals(name))
+				return attachment;
+		}
+		return null;
 	}
 
 	public Content getContent() {

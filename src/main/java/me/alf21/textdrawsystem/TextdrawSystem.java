@@ -22,6 +22,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
+ */
 public class TextdrawSystem extends Plugin {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(TextdrawSystem.class);

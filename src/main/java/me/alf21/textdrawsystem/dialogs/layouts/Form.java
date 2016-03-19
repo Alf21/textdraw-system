@@ -7,7 +7,7 @@ import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.data.Vector2D;
 
 /**
- * Created by Alf21 on 27.02.2016.
+ * Created by Alf21 on 27.02.2016 in the project 'textdraw-system'.
  */
 public class Form implements Layout {
 
@@ -16,7 +16,7 @@ public class Form implements Layout {
 		float iXMax, iXMin, iYMax, iYMin;
 		Vector2D position = contentBackground.getPosition().clone();
 		float startPositionX = position.getX(), startPositionY = position.getY();
-		float width = Calculation.getWidth(contentBackground), height = Calculation.getHeight(contentBackground);
+		float width = Calculation.getWidth(contentBackground), height = Calculation.getBoxHeight(contentBackground);
 		if(contentBackground.getAlignment() == TextDrawAlign.CENTER)
 			startPositionX -= width / 2.0f;
 

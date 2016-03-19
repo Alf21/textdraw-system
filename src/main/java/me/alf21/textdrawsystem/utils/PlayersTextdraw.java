@@ -1,6 +1,7 @@
 package me.alf21.textdrawsystem.utils;
 
 import me.alf21.textdrawsystem.TextdrawSystem;
+import me.alf21.textdrawsystem.calculations.Calculation;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
@@ -14,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
 public class PlayersTextdraw implements Destroyable {
 
+	private static final boolean ENABLE_FRIENDLY_RESOLUTION = true;
+
 	private Textdraw playersTextdraw;
 	private String text;
+	private String allText;
 	private Color color, backgroundColor, boxColor;
 	private TextDrawAlign alignment;
 	private TextDrawFont font;
@@ -27,24 +31,33 @@ public class PlayersTextdraw implements Destroyable {
 	private boolean proportional, useBox, selectable;
 	private int outlineSize, shadowSize;
 	private ArrayList<Player> players;
-	//private boolean showed TODO
+	private boolean showed;
 
-	public PlayersTextdraw(ArrayList<Player> players, float x, float y) {
+	public PlayersTextdraw(ArrayList<Player> players) {
 		this.players = players;
-		playersTextdraw = Textdraw.create(x, y);
+		playersTextdraw = null;
+		text = allText = "";
+		color = Color.WHITE;
+		backgroundColor = boxColor = Color.BLACK;
+		alignment = TextDrawAlign.LEFT;
+		font = TextDrawFont.FONT2;
+		position = letterSize = textSize = new Vector2D();
+		proportional = true;
+		useBox = selectable = showed = false;
+		outlineSize = 0;
+		shadowSize = 1;
 		TextdrawSystem.getPlayersTextdraws().add(this); //TODO
 	}
 
-	public static PlayersTextdraw create(ArrayList<Player> players, float x, float y) {
-		PlayersTextdraw playersTextdraw = new PlayersTextdraw(players, x, y);
+	public static PlayersTextdraw create(ArrayList<Player> players, float x, float y, String text) {
+		PlayersTextdraw playersTextdraw = new PlayersTextdraw(players);
 		playersTextdraw.setPosition(x, y);
+		playersTextdraw.setText(text);
 		return playersTextdraw;
 	}
 
-	public static PlayersTextdraw create(ArrayList<Player> players, float x, float y, String text) {
-		PlayersTextdraw playersTextdraw = create(players, x, y);
-		playersTextdraw.setText(text);
-		return playersTextdraw;
+	public static PlayersTextdraw create(ArrayList<Player> players, float x, float y) {
+		return create(players, x, y, "_");
 	}
 
 	public static PlayersTextdraw create(ArrayList<Player> players, Vector2D vector2d) {
@@ -79,13 +92,44 @@ public class PlayersTextdraw implements Destroyable {
 		return create(tmpPlayers, vector2D, text);
 	}
 
+	public static PlayersTextdraw create(PlayerTextdraw playerTextdraw) {
+		PlayersTextdraw playersTextdraw = create(playerTextdraw.getPosition(), playerTextdraw.getText(), playerTextdraw.getPlayer());
+		playersTextdraw.copy(playerTextdraw);
+		return playersTextdraw;
+	}
+
 	public void setText(String text) {
-		playersTextdraw.setText(text);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setText(text);
 		this.text = text;
+	/* TODO
+		if (boxEnabled != -1 && boxEnabled != 0) {
+			switch (boxEnabled) {
+				case 1:
+					enableBox();
+					break;
+				case 2:
+					enableBoxMaxWidth(maxWidth);
+					break;
+				case 3:
+					enableBoxMaxHeight(maxHeight);
+					break;
+			}
+		}
+	*/
 	}
 
 	public String getText() {
 		return text;
+	}
+
+	public String getAllText() {
+		return allText;
+	}
+
+	public void setAllText(String allText) {
+		this.allText = allText;
+		setText(allText);
 	}
 
 	public Color getColor() {
@@ -93,7 +137,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setColor(Color color) {
-		playersTextdraw.setColor(color);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setColor(color);
 		this.color = color;
 	}
 
@@ -102,7 +147,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setBackgroundColor(Color backgroundColor) {
-		playersTextdraw.setBackgroundColor(backgroundColor);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setBackgroundColor(backgroundColor);
 		this.backgroundColor = backgroundColor;
 	}
 
@@ -111,7 +157,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setBoxColor(Color boxColor) {
-		playersTextdraw.setBoxColor(boxColor);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setBoxColor(boxColor);
 		this.boxColor = boxColor;
 	}
 
@@ -120,7 +167,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setAlignment(TextDrawAlign alignment) {
-		playersTextdraw.setAlignment(alignment);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setAlignment(alignment);
 		this.alignment = alignment;
 	}
 
@@ -129,7 +177,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setFont(TextDrawFont font) {
-		playersTextdraw.setFont(font);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setFont(font);
 		this.font = font;
 	}
 
@@ -138,6 +187,10 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setPosition(Vector2D position) {
+		if (ENABLE_FRIENDLY_RESOLUTION) {
+			position.setX((float) Math.round(position.getX()));
+			position.setY((float) Math.round(position.getY()));
+		}
 		this.position = position;
 	}
 
@@ -150,7 +203,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setLetterSize(Vector2D letterSize) {
-		playersTextdraw.setLetterSize(letterSize);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setLetterSize(letterSize);
 		this.letterSize = letterSize;
 	}
 
@@ -163,7 +217,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setTextSize(Vector2D textSize) {
-		playersTextdraw.setTextSize(textSize);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setTextSize(textSize);
 		this.textSize = textSize;
 	}
 
@@ -176,7 +231,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setProportional(boolean proportional) {
-		playersTextdraw.setProportional(proportional);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setProportional(proportional);
 		this.proportional = proportional;
 	}
 
@@ -185,7 +241,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setUseBox(boolean useBox) {
-		playersTextdraw.setUseBox(useBox);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setUseBox(useBox);
 		this.useBox = useBox;
 	}
 
@@ -194,7 +251,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setSelectable(boolean selectable) {
-		playersTextdraw.setSelectable(selectable);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setSelectable(selectable);
 		this.selectable = selectable;
 	}
 
@@ -203,7 +261,8 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setOutlineSize(int outlineSize) {
-		playersTextdraw.setOutlineSize(outlineSize);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setOutlineSize(outlineSize);
 		this.outlineSize = outlineSize;
 	}
 
@@ -212,13 +271,14 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void setShadowSize(int shadowSize) {
-		playersTextdraw.setShadowSize(shadowSize);
+		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.setShadowSize(shadowSize);
 		this.shadowSize = shadowSize;
 	}
 
-
 	public boolean isShowed(Player player) {
-		return playersTextdraw.isShowed(player);
+		return (showed && playersTextdraw != null && !playersTextdraw.isDestroyed() && playersTextdraw.isShowed(player)
+				|| playersTextdraw != null && !playersTextdraw.isDestroyed() && playersTextdraw.isShowed(player));
 	}
 
 	public boolean isShowed() {
@@ -229,6 +289,7 @@ public class PlayersTextdraw implements Destroyable {
 		return false;
 	}
 
+	@Override
 	public PlayersTextdraw clone() {
 		PlayersTextdraw newPlayersTextdraw = PlayersTextdraw.create(getPosition(), getText());
 		if(getAlignment() != null)          newPlayersTextdraw.setAlignment(getAlignment());
@@ -302,16 +363,23 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void move(Vector2D vector2d) {
-		boolean showed = isShowed();
-		if(showed)
-			hide();
-		playersTextdraw.destroy();
-		playersTextdraw = Textdraw.create(vector2d);
-		setPosition(vector2d);
-		synchronize();
-		if(showed) {
-			show();
+		if (playersTextdraw != null && !playersTextdraw.isDestroyed()) {
+			boolean showed = isShowed();
+			if (ENABLE_FRIENDLY_RESOLUTION) {
+				vector2d.setX((float) Math.round(vector2d.getX()));
+				vector2d.setY((float) Math.round(vector2d.getY()));
+			}
+			if (showed)
+				hide();
+			playersTextdraw.destroy();
+			playersTextdraw = Textdraw.create(vector2d);
+			setPosition(vector2d);
+			synchronize();
+			if (showed) {
+				show();
+			}
 		}
+		else setPosition(vector2d);
 	}
 
 	public void move(float x, float y) {
@@ -319,7 +387,7 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void synchronize() { //TODO also sync position?
-		if(!isDestroyed()) {
+		if(playersTextdraw != null && !isDestroyed()) {
 			if(getAlignment() != null)          playersTextdraw.setAlignment(getAlignment());
 			if(getBackgroundColor() != null)    playersTextdraw.setBackgroundColor(getBackgroundColor());
 			if(getBoxColor() != null)           playersTextdraw.setBoxColor(getBoxColor());
@@ -336,12 +404,27 @@ public class PlayersTextdraw implements Destroyable {
 		}
 	}
 
+	public void clear() {
+		if (!isDestroyed()) destroy();
+		playersTextdraw = null;
+		text = null;
+		color = backgroundColor = boxColor = null;
+		alignment = null;
+		font = null;
+		position = letterSize = textSize = null;
+		proportional = useBox = selectable = false;
+		outlineSize = shadowSize = 0;
+		players = null;
+	}
+
 	public void hide() {
 		getPlayers().forEach(this::hide);
 	}
 
 	public void hide(Player player) {
-		playersTextdraw.hide(player);
+		if (playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.hide(player);
+		showed = false;
 	}
 
 	public void show() {
@@ -349,15 +432,22 @@ public class PlayersTextdraw implements Destroyable {
 	}
 
 	public void show(Player player) {
+		if (playersTextdraw == null || playersTextdraw.isDestroyed())
+			recreate();
 		playersTextdraw.show(player);
+		showed = true;
 	}
 
 	public int getId() {
-		return playersTextdraw.getId();
+		if (playersTextdraw != null && !playersTextdraw.isDestroyed())
+			return playersTextdraw.getId();
+		else return -1;
 	}
 
 	public TextdrawBase getPrimitive() {
-		return playersTextdraw.getPrimitive();
+		if (playersTextdraw != null && !playersTextdraw.isDestroyed())
+			return playersTextdraw.getPrimitive();
+		else return null;
 	}
 
 	public boolean isPlayerTextdraw(Textdraw textdraw) {
@@ -366,17 +456,18 @@ public class PlayersTextdraw implements Destroyable {
 
 	@Override
 	public void destroy() {
-		playersTextdraw.destroy();
+		if (playersTextdraw != null && !playersTextdraw.isDestroyed())
+			playersTextdraw.destroy();
 		TextdrawSystem.getPlayersTextdraws().remove(this);
 	}
 
 	@Override
 	public boolean isDestroyed() {
-		return playersTextdraw.isDestroyed();
+		return (playersTextdraw == null || playersTextdraw.isDestroyed());
 	}
 
 	public void recreate() {
-		if(isDestroyed()) {
+		if(playersTextdraw == null || isDestroyed()) {
 			playersTextdraw = Textdraw.create(getPosition());
 			synchronize();
 		}
@@ -409,5 +500,48 @@ public class PlayersTextdraw implements Destroyable {
 	@Override
 	public String toString() {
 		return super.toString();
+	}
+
+//custom functions
+	public void enableBox() {
+		setUseBox(true);
+		setBox(Calculation.getBoxWidth(this) + 8f, Calculation.getBoxHeight(this) + 8f);
+		if (isShowed()) {
+			hide();
+			show();
+		}
+	}
+
+	public void setWidth(float width) {
+		switch (getAlignment()) {
+			case LEFT:
+				setTextSize(getPosition().getX() - 4f + width, getTextSize().getY());
+				break;
+			case CENTER:
+				setTextSize(getTextSize().getX(), width - 4f); //TODO 3f?
+				break;
+			case RIGHT:
+				setTextSize(getPosition().getX() - 4f - width, getTextSize().getY());
+				break;
+		}
+	}
+
+	public void setHeight(float height) {
+		switch (getAlignment()) {
+			case LEFT:
+				setTextSize(getTextSize().getX(), height - 4f);
+				break;
+			case CENTER:
+				setTextSize(height - 4f, getTextSize().getY());
+				break;
+			case RIGHT:
+				setTextSize(getTextSize().getX(), height - 4f);
+				break;
+		}
+	}
+
+	public void setBox(float width, float height) {
+		setWidth(width);
+		setHeight(height);
 	}
 }

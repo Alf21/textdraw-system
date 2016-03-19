@@ -1,6 +1,6 @@
 Example how to create an register:
 
-```Java
+```java
 panel = new Panel(player);
 			if(panel.getPanelType() == PanelType.PAGE) {
 				panel.setPanelLayout(PanelLayout.FORM);

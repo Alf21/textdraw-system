@@ -8,6 +8,7 @@ import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.common.dialog.InputDialog;
+import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
@@ -15,22 +16,24 @@ import net.gtaun.shoebill.data.Vector2D;
 import java.util.ArrayList;
 
 /**
- * Created by Alf21 on 27.02.2016.
+ * Created by Alf21 on 27.02.2016 in the project 'textdraw-system'.
  */
 public class Input extends Component {
 
-	private Content content;
 	private String placeholder;
 	private PlayerTextdraw playerTextdraw;
 	private InputType inputType;
 
-	private Input(Content content, float x, float y, String placeholder, InputType inputType, String name) {
+	private Input(Content content, float x, float y, float width, String placeholder, InputType inputType, String name) {
 		super(content, ComponentAlignment.TOP_LEFT, name);
-		this.content = content;
+		if(placeholder.isEmpty() || placeholder.replaceAll(" ", "").equals(""))
+			placeholder = Dialog.TEXT_EMPTY;
 		this.placeholder = placeholder;
 		this.inputType = inputType;
+		if(Float.isNaN(width))
+			width = 125f;
 
-		playerTextdraw = PlayerTextdraw.create(getPlayer(), x, y, placeholder);
+		playerTextdraw = PlayerTextdraw.create(super.getPlayer(), x, y, placeholder);
 		playerTextdraw.setBackgroundColor(new Color(0,0,0,255));
 		playerTextdraw.setFont(TextDrawFont.get(1));
 		playerTextdraw.setLetterSize(0.280000f, 1.000000f);
@@ -40,25 +43,39 @@ public class Input extends Component {
 		playerTextdraw.setShadowSize(0);
 		playerTextdraw.setUseBox(true);
 		playerTextdraw.setBoxColor(content.getDialog().getInputColor());
-		playerTextdraw.setTextSize(x+125f, 10.000000f);
+		playerTextdraw.setTextSize(x-4+width, 10.000000f);
 		playerTextdraw.setSelectable(true);
+
+		playerTextdraw.setAllText(placeholder);
 	}
 
-	public static Input create(Content content, float x, float y, String placeholder, InputType inputType, String name) {
-		if(placeholder.isEmpty() || placeholder.replaceAll(" ", "").equals(""))
-			placeholder = Dialog.TEXT_EMPTY;
-		return new Input(content, x, y, placeholder, inputType, name);
+	public static Input create(Content content, float x, float y, float width, String placeholder, InputType inputType, String name) {
+		return new Input(content, x, y, width, placeholder, inputType, name);
 	}
 
-	public static Input create(Content content, float x, float y, String placeholder, String name) { return create(content, x, y, placeholder, InputType.TEXT, name); }
+	public static Input create(Content content, float x, float y, String placeholder, String name) {
+		return create(content, x, y, Float.NaN, placeholder, InputType.TEXT, name);
+	}
 
-	public static Input create(Content content, float x, float y, String name) { return create(content, x, y, Dialog.TEXT_EMPTY, InputType.TEXT, name); }
+	public static Input create(Content content, float x, float y, String name) {
+		return create(content, x, y, Float.NaN, Dialog.TEXT_EMPTY, InputType.TEXT, name);
+	}
 
-	public static Input create(Content content, Vector2D vector2D, String name) { return create(content, vector2D.getX(), vector2D.getY(), Dialog.TEXT_EMPTY, InputType.TEXT, name); }
+	public static Input create(Content content, Vector2D vector2D, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, Dialog.TEXT_EMPTY, InputType.TEXT, name);
+	}
 
-	public static Input create(Content content, Vector2D vector2D, String placeholder, String name) { return create(content, vector2D.getX(), vector2D.getY(), placeholder, InputType.TEXT, name); }
+	public static Input create(Content content, Vector2D vector2D, String placeholder, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, placeholder, InputType.TEXT, name);
+	}
 
-	public static Input create(Content content, Vector2D vector2D, String placeholder, InputType inputType, String name) { return create(content, vector2D.getX(), vector2D.getY(), placeholder, inputType, name); }
+	public static Input create(Content content, Vector2D vector2D, String placeholder, InputType inputType, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, placeholder, inputType, name);
+	}
+
+	public static Input create(Content content, Vector2D vector2D, float width, String placeholder, InputType inputType, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), width, placeholder, inputType, name);
+	}
 
 	@Override
 	public void destroy() {
@@ -79,8 +96,8 @@ public class Input extends Component {
 
 	@Override
 	public void show() {
-		playerTextdraw.show();
 		super.show();
+		playerTextdraw.show();
 	}
 
 	@Override
@@ -90,32 +107,42 @@ public class Input extends Component {
 	}
 
 	@Override
-	public ArrayList<PlayerTextdraw> getPlayerTextdraws() {
-		ArrayList<PlayerTextdraw> playerTextdraws = super.getPlayerTextdraws();
+	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
+		ArrayList<PlayerTextdraw> playerTextdraws = super.getAllPlayerTextdraws();
 		playerTextdraws.add(playerTextdraw);
 		return playerTextdraws;
 	}
 
 	@Override
-	public void onClick() {
+	public ArrayList<PlayerTextdraw> getComponentTextdraws() {
+		ArrayList<PlayerTextdraw> playerTextdraws = super.getComponentTextdraws();
+		playerTextdraws.add(playerTextdraw);
+		return playerTextdraws;
+	}
+
+	@Override
+	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw clickedPlayerTextdraw) {
 		String string = "";
-		if(isRequired())
-			string = " - {FF0000}REQUIRED";
-		InputDialog.create(getPlayer(), TextdrawSystem.getInstance().getEventManagerInstance())
+		if (isRequired()) string = " - {FF0000}REQUIRED";
+		InputDialog.create(super.getPlayer(), TextdrawSystem.getInstance().getEventManagerInstance(), inputType == InputType.PASSWORD)
 				.caption("{FFFF00}" + getInputType().getName() + " {FF8A05}format" + string)
 				.message("To fill the conditions, you need to enter in a valid format.\nExample: " + InputType.getCondition(getInputType()))
 				.buttonCancel("Cancel")
 				.buttonOk("Okay")
 				.onClickOk((inputDialog, s) -> {
-					if(InputType.matchesCondition(getInputType(), s) && !s.isEmpty() && !s.replaceAll(" ", "").isEmpty()) {
-						if(isMarked())
-							unmark();
-						playerTextdraw.setText(s);
+					if (InputType.matchesCondition(getInputType(), s) && !s.isEmpty() && !s.replaceAll(" ", "").isEmpty()) {
+						if (isMarked()) unmark();
+						playerTextdraw.setAllText(s);
+						if (inputType == InputType.PASSWORD) playerTextdraw.setText("xxxxxxxx");
+					} else if (!InputType.matchesCondition(getInputType(), playerTextdraw.getAllText()) || !isRequired()) {
+						if (isRequired() && !isMarked()) mark();
+						playerTextdraw.setAllText(getPlaceholder());
 					}
-					else if (!InputType.matchesCondition(getInputType(), playerTextdraw.getText()) || !isRequired()) { //TODO !isRequired() OR after every not required input an clear text button
-						if(isRequired() && !isMarked())
-							mark();
-						playerTextdraw.setText(getPlaceholder());
+				})
+				.onClickCancel((inputDialog) -> {
+					if (!InputType.matchesCondition(getInputType(), playerTextdraw.getAllText()) || !isRequired()) {
+						if (isRequired() && !isMarked()) mark();
+						playerTextdraw.setAllText(getPlaceholder());
 					}
 				})
 				.build()
@@ -131,8 +158,8 @@ public class Input extends Component {
 	public void toggleRequired(boolean required) {
 		super.toggleRequired(required);
 		if (isRequired()) {
-			if(InputType.matchesCondition(getInputType(), playerTextdraw.getText())
-					&& !playerTextdraw.getText().equals(getPlaceholder())) {
+			if(InputType.matchesCondition(getInputType(), playerTextdraw.getAllText())
+					&& !playerTextdraw.getAllText().equals(getPlaceholder())) {
 				if (isMarked())
 					unmark();
 			}
@@ -150,7 +177,7 @@ public class Input extends Component {
 	@Override
 	public void mark() {
 		super.mark();
-		playerTextdraw.setBoxColor(content.getDialog().getMarkerColor());
+		playerTextdraw.setBoxColor(getContent().getDialog().getMarkerColor());
 		if(playerTextdraw.isShowed()) {
 			playerTextdraw.hide();
 			playerTextdraw.show();
@@ -165,7 +192,7 @@ public class Input extends Component {
 	@Override
 	public void unmark() {
 		super.unmark();
-		playerTextdraw.setBoxColor(content.getDialog().getInputColor());
+		playerTextdraw.setBoxColor(getContent().getDialog().getInputColor());
 		if(playerTextdraw.isShowed()) {
 			playerTextdraw.hide();
 			playerTextdraw.show();
@@ -190,12 +217,12 @@ public class Input extends Component {
 
 	@Override
 	public boolean isFilled() {
-		return !playerTextdraw.getText().equals(getPlaceholder());
+		return !playerTextdraw.getAllText().equals(getPlaceholder());
 	}
 
 	@Override
 	public ComponentData getComponentData() {
-		return new ComponentData(playerTextdraw.getText());
+		return new ComponentData(playerTextdraw.getAllText());
 	}
 
 	@Override

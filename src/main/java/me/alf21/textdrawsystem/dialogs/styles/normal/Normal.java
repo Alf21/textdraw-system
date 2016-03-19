@@ -4,6 +4,7 @@ import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyle;
 import me.alf21.textdrawsystem.dialogs.styles.Process;
+import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -12,26 +13,15 @@ import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Player;
 
 /**
- * Created by Alf21 on 26.02.2016.
+ * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
-public class Normal extends DialogStyle {
-	private static PlayerTextdraw panelBackground;
-	private static PlayerTextdraw title;
-	private static PlayerTextdraw titleBackground;
-	private static PlayerTextdraw leftButtonBackground;
-	private static PlayerTextdraw rightButtonBackground;
-	private static PlayerTextdraw leftButton;
-	private static PlayerTextdraw rightButton;
-	private static PlayerTextdraw contentBackground;
-	private static PlayerTextdraw contentText;
-	private static PlayerTextdraw closeIcon;
-	private static Process process;
+public class Normal extends DialogStyle { //TODO usable for all dialog types -> getItemPosition! Calculation
 
 	@Override
 	public void create(Dialog dialog) {
 		Player player = dialog.getPlayer();
 
-		panelBackground = PlayerTextdraw.create(player, 320.000000f, 120.000000f, "_");
+		PlayerTextdraw panelBackground = PlayerTextdraw.create(player, 320.000000f, 120.000000f, "_");
 		panelBackground.setAlignment(TextDrawAlign.get(2));
 		panelBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		panelBackground.setFont(TextDrawFont.get(1));
@@ -45,7 +35,7 @@ public class Normal extends DialogStyle {
 		panelBackground.setTextSize(new Vector2D(0.000000f, 410.000000f));
 		panelBackground.setSelectable(false);
 
-		title = PlayerTextdraw.create(player, 320.000000f, 120.000000f, "_");
+		PlayerTextdraw title = PlayerTextdraw.create(player, 320.000000f, 120.000000f, "_");
 		title.setAlignment(TextDrawAlign.get(2));
 		title.setBackgroundColor(new Color(0, 0, 0, 255));
 		title.setFont(TextDrawFont.get(2));
@@ -59,7 +49,7 @@ public class Normal extends DialogStyle {
 		title.setTextSize(new Vector2D(0.000000f, 410.000000f));
 		title.setSelectable(false);
 
-		titleBackground = PlayerTextdraw.create(player, 320.000000f, 140.000000f, "_");
+		PlayerTextdraw titleBackground = PlayerTextdraw.create(player, 320.000000f, 140.000000f, "_");
 		titleBackground.setAlignment(TextDrawAlign.get(2));
 		titleBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		titleBackground.setFont(TextDrawFont.get(1));
@@ -73,7 +63,7 @@ public class Normal extends DialogStyle {
 		titleBackground.setTextSize(new Vector2D(0.000000f, 400.000000f));
 		titleBackground.setSelectable(false);
 
-		leftButtonBackground = PlayerTextdraw.create(player, 170.000000f, 292.000000f, "_");
+		PlayerTextdraw leftButtonBackground = PlayerTextdraw.create(player, 170.000000f, 292.000000f, "_");
 		leftButtonBackground.setAlignment(TextDrawAlign.get(2));
 		leftButtonBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		leftButtonBackground.setFont(TextDrawFont.get(1));
@@ -87,7 +77,7 @@ public class Normal extends DialogStyle {
 		leftButtonBackground.setTextSize(new Vector2D(0.000000f, 90.000000f));
 		leftButtonBackground.setSelectable(false);
 
-		rightButtonBackground = PlayerTextdraw.create(player, 470.000000f, 292.000000f, "_");
+		PlayerTextdraw rightButtonBackground = PlayerTextdraw.create(player, 470.000000f, 292.000000f, "_");
 		rightButtonBackground.setAlignment(TextDrawAlign.get(2));
 		rightButtonBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		rightButtonBackground.setFont(TextDrawFont.get(1));
@@ -101,7 +91,7 @@ public class Normal extends DialogStyle {
 		rightButtonBackground.setTextSize(new Vector2D(0.000000f, 90.000000f));
 		rightButtonBackground.setSelectable(false);
 
-		leftButton = PlayerTextdraw.create(player, 170.000000f, 295.000000f, "_");
+		PlayerTextdraw leftButton = PlayerTextdraw.create(player, 170.000000f, 295.000000f, "_");
 		leftButton.setAlignment(TextDrawAlign.get(2));
 		leftButton.setBackgroundColor(new Color(0, 0, 0, 255));
 		leftButton.setFont(TextDrawFont.get(1));
@@ -115,7 +105,7 @@ public class Normal extends DialogStyle {
 		leftButton.setShadowSize(1);
 		leftButton.setSelectable(true);
 
-		rightButton = PlayerTextdraw.create(player, 470.000000f, 295.000000f, "_");
+		PlayerTextdraw rightButton = PlayerTextdraw.create(player, 470.000000f, 295.000000f, "_");
 		rightButton.setAlignment(TextDrawAlign.get(2));
 		rightButton.setBackgroundColor(new Color(0, 0, 0, 255));
 		rightButton.setFont(TextDrawFont.get(1));
@@ -129,7 +119,7 @@ public class Normal extends DialogStyle {
 		rightButton.setShadowSize(1);
 		rightButton.setSelectable(true);
 
-		contentBackground = PlayerTextdraw.create(player, 320.000000f, 146.000000f, "_");
+		PlayerTextdraw contentBackground = PlayerTextdraw.create(player, 320.000000f, 146.000000f, "_");
 		contentBackground.setAlignment(TextDrawAlign.get(2));
 		contentBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		contentBackground.setFont(TextDrawFont.get(1));
@@ -143,7 +133,7 @@ public class Normal extends DialogStyle {
 		contentBackground.setTextSize(new Vector2D(0.000000f, 390.000000f));
 		contentBackground.setSelectable(false);
 
-		contentText = PlayerTextdraw.create(player, 130.000000f, 150.000000f, "_");
+		PlayerTextdraw contentText = PlayerTextdraw.create(player, 130.000000f, 150.000000f, "_");
 		contentText.setBackgroundColor(new Color(0, 0, 0, 255));
 		contentText.setFont(TextDrawFont.get(1));
 		contentText.setLetterSize(new Vector2D(0.500000f, 1.000000f));
@@ -156,7 +146,7 @@ public class Normal extends DialogStyle {
 		contentText.setTextSize(new Vector2D(510.000000f, 0.000000f));
 		contentText.setSelectable(false);
 
-		closeIcon = PlayerTextdraw.create(player, 520.000000f, 120.000000f, "x");
+		PlayerTextdraw closeIcon = PlayerTextdraw.create(player, 520.000000f, 120.000000f, "x");
 		closeIcon.setAlignment(TextDrawAlign.get(2));
 		closeIcon.setBackgroundColor(new Color(0, 0, 0, 255));
 		closeIcon.setFont(TextDrawFont.get(2));
@@ -170,16 +160,18 @@ public class Normal extends DialogStyle {
 		closeIcon.setTextSize(new Vector2D(10.000000f, 10.000000f));
 		closeIcon.setSelectable(true);
 
-		process = NormalProcess.create(dialog);
+		Process process = NormalProcess.create(dialog);
 
 		dialog.setCloseIcon(closeIcon);
 		dialog.setContent(new Content(dialog, contentBackground, contentText));
-		dialog.setLeftButton(leftButton);
-		dialog.setLeftButtonBackground(leftButtonBackground);
 		dialog.setPanelBackground(panelBackground);
+		if (dialog instanceof Panel) {
+			((Panel) dialog).setLeftButton(leftButton);
+			((Panel) dialog).setLeftButtonBackground(leftButtonBackground);
+			((Panel) dialog).setRightButton(rightButton);
+			((Panel) dialog).setRightButtonBackground(rightButtonBackground);
+		}
 		dialog.setProcess(process);
-		dialog.setRightButton(rightButton);
-		dialog.setRightButtonBackground(rightButtonBackground);
 		dialog.setTitle(title);
 		dialog.setTitleBackground(titleBackground);
 		dialog.setHoverColor(new Color(150,0,0,255));
