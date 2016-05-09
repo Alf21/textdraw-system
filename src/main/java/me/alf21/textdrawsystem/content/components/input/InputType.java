@@ -34,9 +34,9 @@ public enum InputType {
 			case NUMBER:
 				return StringUtils.isNumeric(s);
 			case PASSWORD:
-				return !(s.length() < 8);
+				return (s.length() >= 8);
 			case NAME:
-				return !(s.length() < 3 || s.length() > 24);
+				return (s.length() >= 3 && s.length() <= 24);
 			case EMAIL:
 				return Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$").matcher(s).matches();
 			case DATE:
