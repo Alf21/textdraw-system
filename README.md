@@ -31,4 +31,12 @@ PanelDialog panelDialog = TextdrawSystem.createPanelDialog(player);
 		panelDialog.setCaption("Caption");
 
 		panelDialog.show();
+
+//MsgBox
+MsgBox msgBox = new MsgBox(player, "Caption", "Message", groupName));
+			msgBox.setCancelButton("No");
+			msgBox.setOkButton("Yes");
+			msgBox.setClickOkHandler(msgBoxHandler -> createGroupDialog());
+			msgBox.setClickCancelHandler(msgBoxHandler -> createOptions());
+			msgBox.show(); //also possible to use the panel with content !
 ```
