@@ -1,4 +1,4 @@
-Example how to create an register:
+Example how to create a panel with a list, a panelDialog and a MessageBox:
 
 ```java
 Panel panel = TextdrawSystem.createPanel(player);
