@@ -11,7 +11,11 @@ public interface PageInterface {
 
 	}
 
-	default void onLeave(Content content, Page page) {
+	default boolean onLeave(Content content, Page page) {
+		return true;
+	}
+
+	default void onSubmit(Content content, Page page) {
 
 	}
 }

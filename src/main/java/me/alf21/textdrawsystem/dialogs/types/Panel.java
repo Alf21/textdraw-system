@@ -1,10 +1,16 @@
 package me.alf21.textdrawsystem.dialogs.types;
 
+import me.alf21.textdrawsystem.content.components.Component;
+import me.alf21.textdrawsystem.content.components.list.List;
 import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.dialogs.DialogInterface;
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
+import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Player;
+
+import java.util.ArrayList;
 
 /**
  * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
@@ -34,12 +40,39 @@ public class Panel extends Dialog {
 
 	@Override
 	public void show() {
+		super.show();
+		initShow();
+	}
+
+	@Override
+	public void show(ArrayList<Component> addons) {
+		super.show(addons);
+		initShow();
+	}
+
+	@Override
+	public void showFromDialog(ArrayList<Component> addons) {
+		super.showFromDialog(addons);
+		initShow();
+	}
+
+	private void initShow() {
 		if(super.getPlayer() != null) {
-			super.show();
-			leftButtonBackground.show();
-			leftButton.show();
-			rightButtonBackground.show();
-			rightButton.show();
+			boolean isLeftButtonToggled = true, isRightButtonToggled = true;
+
+			if (super.getPanelDialog() != null) {
+				isLeftButtonToggled = super.getPanelDialog().isToggleLeftButton();
+				isRightButtonToggled = super.getPanelDialog().isToggleRightButton();
+			}
+
+			if (isLeftButtonToggled) {
+				leftButtonBackground.show();
+				leftButton.show();
+			}
+			if (isRightButtonToggled) {
+				rightButtonBackground.show();
+				rightButton.show();
+			}
 
 			super.getAfterAddons().forEach(PlayerTextdraw::hide);
 			super.getAfterAddons().forEach(PlayerTextdraw::show);
@@ -55,6 +88,11 @@ public class Panel extends Dialog {
 			leftButton.hide();
 			rightButton.hide();
 		}
+	}
+
+	@Override
+	public void hideFromDialog() {
+		this.hide();
 	}
 
 	@Override
@@ -77,7 +115,7 @@ public class Panel extends Dialog {
 
 
 /*******************************************************************************************************
-									Getting datas from styles
+									Getting data from styles
 *******************************************************************************************************/
 
 	public PlayerTextdraw getLeftButtonBackground() {
@@ -106,5 +144,10 @@ public class Panel extends Dialog {
 
 	public void setRightButton(PlayerTextdraw rightButton) {
 		this.rightButton = rightButton;
+	}
+
+	//public PanelDialog createPanelDialog(EventHandler<PanelDialogResponseEvent> onResponse, EventHandler<PanelDialogShowEvent> onShow, EventHandler<PanelDialogCloseEvent> onClose) {
+	public PanelDialog createPanelDialog() {
+		return PanelDialog.create(this);
 	}
 }

@@ -4,8 +4,13 @@ import me.alf21.textdrawsystem.calculations.Calculation;
 import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentAlignment;
+import me.alf21.textdrawsystem.content.components.ComponentData;
+import me.alf21.textdrawsystem.dialogs.Dialog;
+import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
+import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -18,7 +23,13 @@ public class List extends Component {
 	private float maxWidth, maxHeight;
 	private ListBar listBar;
 	private ArrayList<ListItem> listItems;
-	private ListItem selectedListItem;
+	private ArrayList<ListItem> selectedListItems;
+	private boolean multiselectionMode;
+
+	private Color unselectedListItemColor;
+	private Color unselectedListItemBgColor;
+	private Color selectedListItemColor;
+	private Color selectedListItemBgColor;
 
 	protected List(Content content, Vector2D position, float maxWidth, float maxHeight, String name) {
 		super(content, ComponentAlignment.TOP_LEFT, name);
@@ -27,15 +38,23 @@ public class List extends Component {
 		this.maxWidth = maxWidth;
 		listBar = ListBar.create(this);
 		listItems = new ArrayList<>();
+		selectedListItems = new ArrayList<>();
+		multiselectionMode = false;
+
+		unselectedListItemColor = new Color(255, 255, 255, 255);
+		unselectedListItemBgColor = new Color(0, 0, 0, 255);
+		selectedListItemColor = new Color(0, 0, 0, 255);
+		selectedListItemBgColor = new Color(0, 255, 0, 255);
 	}
 
 	public static List create(Content content, Vector2D position, float maxWidth, float maxHeight, String name) {
 		return new List(content, position, maxWidth, maxHeight, name);
 	}
 
-	public void addListItem(String text, ListItemInterface listItemInterface) {
-		ListItem listItem = new ListItem(this, text, listItemInterface);
+	public ListItem addListItem(String text) {
+		ListItem listItem = new ListItem(this, text);
 		listItems.add(listItem);
+		return listItem;
 	}
 
 	public ArrayList<ListItem> getListItems() {
@@ -61,6 +80,7 @@ public class List extends Component {
 		super.recreate();
 		listItems.forEach(ListItem::recreate);
 		listBar.recreate();
+	//	selectedListItems = new ArrayList<>();
 	}
 
 	@Override
@@ -68,7 +88,7 @@ public class List extends Component {
 		for (ListItem listItem : listItems)
 			if (!listItem.isDestroyed())
 				return false;
-		return !(!super.isDestroyed() || !listBar.isDestroyed());
+		return !(!super.isDestroyed() || !listBar.isDestroyed() || !selectedListItems.isEmpty());
 	}
 
 	@Override
@@ -76,7 +96,7 @@ public class List extends Component {
 		super.destroy();
 		listItems.forEach(ListItem::destroy);
 		listBar.destroy();
-		selectedListItem = null;
+		selectedListItems.clear();
 	}
 
 	public Vector2D getPosition() {
@@ -98,11 +118,11 @@ public class List extends Component {
 	@Override
 	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = super.getAllPlayerTextdraws();
+		playerTextdraws.addAll(listItems.stream().map(ListItem::getPlayerTextdraw).collect(Collectors.toList()));
 		playerTextdraws.add(listBar.getPrevious());
 		playerTextdraws.add(listBar.getBar());
 		playerTextdraws.add(listBar.getBarbg());
 		playerTextdraws.add(listBar.getNext());
-		playerTextdraws.addAll(listItems.stream().map(ListItem::getPlayerTextdraw).collect(Collectors.toList()));
 		return playerTextdraws;
 	}
 
@@ -111,29 +131,54 @@ public class List extends Component {
 		ListItem listItem = getListItem(clickedPlayerTextdraw);
 		if (listItem != null) {
 			if (System.currentTimeMillis() - listItem.getClicked() <= 500) {
-				listItem.getListItemInterface().onDoubleClick(this, listItem);
+				listItem.onDoubleClick();
+				listItem.onClick();
 				listItem.setClicked(System.currentTimeMillis() - 501);
 			}
 			else {
-				listItem.getListItemInterface().onClick(this, listItem);
+				listItem.onClick();
 				listItem.setClicked(System.currentTimeMillis());
 			}
-			selectedListItem = listItem;
-		}
-		else {
-			int currentListBarIndex = listBar.getCurrentIndex();
-			if (listBar.getNext().isPlayerTextdraw(clickedPlayerTextdraw)) {
-				if (currentListBarIndex < listItems.size() - getAmountVisibleListItems()) {
-					listBar.setCurrentIndex(currentListBarIndex + 1);
-					updateListItems();
-				}
+
+			if (multiselectionMode) {
+				if (!selectedListItems.contains(listItem))
+					selectListItem(listItem);
+				else
+					unselectListItem(listItem);
 			}
 			else {
-				if (currentListBarIndex > 0) {
-					listBar.setCurrentIndex(currentListBarIndex - 1);
-					updateListItems();
+				if (selectedListItems.isEmpty()){
+					selectListItem(listItem);
+				}
+				else if (selectedListItems.get(0) == listItem) {
+					unselectListItem(listItem);
+				}
+				else {
+					unselectListItem(selectedListItems.get(0));
+					selectListItem(listItem);
 				}
 			}
+		}
+		else {
+			if (listBar.getNext().isPlayerTextdraw(clickedPlayerTextdraw))
+				moveDown();
+			else moveUp();
+		}
+	}
+
+	public void moveUp() {
+		int currentListBarIndex = listBar.getCurrentIndex();
+		if (currentListBarIndex > 0) {
+			listBar.setCurrentIndex(currentListBarIndex - 1);
+			updateListItems();
+		}
+	}
+
+	public void moveDown() {
+		int currentListBarIndex = listBar.getCurrentIndex();
+		if (currentListBarIndex < listItems.size() - getAmountVisibleListItems()) {
+			listBar.setCurrentIndex(currentListBarIndex + 1);
+			updateListItems();
 		}
 	}
 
@@ -192,11 +237,86 @@ public class List extends Component {
 		return i;
 	}
 
-	public ListItem getSelectedListItem() {
-		return selectedListItem;
+	public ArrayList<ListItem> getSelectedListItems() {
+		return selectedListItems;
 	}
 
-	public void setSelectedListItem(ListItem selectedListItem) {
-		this.selectedListItem = selectedListItem;
+	public void setSelectedListItems(ArrayList<ListItem> selectedListItem) {
+		this.selectedListItems = selectedListItem;
+	}
+
+	public void toggleMultiselectionMode(boolean multiselectionMode) {
+		this.multiselectionMode = multiselectionMode;
+	}
+
+	public boolean isMultiselectionMode() {
+		return multiselectionMode;
+	}
+
+	private void selectListItem(ListItem listItem) {
+		selectedListItems.add(listItem);
+		listItem.select();
+	}
+
+	private void unselectListItem(ListItem listItem) {
+		selectedListItems.remove(listItem);
+		listItem.unselect();
+	}
+
+	public void changeSelectedTextColor(Color color) {
+		selectedListItemColor = color;
+
+		listItems.forEach(listItem -> {
+			if (!listItem.isDisableAutoColoring())
+				listItem.setSelectedListItemColor(color);
+		});
+	}
+
+	public void changeSelectedBoxColor(Color color) {
+		selectedListItemBgColor = color;
+
+		listItems.forEach(listItem -> {
+			if (!listItem.isDisableAutoColoring())
+				listItem.setSelectedListItemBgColor(color);
+		});
+	}
+
+	public void changeUnselectedTextColor(Color color) {
+		unselectedListItemColor = color;
+
+		listItems.forEach(listItem -> {
+			if (!listItem.isDisableAutoColoring())
+				listItem.setUnselectedListItemColor(color);
+		});
+	}
+
+	public void changeUnselectedBoxColor(Color color) {
+		unselectedListItemBgColor = color;
+
+		listItems.forEach(listItem -> {
+			if (!listItem.isDisableAutoColoring())
+				listItem.setUnselectedListItemBgColor(color);
+		});
+	}
+
+	public Color getUnselectedListItemColor() {
+		return unselectedListItemColor;
+	}
+
+	public Color getUnselectedListItemBgColor() {
+		return unselectedListItemBgColor;
+	}
+
+	public Color getSelectedListItemColor() {
+		return selectedListItemColor;
+	}
+
+	public Color getSelectedListItemBgColor() {
+		return selectedListItemBgColor;
+	}
+
+	@Override
+	public ComponentData getComponentData() {
+		return new ComponentData(selectedListItems);
 	}
 }

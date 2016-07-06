@@ -17,11 +17,11 @@ import java.util.regex.Pattern;
 public class Calculation {
 
 	public static float letterHeightToHeight(float letterHeight) {
-		return letterHeight * 8.63f;
-	}
+		return letterHeight * 8.7f;
+	} //8.63
 
 	public static float heightToLetterHeight(float height) {
-		return height / 8.63f;
+		return height / 8.7f;
 	}
 
 	private static String[] getLines(PlayerTextdraw playerTextdraw) {
@@ -136,10 +136,16 @@ public class Calculation {
 	}
 
 	public static float getBoxHeight(ArrayList<PlayerTextdraw> playerTextdraws) {
-		float height = 0f;
-		//TODO sort from curPosition - (beforePosition + height) //TODO auch die zwischenspalten mitberechnen ! falls es auch unter dem anderen txd liegt
-		for (PlayerTextdraw playerTextdraw : playerTextdraws) height += getBoxHeight(playerTextdraw);
-		return height;
+		float minHeight = playerTextdraws.get(0).getPosition().getY(), maxHeight = getBoxHeight(playerTextdraws.get(0));
+		for (PlayerTextdraw playerTextdraw : playerTextdraws) {
+			float   height = getBoxHeight(playerTextdraw),
+					y = playerTextdraw.getPosition().getY();
+			if (minHeight > y)
+				minHeight = y;
+			if (maxHeight < height)
+				maxHeight = height;
+		}
+		return maxHeight - minHeight;
 	}
 
 	public static float getBoxHeight(PlayerTextdraw playerTextdraw, float maxWidth) {
@@ -437,28 +443,28 @@ public class Calculation {
 						return 7.775f;
 
 					case '~':
-						return 0;
+						return 0f;
 
-					case '€':
+					case '\u20ac': //€
 						return 7.775f;
 
-					case '§':
+					case '\u00A7': //§
 						return 7.775f;
 
-					case '°':
-					case '²':
-					case '³':
+					case '\u00B0': //°
+					case '\u00B2': //²
+					case '\u00B3': //³
 						return 6.775f;
 
-					case '´':
+					case '\u00B4':
 						return 7.775f;
 
 					default:
-						return 0;
+						return 0f;
 				}
 
 			default:
-				return 0;
+				return 0f;
 		}
 	}
 }

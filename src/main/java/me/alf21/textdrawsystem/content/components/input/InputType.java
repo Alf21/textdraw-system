@@ -2,7 +2,6 @@ package me.alf21.textdrawsystem.content.components.input;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

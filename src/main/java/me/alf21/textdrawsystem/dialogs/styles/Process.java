@@ -9,6 +9,7 @@ import net.gtaun.shoebill.object.Destroyable;
 public abstract class Process implements Destroyable {
 
 	private Dialog dialog;
+	private boolean disabled;
 
 	public Process(Dialog dialog) {
 		this.dialog = dialog;
@@ -44,5 +45,17 @@ public abstract class Process implements Destroyable {
 
 	public Dialog getDialog() {
 		return dialog;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void disabled() {
+		disabled = true;
+	}
+
+	public void enable() {
+		disabled = false;
 	}
 }

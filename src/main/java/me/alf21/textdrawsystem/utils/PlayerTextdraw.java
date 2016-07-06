@@ -345,9 +345,8 @@ public class PlayerTextdraw implements Destroyable {
 			playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(getPlayer(), vector2d);
 			setPosition(vector2d);
 			synchronize();
-			if (showed) {
+			if (showed)
 				show();
-			}
 		}
 		else setPosition(vector2d);
 	}
@@ -365,9 +364,8 @@ public class PlayerTextdraw implements Destroyable {
 			playerTextdraw.destroy();
 			playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(player, getPosition());
 			synchronize();
-			if (showed) {
+			if (showed)
 				show();
-			}
 		}
 	}
 
@@ -464,8 +462,8 @@ public class PlayerTextdraw implements Destroyable {
 		PlayersTextdraw playersTextdraw = PlayersTextdraw.create(tmpPlayers, getPosition());
 		playersTextdraw.copy(this);
 		if(isShowed()) {
-			playersTextdraw.show();
 			hide();
+			playersTextdraw.show();
 		}
 		destroy();
 		return playersTextdraw;
@@ -491,10 +489,7 @@ public class PlayerTextdraw implements Destroyable {
 		boxEnabled = 1;
 		setUseBox(true);
 		setBox(Calculation.getBoxWidth(this) + 8f, Calculation.getBoxHeight(this) + 8f);
-		if (isShowed()) {
-			hide();
-			show();
-		}
+		update();
 	}
 
 	public void enableBoxMaxWidth(float maxWidth) {
@@ -502,10 +497,7 @@ public class PlayerTextdraw implements Destroyable {
 		this.maxWidth = maxWidth;
 		setUseBox(true);
 		setBox(Calculation.getBoxWidth(this) + 8f, Calculation.getBoxHeight(this, maxWidth) + 8f);
-		if (isShowed()) {
-			hide();
-			show();
-		}
+		update();
 	}
 
 	public void enableBoxMaxHeight(float maxHeight) {
@@ -513,10 +505,7 @@ public class PlayerTextdraw implements Destroyable {
 		this.maxHeight = maxHeight;
 		setUseBox(true);
 		setBox(Calculation.getBoxWidth(this, maxHeight) + 8f, Calculation.getBoxHeight(this) + 8f);
-		if (isShowed()) {
-			hide();
-			show();
-		}
+		update();
 	}
 
 	public void setWidth(float width) {
@@ -554,5 +543,12 @@ public class PlayerTextdraw implements Destroyable {
 	public void setBox(float width, float height) {
 		setWidth(width);
 		setHeight(height);
+	}
+
+	public void update() {
+		if (isShowed()) {
+			hide();
+			show();
+		}
 	}
 }

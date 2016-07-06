@@ -506,10 +506,7 @@ public class PlayersTextdraw implements Destroyable {
 	public void enableBox() {
 		setUseBox(true);
 		setBox(Calculation.getBoxWidth(this) + 8f, Calculation.getBoxHeight(this) + 8f);
-		if (isShowed()) {
-			hide();
-			show();
-		}
+		update();
 	}
 
 	public void setWidth(float width) {
@@ -543,5 +540,12 @@ public class PlayersTextdraw implements Destroyable {
 	public void setBox(float width, float height) {
 		setWidth(width);
 		setHeight(height);
+	}
+
+	public void update() {
+		if (isShowed()) {
+			hide();
+			show();
+		}
 	}
 }

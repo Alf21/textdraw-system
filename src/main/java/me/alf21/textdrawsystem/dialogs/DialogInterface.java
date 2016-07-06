@@ -6,7 +6,7 @@ package me.alf21.textdrawsystem.dialogs;
 public interface DialogInterface {
 
 	default void onFinish(Dialog dialog) {
-
+		dialog.getContent().submit();
 	}
 
 	default void onClose(Dialog dialog) {

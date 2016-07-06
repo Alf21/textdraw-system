@@ -8,7 +8,6 @@ import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.common.dialog.InputDialog;
-import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
@@ -65,12 +64,20 @@ public class Input extends Component {
 		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, Dialog.TEXT_EMPTY, InputType.TEXT, name);
 	}
 
+	public static Input create(Content content, Vector2D vector2D, InputType inputType, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, Dialog.TEXT_EMPTY, inputType, name);
+	}
+
 	public static Input create(Content content, Vector2D vector2D, String placeholder, String name) {
 		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, placeholder, InputType.TEXT, name);
 	}
 
 	public static Input create(Content content, Vector2D vector2D, String placeholder, InputType inputType, String name) {
 		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, placeholder, inputType, name);
+	}
+
+	public static Input create(Content content, Vector2D vector2D, float width, InputType inputType, String name) {
+		return create(content, vector2D.getX(), vector2D.getY(), width, Dialog.TEXT_EMPTY, inputType, name);
 	}
 
 	public static Input create(Content content, Vector2D vector2D, float width, String placeholder, InputType inputType, String name) {

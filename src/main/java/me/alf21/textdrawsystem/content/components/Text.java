@@ -92,7 +92,7 @@ public class Text extends Component {
 	}
 
 	public void setText(String text) {
-		if(text.isEmpty() || text.replaceAll(" ", "").isEmpty())
+		if(text.replaceAll(" ", "").isEmpty())
 			text = "_";
 		playerTextdraw.setText(text);
 		super.getAttachments().stream().filter(attachment -> attachment instanceof Box).map(attachment -> (Box) attachment).forEach(Box::update);

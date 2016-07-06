@@ -1,12 +1,16 @@
 package me.alf21.textdrawsystem.dialogs;
 
+import me.alf21.textdrawsystem.TextdrawSystem;
 import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.content.components.Component;
+import me.alf21.textdrawsystem.content.components.ComponentDataCollection;
 import me.alf21.textdrawsystem.dialogs.layouts.DialogLayout;
 import me.alf21.textdrawsystem.dialogs.layouts.Layout;
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyle;
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
 import me.alf21.textdrawsystem.dialogs.styles.Process;
 import me.alf21.textdrawsystem.dialogs.types.DialogType;
+import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Destroyable;
@@ -22,7 +26,7 @@ public abstract class Dialog implements Destroyable {
 	public static final String TEXT_EMPTY = "Click me";
 
 	//Colors
-	private Color inputColor = Color.GRAY, markerColor = Color.RED, hoverColor = Color.GREEN;
+	private Color inputColor = Color.GRAY, markerColor = Color.RED, hoverColor = TextdrawSystem.HOVERCOLOR;
 
 	private Player player;
 	private Content content;
@@ -30,6 +34,9 @@ public abstract class Dialog implements Destroyable {
 	private DialogInterface dialogInterface;
 	private DialogType dialogType;
 	private DialogLayout dialogLayout;
+	private PanelDialog panelDialog;
+
+	private boolean showed = false;
 
 	//Textdraws
 	private PlayerTextdraw panelBackground;
@@ -59,6 +66,8 @@ public abstract class Dialog implements Destroyable {
 	}
 
 	public void show() {
+		showed = true;
+
 		if(getPlayer() != null) {
 			getPlayer().selectTextDraw(hoverColor);
 
@@ -73,7 +82,43 @@ public abstract class Dialog implements Destroyable {
 		}
 	}
 
+	public void show(ArrayList<Component> addons) {
+		showed = true;
+
+		if(getPlayer() != null) {
+			getPlayer().selectTextDraw(hoverColor);
+
+			preAddons.forEach(PlayerTextdraw::show);
+			panelBackground.show();
+			titleBackground.show();
+			title.show();
+			content.show(addons);
+			closeIcon.show();
+			process.show();
+			afterAddons.forEach(PlayerTextdraw::show);
+		}
+	}
+
+	public void showFromDialog(ArrayList<Component> addons) {
+		showed = true;
+
+		if(getPlayer() != null) {
+			getPlayer().selectTextDraw(hoverColor);
+
+			preAddons.forEach(PlayerTextdraw::show);
+			panelBackground.show();
+			titleBackground.show();
+			title.show();
+			content.showFromDialog(addons);
+			closeIcon.show();
+			process.show();
+			afterAddons.forEach(PlayerTextdraw::show);
+		}
+	}
+
 	public void hide() {
+		showed = false;
+
 		if(getPlayer() != null) {
 			getPlayer().cancelSelectTextDraw();
 
@@ -88,8 +133,28 @@ public abstract class Dialog implements Destroyable {
 		}
 	}
 
+	public void hideFromDialog() {
+		showed = false;
+
+		if(getPlayer() != null) {
+			getPlayer().cancelSelectTextDraw();
+
+			preAddons.forEach(PlayerTextdraw::hide);
+			panelBackground.hide();
+			titleBackground.hide();
+			title.hide();
+			content.hideFromDialog();
+			closeIcon.hide();
+			process.hide();
+			afterAddons.forEach(PlayerTextdraw::hide);
+		}
+	}
+
 	@Override
 	public void destroy() {
+		if (this.isShowed())
+			this.hide();
+
 		preAddons.forEach(PlayerTextdraw::destroy);
 		panelBackground.destroy();
 		titleBackground.destroy();
@@ -112,6 +177,10 @@ public abstract class Dialog implements Destroyable {
 				|| !content.isDestroyed()
 				|| !closeIcon.isDestroyed()
 				|| !process.isDestroyed());
+	}
+
+	public boolean isShowed() {
+		return showed;
 	}
 
 	public Player getPlayer() {
@@ -183,6 +252,10 @@ public abstract class Dialog implements Destroyable {
 		this.hoverColor = hoverColor;
 	}
 
+	public Color getHoverColor() {
+		return hoverColor;
+	}
+
 	public void setContent(Content content) {
 		this.content = content;
 	}
@@ -215,6 +288,10 @@ public abstract class Dialog implements Destroyable {
 		return dialogInterface;
 	}
 
+	public void setDialogInterface(DialogInterface dialogInterface) {
+		this.dialogInterface = dialogInterface;
+	}
+
 	public DialogType getDialogType() {
 		return dialogType;
 	}
@@ -243,6 +320,9 @@ public abstract class Dialog implements Destroyable {
 // Page handling
 	public void onClickCloseIcon() {
 		getDialogInterface().onClose(this);
+
+		if (panelDialog != null)
+			panelDialog.onClose();
 	}
 
 	public void onClickLeftButton() {
@@ -252,20 +332,34 @@ public abstract class Dialog implements Destroyable {
 				getContent().previousPage();
 			}
 		}
+
+		if (panelDialog != null)
+			panelDialog.onClickCancel();
 	}
 
 	public void onClickRightButton() {
 		if(getDialogType() == DialogType.PAGE) {
 			Process process = getProcess();
 			if (getContent().hasMarkedComponents()) {
-				getContent().setText("~r~[ERROR]~w~At first you need to fill all fields");
+			//	getContent().setText("~r~[ERROR]~w~At first you need to fill all fields");
 				return;
 			}
 			if ((int) process.getProcess() != (int) process.getMaxProcess()) {
-				getContent().setText("_");
+			//	getContent().setText("_");
 				getContent().nextPage();
 			}
 			else getDialogInterface().onFinish(this);
 		}
+
+		if (panelDialog != null)
+			panelDialog.onClickOk(new ComponentDataCollection(panelDialog.getComponents()));
+	}
+
+	public PanelDialog getPanelDialog() {
+		return panelDialog;
+	}
+
+	public void setPanelDialog(PanelDialog panelDialog) {
+		this.panelDialog = panelDialog;
 	}
 }

@@ -106,14 +106,14 @@ public class ListBar implements Destroyable {
 	public void recreate() {
 		previous.recreate();
 		barbg.recreate();
-		bar.recreate();
 		next.recreate();
+		bar.recreate();
 	}
 
 	@Override
 	public void destroy() {
-		next.destroy();
 		bar.destroy();
+		next.destroy();
 		barbg.destroy();
 		previous.destroy();
 	}

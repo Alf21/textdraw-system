@@ -8,11 +8,19 @@
 
 package me.alf21.textdrawsystem;
 
+import me.alf21.textdrawsystem.MsgBox.MsgBox;
+import me.alf21.textdrawsystem.dialogs.DialogInterface;
+import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
+import me.alf21.textdrawsystem.dialogs.types.Panel;
+import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.player.PlayerManager;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import me.alf21.textdrawsystem.utils.PlayersTextdraw;
 import net.gtaun.shoebill.common.player.PlayerLifecycleHolder;
+import net.gtaun.shoebill.constant.DialogStyle;
+import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManagerNode;
@@ -30,11 +38,12 @@ public class TextdrawSystem extends Plugin {
 	public static final Logger LOGGER = LoggerFactory.getLogger(TextdrawSystem.class);
 	private static TextdrawSystem instance;
 	private PlayerManager playerManager;
-	private EventManager eventManager;
-    private PlayerLifecycleHolder playerLifecycleHolder;
+	private PlayerLifecycleHolder playerLifecycleHolder;
     private EventManagerNode eventManagerNode;
 	private static ArrayList<PlayersTextdraw> playersTextdraws;
 	private static ArrayList<PlayerTextdraw> playerTextdraws;
+
+	public final static Color HOVERCOLOR = Color.GREEN;
     
 	public static TextdrawSystem getInstance() {
 		if (instance == null)
@@ -55,7 +64,7 @@ public class TextdrawSystem extends Plugin {
 	@Override
 	protected void onEnable() throws Throwable {
 		instance = this;
-		eventManager = getEventManager();
+		EventManager eventManager = getEventManager();
         eventManagerNode = eventManager.createChildNode();
         playerLifecycleHolder = new PlayerLifecycleHolder(eventManager);
         playerLifecycleHolder.registerClass(PlayerData.class);
@@ -87,5 +96,36 @@ public class TextdrawSystem extends Plugin {
 
 	public static ArrayList<PlayerTextdraw> getPlayerTextdraws() {
 		return playerTextdraws;
+	}
+
+	// extern functions:
+	public static Panel getPanel(Player player) {
+		PlayerData playerData = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+		Panel panel = playerData.getPanel();
+		if (panel == null) {
+			panel = Panel.create(player);
+			setPanel(player, panel);
+		}
+		return panel;
+	}
+
+	public static void setPanel(Player player, Panel panel) {
+		PlayerData playerData = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+		Panel panel1 = playerData.getPanel();
+		if (panel1 != null) {
+			if (!panel1.isDestroyed()) {
+				panel1.hide();
+				panel1.destroy();
+			}
+		}
+		playerData.setPanel(panel);
+	}
+
+	public static Panel createPanel(Player player) {
+		return Panel.create(player);
+	}
+
+	public static PanelDialog createPanelDialog(Player player) {
+		return getPanel(player).createPanelDialog();
 	}
 }
