@@ -54,7 +54,7 @@ public class PlayerTextdraw implements Destroyable {
 		outlineSize = 0;
 		shadowSize = 1;
 		boxEnabled = -1;
-		TextdrawSystem.getPlayerTextdraws().add(this); //TODO
+		TextdrawSystem.getPlayerTextdraws().add(this);
 	}
 
 	public static PlayerTextdraw create(Player player, float x, float y, String text) {
@@ -80,6 +80,14 @@ public class PlayerTextdraw implements Destroyable {
 		PlayerTextdraw playerTextdraw = create(player, playersTextdraw.getPosition(), playersTextdraw.getText());
 		playerTextdraw.copy(playersTextdraw);
 		return playerTextdraw;
+	}
+
+	public static PlayerTextdraw get(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+		for (PlayerTextdraw playerTextdraw1 : TextdrawSystem.getPlayerTextdraws()) {
+			if (playerTextdraw1.isPlayerTextdraw(playerTextdraw))
+				return playerTextdraw1;
+		}
+		return null;
 	}
 
 	public void setText(String text) {
@@ -261,6 +269,10 @@ public class PlayerTextdraw implements Destroyable {
 	public boolean isShowed() {
 		return (showed && playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShowed()
 				|| playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShowed());
+	}
+
+	public boolean isShowed(Player player) {
+		return this.player == player && isShowed();
 	}
 
 	@Override
@@ -550,5 +562,9 @@ public class PlayerTextdraw implements Destroyable {
 			hide();
 			show();
 		}
+	}
+
+	public net.gtaun.shoebill.object.PlayerTextdraw getPlayerTextdraw() {
+		return playerTextdraw;
 	}
 }

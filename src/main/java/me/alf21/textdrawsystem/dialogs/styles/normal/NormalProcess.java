@@ -17,6 +17,7 @@ public class NormalProcess extends Process implements Destroyable {
 	private static PlayerTextdraw processBarBackground;
 	private static PlayerTextdraw processBar;
 	private double process, maxProcess;
+	private boolean showed;
 
 	private static float max_width = 410f;
 
@@ -58,17 +59,22 @@ public class NormalProcess extends Process implements Destroyable {
 
 	@Override
 	public void show() {
+		showed = true;
+		super.show();
 		processBarBackground.show();
 		processBar.show();
 	}
 
 	@Override
 	public void process() {
-		hide();
-		processBar.setTextSize(new Vector2D(0, max_width));
-		Vector2D textSize = Calculation.getWidth(processBar, maxProcess, process);
-		processBar.setTextSize(textSize);
-		show();
+		if (isShowed()) {
+			super.process();
+			hide();
+			processBar.setTextSize(new Vector2D(0, max_width));
+			Vector2D textSize = Calculation.getWidth(processBar, maxProcess, process);
+			processBar.setTextSize(textSize);
+			show();
+		}
 	}
 
 	@Override
@@ -83,8 +89,17 @@ public class NormalProcess extends Process implements Destroyable {
 
 	@Override
 	public void hide() {
+		showed = false;
+		super.hide();
 		processBar.hide();
 		processBarBackground.hide();
+	}
+
+	@Override
+	public void recreate() {
+		super.recreate();
+		processBar.recreate();
+		processBarBackground.recreate();
 	}
 
 	@Override
@@ -109,6 +124,7 @@ public class NormalProcess extends Process implements Destroyable {
 
 	@Override
 	public void destroy() {
+		super.destroy();
 		hide();
 		processBarBackground.destroy();
 		processBar.destroy();
@@ -116,6 +132,10 @@ public class NormalProcess extends Process implements Destroyable {
 
 	@Override
 	public boolean isDestroyed() {
-		return !(!processBarBackground.isDestroyed() || !processBar.isDestroyed());
+		return !(!super.isDestroyed() || !processBarBackground.isDestroyed() || !processBar.isDestroyed());
+	}
+
+	public boolean isShowed() {
+		return showed;
 	}
 }

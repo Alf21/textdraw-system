@@ -23,6 +23,8 @@ public abstract class Process implements Destroyable {
 
 	public void show() {}
 
+	public void recreate() {}
+
 	public void process() {}
 
 	public void setProcess(double process) {}

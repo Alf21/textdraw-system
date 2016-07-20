@@ -1,6 +1,6 @@
 package me.alf21.textdrawsystem.content.attachments;
 
-import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Vector2D;
@@ -17,14 +17,14 @@ public abstract class Attachment implements Destroyable {
 	private String name;
 	private AttachmentAlignment attachmentAlignment;
 	private Player player;
-	private Content content;
+	private Container container;
 	private Component component;
 
-	protected Attachment(Content content, AttachmentAlignment attachmentAlignment, String name) {
-		this.content = content;
+	protected Attachment(Container container, AttachmentAlignment attachmentAlignment, String name) {
+		this.container = container;
 		this.attachmentAlignment = attachmentAlignment;
 		this.name = name;
-		player = content.getDialog().getPlayer();
+		player = container.getDialog().getPlayer();
 	}
 
 	public void attach(Component component) {
@@ -96,8 +96,8 @@ public abstract class Attachment implements Destroyable {
 		return player;
 	}
 
-	public Content getContent() {
-		return content;
+	public Container getContainer() {
+		return container;
 	}
 
 	public Component getComponent() {

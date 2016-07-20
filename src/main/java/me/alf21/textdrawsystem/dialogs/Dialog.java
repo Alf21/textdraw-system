@@ -11,6 +11,7 @@ import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
 import me.alf21.textdrawsystem.dialogs.styles.Process;
 import me.alf21.textdrawsystem.dialogs.types.DialogType;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
+import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Destroyable;
@@ -66,11 +67,12 @@ public abstract class Dialog implements Destroyable {
 	}
 
 	public void show() {
+		if (isDestroyed())
+			recreate();
+
 		showed = true;
 
 		if(getPlayer() != null) {
-			getPlayer().selectTextDraw(hoverColor);
-
 			preAddons.forEach(PlayerTextdraw::show);
 			panelBackground.show();
 			titleBackground.show();
@@ -79,15 +81,19 @@ public abstract class Dialog implements Destroyable {
 			closeIcon.show();
 			process.show();
 			afterAddons.forEach(PlayerTextdraw::show);
+
+			PlayerData playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(true);
 		}
 	}
 
 	public void show(ArrayList<Component> addons) {
+		if (isDestroyed())
+			recreate();
+
 		showed = true;
 
 		if(getPlayer() != null) {
-			getPlayer().selectTextDraw(hoverColor);
-
 			preAddons.forEach(PlayerTextdraw::show);
 			panelBackground.show();
 			titleBackground.show();
@@ -96,15 +102,19 @@ public abstract class Dialog implements Destroyable {
 			closeIcon.show();
 			process.show();
 			afterAddons.forEach(PlayerTextdraw::show);
+
+			PlayerData playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(true);
 		}
 	}
 
 	public void showFromDialog(ArrayList<Component> addons) {
+		if (isDestroyed())
+			recreate();
+
 		showed = true;
 
 		if(getPlayer() != null) {
-			getPlayer().selectTextDraw(hoverColor);
-
 			preAddons.forEach(PlayerTextdraw::show);
 			panelBackground.show();
 			titleBackground.show();
@@ -113,6 +123,9 @@ public abstract class Dialog implements Destroyable {
 			closeIcon.show();
 			process.show();
 			afterAddons.forEach(PlayerTextdraw::show);
+
+			PlayerData playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(true);
 		}
 	}
 
@@ -120,7 +133,8 @@ public abstract class Dialog implements Destroyable {
 		showed = false;
 
 		if(getPlayer() != null) {
-			getPlayer().cancelSelectTextDraw();
+			PlayerData playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(false);
 
 			preAddons.forEach(PlayerTextdraw::hide);
 			panelBackground.hide();
@@ -137,7 +151,8 @@ public abstract class Dialog implements Destroyable {
 		showed = false;
 
 		if(getPlayer() != null) {
-			getPlayer().cancelSelectTextDraw();
+			PlayerData playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(false);
 
 			preAddons.forEach(PlayerTextdraw::hide);
 			panelBackground.hide();
@@ -148,6 +163,28 @@ public abstract class Dialog implements Destroyable {
 			process.hide();
 			afterAddons.forEach(PlayerTextdraw::hide);
 		}
+	}
+
+	public void recreate() {
+		preAddons.forEach(PlayerTextdraw::recreate);
+		panelBackground.recreate();
+		titleBackground.recreate();
+		title.recreate();
+		content.recreate();
+		closeIcon.recreate();
+		process.recreate();
+		afterAddons.forEach(PlayerTextdraw::recreate);
+	}
+
+	public void recreate(ArrayList<Component> addons) {
+		preAddons.forEach(PlayerTextdraw::recreate);
+		panelBackground.recreate();
+		titleBackground.recreate();
+		title.recreate();
+		content.recreate(addons);
+		closeIcon.recreate();
+		process.recreate();
+		afterAddons.forEach(PlayerTextdraw::recreate);
 	}
 
 	@Override
@@ -166,6 +203,9 @@ public abstract class Dialog implements Destroyable {
 
 		preAddons.clear();
 		afterAddons.clear();
+
+	//	if (!TextdrawSystem.hasSelectableTextdraw(player)) //TODO
+	//		player.cancelSelectTextDraw(); //TODO
 	}
 
 	@Override

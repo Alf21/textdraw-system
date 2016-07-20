@@ -2,12 +2,14 @@ package me.alf21.textdrawsystem.player;
 
 import java.io.IOException;
 
-import me.alf21.textdrawsystem.MsgBox.MsgBox;
+import me.alf21.textdrawsystem.msgBox.MsgBox;
 import me.alf21.textdrawsystem.TextdrawSystem;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import me.alf21.textdrawsystem.utils.PlayerTextdrawData;
+import net.gtaun.shoebill.constant.PlayerKey;
 import net.gtaun.shoebill.event.player.*;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.util.event.EventManager;
@@ -47,7 +49,20 @@ public class PlayerManager
 			}
 
 			Panel panel = playerLifecycle.getPanel();
-			if (panel == null || panel.isDestroyed() || !panel.isShowed())
+			if (panel == null)
+				return;
+
+			if (!playerLifecycle.getContainers().isEmpty()) {
+				for (Container container : playerLifecycle.getContainers()) {
+					Component component = container.getComponent(e.getPlayerTextdraw());
+					if (component != null) {
+						component.onClick(e.getPlayerTextdraw());
+					}
+				}
+			}
+
+
+			if (panel.isDestroyed() || !panel.isShowed())
 				return;
 
 			PlayerTextdraw closeIcon = panel.getCloseIcon();
@@ -71,6 +86,7 @@ public class PlayerManager
 
 		eventManager.registerHandler(PlayerClickTextDrawEvent.class, HandlerPriority.NORMAL, e -> {
 			//TODO add PlayerClickTextDrawEvent.class with same content ?
+		/*
 			Player player = e.getPlayer();
 			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
 			if (playerLifecycle == null)
@@ -85,6 +101,10 @@ public class PlayerManager
 					panel.onClickCloseIcon();
 				}
 			}
+		*/
+			Player player = e.getPlayer();
+			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+			playerLifecycle.toggleMouse(false);
 		});
 
 		eventManager.registerHandler(PlayerClickPlayerTextDrawEvent.class, HandlerPriority.LOWEST, e -> {
@@ -119,6 +139,14 @@ public class PlayerManager
 			}
 		});
 		*/
+
+		eventManager.registerHandler(PlayerKeyStateChangeEvent.class, e -> {
+			Player player = e.getPlayer();
+			if (player.getKeyState().isKeyPressed(PlayerKey.YES)) {
+				playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+				playerLifecycle.toggleMouse();
+			}
+		});
 	}
 
 

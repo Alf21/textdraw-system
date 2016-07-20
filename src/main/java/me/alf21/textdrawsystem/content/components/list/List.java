@@ -1,16 +1,14 @@
 package me.alf21.textdrawsystem.content.components.list;
 
+import me.alf21.textdrawsystem.container.Container;
+import me.alf21.textdrawsystem.TextdrawSystem;
 import me.alf21.textdrawsystem.calculations.Calculation;
-import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentAlignment;
 import me.alf21.textdrawsystem.content.components.ComponentData;
-import me.alf21.textdrawsystem.dialogs.Dialog;
-import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -31,8 +29,8 @@ public class List extends Component {
 	private Color selectedListItemColor;
 	private Color selectedListItemBgColor;
 
-	protected List(Content content, Vector2D position, float maxWidth, float maxHeight, String name) {
-		super(content, ComponentAlignment.TOP_LEFT, name);
+	protected List(Container container, Vector2D position, float maxWidth, float maxHeight, String name) {
+		super(container, ComponentAlignment.TOP_LEFT, name);
 		this.position = position;
 		this.maxHeight = maxHeight;
 		this.maxWidth = maxWidth;
@@ -41,14 +39,14 @@ public class List extends Component {
 		selectedListItems = new ArrayList<>();
 		multiselectionMode = false;
 
-		unselectedListItemColor = new Color(255, 255, 255, 255);
-		unselectedListItemBgColor = new Color(0, 0, 0, 255);
-		selectedListItemColor = new Color(0, 0, 0, 255);
-		selectedListItemBgColor = new Color(0, 255, 0, 255);
+		unselectedListItemColor = TextdrawSystem.UNSELECT_COLOR;
+		unselectedListItemBgColor = TextdrawSystem.UNSELECT_BG_COLOR;
+		selectedListItemColor = TextdrawSystem.SELECT_COLOR;
+		selectedListItemBgColor = TextdrawSystem.SELECT_BG_COLOR;
 	}
 
-	public static List create(Content content, Vector2D position, float maxWidth, float maxHeight, String name) {
-		return new List(content, position, maxWidth, maxHeight, name);
+	public static List create(Container container, Vector2D position, float maxWidth, float maxHeight, String name) {
+		return new List(container, position, maxWidth, maxHeight, name);
 	}
 
 	public ListItem addListItem(String text) {
@@ -317,6 +315,6 @@ public class List extends Component {
 
 	@Override
 	public ComponentData getComponentData() {
-		return new ComponentData(selectedListItems);
+		return new ComponentData<>(selectedListItems);
 	}
 }

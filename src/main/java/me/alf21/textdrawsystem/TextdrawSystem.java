@@ -8,9 +8,6 @@
 
 package me.alf21.textdrawsystem;
 
-import me.alf21.textdrawsystem.MsgBox.MsgBox;
-import me.alf21.textdrawsystem.dialogs.DialogInterface;
-import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.player.PlayerData;
@@ -18,13 +15,11 @@ import me.alf21.textdrawsystem.player.PlayerManager;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import me.alf21.textdrawsystem.utils.PlayersTextdraw;
 import net.gtaun.shoebill.common.player.PlayerLifecycleHolder;
-import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManagerNode;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +38,11 @@ public class TextdrawSystem extends Plugin {
 	private static ArrayList<PlayersTextdraw> playersTextdraws;
 	private static ArrayList<PlayerTextdraw> playerTextdraws;
 
-	public final static Color HOVERCOLOR = Color.GREEN;
+	public final static Color   HOVERCOLOR = Color.GREEN,
+								UNSELECT_COLOR = new Color(255, 255, 255, 255),
+								UNSELECT_BG_COLOR = new Color(0, 0, 0, 255),
+								SELECT_COLOR = new Color(0, 0, 0, 255),
+								SELECT_BG_COLOR = new Color(0, 255, 0, 255);
     
 	public static TextdrawSystem getInstance() {
 		if (instance == null)
@@ -127,5 +126,17 @@ public class TextdrawSystem extends Plugin {
 
 	public static PanelDialog createPanelDialog(Player player) {
 		return getPanel(player).createPanelDialog();
+	}
+
+	public static boolean hasSelectableTextdraw(Player player) {
+		for (PlayerTextdraw playerTextdraw : playerTextdraws) {
+			if (playerTextdraw.isShowed(player) && playerTextdraw.isSelectable())
+				return true;
+		}
+		for (PlayersTextdraw playersTextdraw : playersTextdraws) {
+			if (playersTextdraw.isShowed(player) && playersTextdraw.isSelectable())
+				return true;
+		}
+		return false;
 	}
 }

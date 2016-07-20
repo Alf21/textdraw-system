@@ -70,13 +70,13 @@ public class Calculation {
 		float width;
 		switch (playerTextdraw.getAlignment()) {
 			case LEFT:
-				width = playerTextdraw.getPosition().getX() - 4f + playerTextdraw.getTextSize().getX();
+				width = playerTextdraw.getTextSize().getX() - playerTextdraw.getPosition().getX() - 4f;
 				break;
 			case CENTER:
 				width = playerTextdraw.getTextSize().getY();
 				break;
 			case RIGHT:
-				width = Math.abs(playerTextdraw.getPosition().getX() - 4f - playerTextdraw.getTextSize().getX());
+				width = Math.abs(playerTextdraw.getPosition().getX() - 4f - playerTextdraw.getTextSize().getX()); //TODO check
 				break;
 			default:
 				width = playerTextdraw.getTextSize().getX();

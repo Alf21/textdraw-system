@@ -96,6 +96,24 @@ public class Panel extends Dialog {
 	}
 
 	@Override
+	public void recreate() {
+		super.recreate();
+		leftButtonBackground.recreate();
+		rightButtonBackground.recreate();
+		leftButton.recreate();
+		rightButton.recreate();
+	}
+
+	@Override
+	public void recreate(ArrayList<Component> addons) {
+		super.recreate();
+		leftButtonBackground.recreate();
+		rightButtonBackground.recreate();
+		leftButton.recreate();
+		rightButton.recreate();
+	}
+
+	@Override
 	public void destroy() {
 		super.destroy();
 		leftButtonBackground.destroy();

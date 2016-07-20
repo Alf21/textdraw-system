@@ -1,8 +1,7 @@
 package me.alf21.textdrawsystem.content.attachments;
 
-import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
-import me.alf21.textdrawsystem.content.components.ComponentAlignment;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -18,8 +17,8 @@ public class Label extends Attachment { //TODO Change to Label and base on Compo
 
 	private PlayerTextdraw playerTextdraw;
 
-	private Label(Content content, String text, String name) {
-		super(content, AttachmentAlignment.TOP_LEFT, name);
+	private Label(Container container, String text, String name) {
+		super(container, AttachmentAlignment.TOP_LEFT, name);
 		if(text.isEmpty() || text.replaceAll(" ", "").isEmpty())
 			text = "_";
 
@@ -35,7 +34,7 @@ public class Label extends Attachment { //TODO Change to Label and base on Compo
 		playerTextdraw.setSelectable(false);
 	}
 
-	public static Label create(Content content, String text, String name) { return new Label(content, text, name); }
+	public static Label create(Container container, String text, String name) { return new Label(container, text, name); }
 
 	@Override
 	public void attach(Component component) {

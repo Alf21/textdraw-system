@@ -1,6 +1,6 @@
 package me.alf21.textdrawsystem.content.components;
 
-import me.alf21.textdrawsystem.content.Content;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.attachments.Attachment;
 import me.alf21.textdrawsystem.content.attachments.Box;
 import me.alf21.textdrawsystem.content.attachments.Label;
@@ -19,19 +19,21 @@ import java.util.stream.Collectors;
 public abstract class Component implements Destroyable {
 
 	private boolean required, marked;
-	private ComponentData componentData = new ComponentData(false);
+	private ComponentData componentData = new ComponentData<>(false);
 	private String name;
 	private ComponentAlignment componentAlignment;
 	private ArrayList<Attachment> attachments;
 	private Player player;
-	private Content content;
+	private Container container;
+	private ArrayList<ComponentData> extraComponentDatas;
 
-	protected Component(Content content, ComponentAlignment componentAlignment, String name) {
-		this.content = content;
+	protected Component(Container container, ComponentAlignment componentAlignment, String name) {
+		this.container = container;
 		this.componentAlignment = componentAlignment;
 		this.name = name;
-		player = content.getDialog().getPlayer();
+		player = container.getPlayer();
 		attachments = new ArrayList<>();
+		extraComponentDatas = new ArrayList<>();
 	}
 
 	public void show() {
@@ -279,13 +281,13 @@ public abstract class Component implements Destroyable {
 /******************************************************/
 
 	public Label attachLabel(String text) {
-		Label label = Label.create(content, text, getName() + "_label");
+		Label label = Label.create(container, text, getName() + "_label");
 		attach(label);
 		return label;
 	}
 
 	public Box attachBox(Color color) {
-		Box box = Box.create(content, color, getName() + "_box");
+		Box box = Box.create(container, color, getName() + "_box");
 		attach(box);
 		return box;
 	}
@@ -325,7 +327,15 @@ public abstract class Component implements Destroyable {
 		return null;
 	}
 
-	public Content getContent() {
-		return content;
+	public Container getContainer() {
+		return container;
+	}
+
+	public ArrayList<ComponentData> getExtraComponentDatas() {
+		return extraComponentDatas;
+	}
+
+	public void setExtraComponentDatas(ArrayList<ComponentData> extraComponentDatas) {
+		this.extraComponentDatas = extraComponentDatas;
 	}
 }

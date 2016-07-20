@@ -1,17 +1,14 @@
 package me.alf21.textdrawsystem.content.components;
 
-import me.alf21.textdrawsystem.content.Content;
-import me.alf21.textdrawsystem.content.attachments.Attachment;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.attachments.Box;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alf21 on 02.03.2016 in the project 'textdraw-system'.
@@ -20,8 +17,8 @@ public class Text extends Component {
 
 	private PlayerTextdraw playerTextdraw;
 
-	protected Text(Content content, float x, float y, float width, String text, String name) {
-		super(content, ComponentAlignment.TOP_LEFT, name);
+	protected Text(Container container, float x, float y, float width, String text, String name) {
+		super(container, ComponentAlignment.TOP_LEFT, name);
 		playerTextdraw = PlayerTextdraw.create(super.getPlayer(), x, y, text);
 	//	playerTextdraw.setUseBox(true);
 		//TODO
@@ -40,26 +37,26 @@ public class Text extends Component {
 		playerTextdraw.setSelectable(false);
 	}
 
-	public static Text create(Content content, float x, float y, float width, String text, String name) {
+	public static Text create(Container container, float x, float y, float width, String text, String name) {
 		if(name.replaceAll(" ", "").isEmpty())
 			name = "_";
-		return new Text(content, x, y, width, text, name);
+		return new Text(container, x, y, width, text, name);
 	}
 
-	public static Text create(Content content, float x, float y, String name) {
-		return create(content, x, y, Float.NaN, "_", name);
+	public static Text create(Container container, float x, float y, String name) {
+		return create(container, x, y, Float.NaN, "_", name);
 	}
 
-	public static Text create(Content content, Vector2D vector2D, float width, String text, String name) {
-		return create(content, vector2D.getX(), vector2D.getY(), width, text, name);
+	public static Text create(Container container, Vector2D vector2D, float width, String text, String name) {
+		return create(container, vector2D.getX(), vector2D.getY(), width, text, name);
 	}
 
-	public static Text create(Content content, Vector2D vector2D, String text, String name) {
-		return create(content, vector2D.getX(), vector2D.getY(), Float.NaN, text, name);
+	public static Text create(Container container, Vector2D vector2D, String text, String name) {
+		return create(container, vector2D.getX(), vector2D.getY(), Float.NaN, text, name);
 	}
 
-	public static Text create(Content content, Vector2D vector2D, String name) {
-		return create(content, vector2D, "_", name);
+	public static Text create(Container container, Vector2D vector2D, String name) {
+		return create(container, vector2D, "_", name);
 	}
 
 	@Override

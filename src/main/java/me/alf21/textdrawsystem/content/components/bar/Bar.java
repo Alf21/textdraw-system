@@ -1,7 +1,7 @@
 package me.alf21.textdrawsystem.content.components.bar;
 
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.calculations.Calculation;
-import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentAlignment;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
@@ -25,8 +25,8 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 	private double process;
 	private Color minColor, maxColor;
 
-	private Bar(Content content, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
-		super(content, ComponentAlignment.TOP_LEFT, name);
+	private Bar(Container container, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
+		super(container, ComponentAlignment.TOP_LEFT, name);
 		this.barInterface = barInterface;
 		this.minHeight = minHeight-4;
 		this.maxHeight = maxHeight-4;
@@ -37,7 +37,7 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 		createTimer(200);
 		createBar(x, y);
 
-		barInterface.onInit(content, this);
+		barInterface.onInit(container, this);
 	}
 
 	private void createBar(float x, float y) {
@@ -68,28 +68,28 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 		barBackground.setSelectable(false);
 	}
 
-	public static Bar create(Content content, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
-		return new Bar(content, x, y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
+	public static Bar create(Container container, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
+		return new Bar(container, x, y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
 	}
 
-	public static Bar create(Content content, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, String name) {
-		return create(content, x, y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, new BarInterface() {}, name);
+	public static Bar create(Container container, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, String name) {
+		return create(container, x, y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, new BarInterface() {}, name);
 	}
 
-	public static Bar create(Content content, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, String name) {
-		return create(content, x, y, minHeight, maxHeight, minWidth, maxWidth, new Color(0, 150, 0, 255), new Color(0, 150, 0, 255), new BarInterface() {}, name);
+	public static Bar create(Container container, float x, float y, float minHeight, float maxHeight, float minWidth, float maxWidth, String name) {
+		return create(container, x, y, minHeight, maxHeight, minWidth, maxWidth, new Color(0, 150, 0, 255), new Color(0, 150, 0, 255), new BarInterface() {}, name);
 	}
 
-	public static Bar create(Content content, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
-		return create(content, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
+	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
+		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
 	}
 
-	public static Bar create(Content content, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, String name) {
-		return create(content, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, name);
+	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, String name) {
+		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, name);
 	}
 
-	public static Bar create(Content content, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, String name) {
-		return create(content, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, name);
+	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, String name) {
+		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, name);
 	}
 
 	public BarInterface getBarInterface() {
@@ -156,7 +156,7 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 	}
 
 	public void createTimer(int interval) {
-		timer = Timer.create(interval, (factualInterval) -> barInterface.onProcess(getContent(), this));
+		timer = Timer.create(interval, (factualInterval) -> barInterface.onProcess(getContainer(), this));
 	}
 
 	public float getMaxWidth() {

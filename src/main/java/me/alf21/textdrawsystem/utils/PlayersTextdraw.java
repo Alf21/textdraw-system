@@ -98,6 +98,14 @@ public class PlayersTextdraw implements Destroyable {
 		return playersTextdraw;
 	}
 
+	public static PlayersTextdraw get(net.gtaun.shoebill.object.Textdraw textdraw) {
+		for (PlayersTextdraw playersTextdraw1 : TextdrawSystem.getPlayersTextdraws()) {
+			if (playersTextdraw1.isPlayerTextdraw(textdraw))
+				return playersTextdraw1;
+		}
+		return null;
+	}
+
 	public void setText(String text) {
 		if(playersTextdraw != null && !playersTextdraw.isDestroyed())
 			playersTextdraw.setText(text);
@@ -547,5 +555,9 @@ public class PlayersTextdraw implements Destroyable {
 			hide();
 			show();
 		}
+	}
+
+	public Textdraw getPlayersTextdraw() {
+		return playersTextdraw;
 	}
 }

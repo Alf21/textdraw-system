@@ -1,7 +1,7 @@
 package me.alf21.textdrawsystem.content.attachments;
 
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.calculations.Calculation;
-import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawAlign;
@@ -19,8 +19,8 @@ public class Box extends Attachment {
 
 	private PlayerTextdraw playerTextdraw;
 
-	protected Box(Content content, Color color, String name) {
-		super(content, AttachmentAlignment.TOP_LEFT, name);
+	protected Box(Container container, Color color, String name) {
+		super(container, AttachmentAlignment.TOP_LEFT, name);
 
 		playerTextdraw = PlayerTextdraw.create(getPlayer(), 0f, 0f, "_");
 		playerTextdraw.setAlignment(TextDrawAlign.LEFT);
@@ -37,8 +37,8 @@ public class Box extends Attachment {
 		playerTextdraw.setTextSize(-4.0f, -4.0f);
 	}
 
-	public static Box create(Content content, Color color, String name) {
-		return new Box(content, color, name);
+	public static Box create(Container container, Color color, String name) {
+		return new Box(container, color, name);
 	}
 
 	@Override

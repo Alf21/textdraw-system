@@ -21,17 +21,16 @@ import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.content.components.ComponentDataCollection;
 import me.alf21.textdrawsystem.content.components.bar.Bar;
 import me.alf21.textdrawsystem.content.components.bar.BarInterface;
+import me.alf21.textdrawsystem.content.components.button.Button;
 import me.alf21.textdrawsystem.content.components.input.Input;
 import me.alf21.textdrawsystem.content.components.input.InputType;
 import me.alf21.textdrawsystem.content.components.list.List;
 import me.alf21.textdrawsystem.content.components.list.ListItem;
-import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.dialogs.layouts.Layout;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
 
@@ -314,6 +313,11 @@ public abstract class AbstractPanelDialog implements Destroyable {
             components.add(bar);
     }
 
+    public void addButton(Button button) {
+        if (!components.contains(button))
+            components.add(button);
+    }
+
     public List createList(Vector2D position, float maxWidth, float maxHeight, String name) {
         List list = List.create(panel.getContent(), position, maxWidth, maxHeight, name);
         getComponents().add(list);
@@ -354,6 +358,18 @@ public abstract class AbstractPanelDialog implements Destroyable {
         Bar bar = Bar.create(panel.getContent(), position, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
         getComponents().add(bar);
         return bar;
+    }
+
+    public Button createButton(float x, float y, String text, String name) {
+        Button button = Button.create(panel.getContent(), x, y, text, name);
+        getComponents().add(button);
+        return button;
+    }
+
+    public Button createButton(float x, float y, float width, String text, String name) {
+        Button button = Button.create(panel.getContent(), x, y, width, text, name);
+        getComponents().add(button);
+        return button;
     }
 
     public Layout getLayout() {

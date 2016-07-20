@@ -1,40 +1,34 @@
 package me.alf21.textdrawsystem.content;
 
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.list.List;
 import me.alf21.textdrawsystem.content.components.list.ListItem;
 import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.content.pages.Page;
-import me.alf21.textdrawsystem.dialogs.styles.Process;
-import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
-import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
-public class Content implements Destroyable {
+public class Content extends Container {
 
 	private Dialog dialog;
 	private PlayerTextdraw contentText, contentBackground;
 	private ArrayList<Page> pages;
-	private ArrayList<Component> components;
 	private Page currentPage;
 	private boolean showed;
 
 	public Content(Dialog dialog, PlayerTextdraw contentBackground, PlayerTextdraw contentText) {
+		super(dialog, "Content");
 		this.dialog = dialog;
 		this.contentBackground = contentBackground;
 		this.contentText = contentText;
 		this.pages = new ArrayList<>();
-		this.components = new ArrayList<>();
 		showed = false;
 	}
 
@@ -65,7 +59,7 @@ public class Content implements Destroyable {
 			else currentPage.hide();
 			currentPage.show();
 		}
-		components.forEach(Component::show);
+		super.getComponents().forEach(Component::show);
 	}
 
 	public void hide() {
@@ -79,13 +73,28 @@ public class Content implements Destroyable {
 
 		if (currentPage != null)
 			currentPage.hide();
-		components.forEach(Component::hide);
+		super.getComponents().forEach(Component::hide);
 		contentText.hide();
 		contentBackground.hide();
 	}
 
 	public void hideFromDialog() {
 		initHide();
+	}
+
+	public void recreate() {
+		contentBackground.recreate();
+		contentText.recreate();
+		pages.forEach(Page::recreate);
+		super.getComponents().forEach(Component::recreate);
+
+		if (dialog.getPanelDialog() != null)
+			dialog.getPanelDialog().recreate();
+	}
+
+	public void recreate(ArrayList<Component> addons) {
+		recreate();
+		addons.forEach(Component::recreate);
 	}
 
 	public void setText(String text) {
@@ -112,7 +121,7 @@ public class Content implements Destroyable {
 		showed = false;
 
 		pages.forEach(Page::destroy);
-		components.forEach(Component::destroy);
+		super.getComponents().forEach(Component::destroy);
 		contentBackground.destroy();
 		contentText.destroy();
 	}
@@ -123,7 +132,7 @@ public class Content implements Destroyable {
 			if (!page.isDestroyed())
 				return false;
 		}
-		for (Component component : components) {
+		for (Component component : super.getComponents()) {
 			if (!component.isDestroyed())
 				return false;
 		}
@@ -134,14 +143,38 @@ public class Content implements Destroyable {
 		return dialog;
 	}
 
+	@Override
 	public ArrayList<Component> getComponents() {
-		ArrayList<Component> components = new ArrayList<>(this.components);
+		ArrayList<Component> components = new ArrayList<>(super.getComponents());
 		pages.forEach(page -> page.getComponents().forEach(components::add));
 		if (dialog.getPanelDialog() != null)
 			dialog.getPanelDialog().getComponents().forEach(components::add);
 		return components;
 	} //TODO add pages and dialoges
 
+	@Override
+	public <E extends Component> ArrayList<Component> getComponents(Class<E> compClass) {
+		ArrayList<Component> components = new ArrayList<>();
+		super.getComponents().forEach(component -> {
+			if (component.getClass() == compClass) {
+				components.add(component);
+			}
+		});
+		pages.forEach(page -> page.getComponents().forEach(component -> {
+			if (component.getClass() == compClass) {
+				components.add(component);
+			}
+		}));
+		if (dialog.getPanelDialog() != null)
+			dialog.getPanelDialog().getComponents().forEach(component -> {
+				if (component.getClass() == compClass) {
+					components.add(component);
+				}
+			});
+		return components;
+	} //TODO add pages and dialoges
+
+	@Override
 	public Component getComponent(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
@@ -159,7 +192,7 @@ public class Content implements Destroyable {
 				}
 			}
 		}
-		for (Component component : components) {
+		for (Component component : super.getComponents()) {
 			for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
 				if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
 					return component;
@@ -168,6 +201,37 @@ public class Content implements Destroyable {
 		return null;
 	}
 
+	@Override
+	public <E extends Component> Component getComponent(Class<E> compClass, net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+		for (Page page : pages) {
+			for (Component component : page.getComponents()) {
+				if (component.getClass() == compClass)
+					for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
+						if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
+							return component;
+					}
+			}
+		}
+		if (dialog.getPanelDialog() != null) {
+			for (Component component : dialog.getPanelDialog().getComponents()) {
+				if (component.getClass() == compClass)
+					for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
+						if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
+							return component;
+					}
+			}
+		}
+		for (Component component : super.getComponents()) {
+			if (component.getClass() == compClass)
+				for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
+					if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
+						return component;
+				}
+		}
+		return null;
+	}
+
+	@Override
 	public Component getComponent(String name) {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
@@ -181,13 +245,38 @@ public class Content implements Destroyable {
 					return component;
 			}
 		}
-		for (Component component : components) {
+		for (Component component : super.getComponents()) {
 			if(component.getName().equals(name))
 				return component;
 		}
 		return null;
 	}
 
+	@Override
+	public <E extends Component> Component getComponent(Class<E> compClass, String name) {
+		for (Page page : pages) {
+			for (Component component : page.getComponents()) {
+				if (component.getClass() == compClass)
+					if (component.getName().equals(name))
+						return component;
+			}
+		}
+		if (dialog.getPanelDialog() != null) {
+			for (Component component : dialog.getPanelDialog().getComponents()) {
+				if (component.getClass() == compClass)
+					if (component.getName().equals(name))
+						return component;
+			}
+		}
+		for (Component component : super.getComponents()) {
+			if (component.getClass() == compClass)
+				if(component.getName().equals(name))
+					return component;
+		}
+		return null;
+	}
+
+	@Override
 	public boolean hasMarkedComponents() {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
@@ -203,7 +292,7 @@ public class Content implements Destroyable {
 						return true;
 			}
 		}
-		for (Component component : components) {
+		for (Component component : super.getComponents()) {
 			if (component.isRequired())
 				if(!component.isFilled())
 					return true;
@@ -211,6 +300,34 @@ public class Content implements Destroyable {
 		return false;
 	}
 
+	@Override
+	public <E extends Component> boolean hasMarkedComponents(Class<E> compClass) {
+		for (Page page : pages) {
+			for (Component component : page.getComponents()) {
+				if (component.getClass() == compClass)
+					if (component.isRequired())
+						if(!component.isFilled())
+							return true;
+			}
+		}
+		if (dialog.getPanelDialog() != null) {
+			for (Component component : dialog.getPanelDialog().getComponents()) {
+				if (component.getClass() == compClass)
+					if (component.isRequired())
+						if(!component.isFilled())
+							return true;
+			}
+		}
+		for (Component component : super.getComponents()) {
+			if (component.getClass() == compClass)
+				if (component.isRequired())
+					if(!component.isFilled())
+						return true;
+		}
+		return false;
+	}
+
+	@Override
 	public ArrayList<Component> getMarkedComponents() {
 		ArrayList<Component> markedComponents = new ArrayList<>();
 		for (Page page : pages) {
@@ -219,7 +336,20 @@ public class Content implements Destroyable {
 		if (dialog.getPanelDialog() != null) {
 			dialog.getPanelDialog().getComponents().stream().filter(component -> component.isRequired() && !component.isFilled()).forEach(markedComponents::add);
 		}
-		markedComponents.addAll(components.stream().filter(component -> component.isRequired() && !component.isFilled()).collect(Collectors.toList()));
+		markedComponents.addAll(super.getComponents().stream().filter(component -> component.isRequired() && !component.isFilled()).collect(Collectors.toList()));
+		return markedComponents;
+	}
+
+	@Override
+	public <E extends Component> ArrayList<Component> getMarkedComponents(Class<E> compClass) {
+		ArrayList<Component> markedComponents = new ArrayList<>();
+		for (Page page : pages) {
+			page.getComponents().stream().filter(component -> component.getClass() == compClass && component.isRequired() && !component.isFilled()).forEach(markedComponents::add);
+		}
+		if (dialog.getPanelDialog() != null) {
+			dialog.getPanelDialog().getComponents().stream().filter(component -> component.getClass() == compClass && component.isRequired() && !component.isFilled()).forEach(markedComponents::add);
+		}
+		markedComponents.addAll(super.getComponents().stream().filter(component -> component.getClass() == compClass && component.isRequired() && !component.isFilled()).collect(Collectors.toList()));
 		return markedComponents;
 	}
 
@@ -343,6 +473,7 @@ public class Content implements Destroyable {
 	 * @param name the name of the component
 	 * @return the data of the component
 	 */
+	@Override
 	public ComponentData getComponentData(String name) {
 		for(Page page : pages) {
 			for(Component component : page.getComponents()) {
@@ -356,7 +487,7 @@ public class Content implements Destroyable {
 					return component.getComponentData();
 			}
 		}
-		for(Component component : components) {
+		for(Component component : super.getComponents()) {
 			if(component.getName().equals(name))
 				return component.getComponentData();
 		}
@@ -368,7 +499,7 @@ public class Content implements Destroyable {
 	}
 
 	public void clear() {
-		getComponents().forEach(Component::hide);
-		getComponents().forEach(Component::destroy);
+		super.getComponents().forEach(Component::hide);
+		super.getComponents().forEach(Component::destroy);
 	}
 }

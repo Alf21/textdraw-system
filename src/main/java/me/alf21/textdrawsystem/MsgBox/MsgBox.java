@@ -1,4 +1,4 @@
-package me.alf21.textdrawsystem.MsgBox;
+package me.alf21.textdrawsystem.msgBox;
 
 import me.alf21.textdrawsystem.TextdrawSystem;
 import me.alf21.textdrawsystem.player.PlayerData;
@@ -26,7 +26,7 @@ public class MsgBox implements Destroyable { // TODO if only cancelButton is ena
 
 	private Player player;
 
-	private boolean showed, hiddedPanel;
+	private boolean showed, hiddenPanel;
 
 	private MsgBoxHandler clickCancelHandler;
 	private MsgBoxHandler clickOkHandler;
@@ -100,7 +100,7 @@ public class MsgBox implements Destroyable { // TODO if only cancelButton is ena
 		contentMessage.setShadowSize(0);
 		contentMessage.setUseBox(true);
 		contentMessage.setBoxColor(new Color(0, 0, 0, 255));
-		contentMessage.setTextSize(new Vector2D(475.000000f, 10.000000f));
+		contentMessage.setTextSize(new Vector2D(480.000000f, 10.000000f));
 		contentMessage.setSelectable(false);
 
 		cancelButtonBackground = PlayerTextdraw.create(player, 211.000000f, 306.000000f, "_");
@@ -165,10 +165,11 @@ public class MsgBox implements Destroyable { // TODO if only cancelButton is ena
 
 	public void show() {
 		PlayerData playerData = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
-		hiddedPanel = false;
+		hiddenPanel = false;
 		if (playerData.getPanel() != null && !playerData.getPanel().isDestroyed() && playerData.getPanel().isShowed()) {
 			playerData.getPanel().hide();
-			hiddedPanel = true;
+			playerData.getPanel().destroy();
+			hiddenPanel = true;
 		}
 
 		showed = true;
@@ -185,31 +186,33 @@ public class MsgBox implements Destroyable { // TODO if only cancelButton is ena
 		cancelButtonText.show();
 		okButtonText.show();
 
-		if (playerData.getPanel() != null)
-			player.selectTextDraw(playerData.getPanel().getHoverColor());
-		else player.selectTextDraw(TextdrawSystem.HOVERCOLOR);
+		playerData.toggleMouse(true);
 	}
 
 	public void hide() {
-		PlayerData playerData = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
+		if (isShowed()) {
+			PlayerData playerData = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
 
-		showed = false;
+			playerData.toggleMouse(false);
 
-		progressBar.hide();
-		captionText.hide();
-		contentBackground.hide();
-		contentMessage.hide();
-		cancelButtonText.hide();
-		cancelButtonBackground.hide();
-		okButtonBackground.hide();
-		okButtonText.hide();
+			showed = false;
 
-		if (hiddedPanel && playerData.getPanel() != null && !playerData.getPanel().isDestroyed() && !playerData.getPanel().isShowed()) {
-			playerData.getPanel().show();
-			hiddedPanel = false;
+			progressBar.hide();
+			captionText.hide();
+			contentBackground.hide();
+			contentMessage.hide();
+			cancelButtonText.hide();
+			cancelButtonBackground.hide();
+			okButtonBackground.hide();
+			okButtonText.hide();
+
+			if (hiddenPanel && playerData.getPanel() != null) {
+				hiddenPanel = false;
+			//	if (playerData.getPanel().isDestroyed())    //TODO
+			//		playerData.getPanel().recreate();       //TODO this is BUGGY or remove it completely from classes !
+				playerData.getPanel().show();
+			}
 		}
-		else player.cancelSelectTextDraw();
-
 	}
 
 	public void recreate() {
@@ -299,27 +302,19 @@ public class MsgBox implements Destroyable { // TODO if only cancelButton is ena
 	}
 
 	public void setText(String message) {
-		if (message.isEmpty() || message.replaceAll(" ", "").isEmpty())
-			message = "_";
-		contentMessage.setText(message);
+		contentMessage.setText(message.replaceAll(" ", "").isEmpty() ? "_" : message);
 	}
 
-	public void setCaption(String message) {
-		if (message.isEmpty() || message.replaceAll(" ", "").isEmpty())
-			message = "_";
-		captionText.setText(message);
+	public void setCaption(String caption) {
+		captionText.setText(caption.replaceAll(" ", "").isEmpty() ? "_" : caption);
 	}
 
 	public void setCancelButton(String text) {
-		if (text.isEmpty() || text.replaceAll(" ", "").isEmpty())
-			text = "_";
-		cancelButtonText.setText(text);
+		cancelButtonText.setText(text.replaceAll(" ", "").isEmpty() ? "_" : text);
 	}
 
 	public void setOkButton(String text) {
-		if (text.isEmpty() || text.replaceAll(" ", "").isEmpty())
-			text = "_";
-		okButtonText.setText(text);
+		okButtonText.setText(text.replaceAll(" ", "").isEmpty() ? "_" : text);
 	}
 
 	//get the rest of playerTextDraw objects
