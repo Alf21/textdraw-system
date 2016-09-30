@@ -1,0 +1,7 @@
+add
+    help Attachment for a duration like SpeechBubbles
+
+modify
+    break or trim too long texts for boxes (only visible, not invisible)
+        OR
+    size the box up
