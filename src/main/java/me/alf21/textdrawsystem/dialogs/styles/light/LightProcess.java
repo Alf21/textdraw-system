@@ -1,4 +1,4 @@
-package me.alf21.textdrawsystem.dialogs.styles.normal;
+package me.alf21.textdrawsystem.dialogs.styles.light;
 
 import me.alf21.textdrawsystem.calculations.Calculation;
 import me.alf21.textdrawsystem.dialogs.Dialog;
@@ -13,18 +13,18 @@ import net.gtaun.shoebill.object.Destroyable;
 /**
  * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */
-public class NormalProcess extends Process implements Destroyable {
+public class LightProcess extends Process implements Destroyable {
 	private static PlayerTextdraw processBarBackground;
 	private static PlayerTextdraw processBar;
 	private double process, maxProcess;
 	private boolean showed;
 
-	private static float max_width = 410f;
+	private static float max_width = 400.000000f;
 
-	private NormalProcess(Dialog dialog) {
+	private LightProcess(Dialog dialog) {
 		super(dialog);
 
-		processBarBackground = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 133.500000f, "_");
+		processBarBackground = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 138.000000f, "_");
 		processBarBackground.setAlignment(TextDrawAlign.get(2));
 		processBarBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		processBarBackground.setFont(TextDrawFont.get(1));
@@ -38,7 +38,7 @@ public class NormalProcess extends Process implements Destroyable {
 		processBarBackground.setTextSize(new Vector2D(0.000000f, max_width));
 		processBarBackground.setSelectable(false);
 
-		processBar = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 133.500000f, "_");
+		processBar = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 138.000000f, "_");
 		processBar.setAlignment(TextDrawAlign.get(2));
 		processBar.setBackgroundColor(new Color(0, 0, 0, 255));
 		processBar.setFont(TextDrawFont.get(1));
@@ -48,13 +48,13 @@ public class NormalProcess extends Process implements Destroyable {
 		processBar.setProportional(true);
 		processBar.setShadowSize(1);
 		processBar.setUseBox(true);
-		processBar.setBoxColor(new Color(0, 255, 0, 255));
+		processBar.setBoxColor(new Color(150, 0, 0, 255));
 		processBar.setTextSize(new Vector2D(0.000000f, max_width));
 		processBar.setSelectable(false);
 	} //TODO REMOVE THIS CLASS AND USE Bar.class AS CONTENT COMPONENT
 
 	public static Process create(Dialog dialog) {
-		return new NormalProcess(dialog);
+		return new LightProcess(dialog);
 	}
 
 	@Override
