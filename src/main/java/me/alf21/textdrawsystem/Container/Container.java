@@ -6,10 +6,7 @@ import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.content.components.bar.Bar;
 import me.alf21.textdrawsystem.content.components.bar.BarInterface;
 import me.alf21.textdrawsystem.content.components.button.Button;
-<<<<<<< HEAD
 import me.alf21.textdrawsystem.content.components.clickableTextdraw.ClickableTextdraw;
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import me.alf21.textdrawsystem.content.components.input.Input;
 import me.alf21.textdrawsystem.content.components.input.InputType;
 import me.alf21.textdrawsystem.content.components.list.List;
@@ -98,21 +95,13 @@ public class Container implements Destroyable {
 
 	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
-<<<<<<< HEAD
 		components.forEach(comp -> playerTextdraws.addAll(comp.getAllPlayerTextdraws()));
-=======
-		components.forEach(comp -> comp.getAllPlayerTextdraws().forEach(playerTextdraws::add));
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 		return playerTextdraws;
 	}
 
 	public ArrayList<PlayerTextdraw> getComponentTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
-<<<<<<< HEAD
 		components.forEach(component -> playerTextdraws.addAll(component.getComponentTextdraws()));
-=======
-		components.forEach(component -> component.getComponentTextdraws().forEach(playerTextdraws::add));
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 		return playerTextdraws;
 	}
 
@@ -131,14 +120,11 @@ public class Container implements Destroyable {
 			components.add(bar);
 	}
 
-<<<<<<< HEAD
 	public void addClickableTextdraw(ClickableTextdraw clickableTextdraw) {
 		if (!components.contains(clickableTextdraw))
 			components.add(clickableTextdraw);
 	}
 
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	public void addButton(Button button) {
 		if (!components.contains(button))
 			components.add(button);
@@ -186,15 +172,12 @@ public class Container implements Destroyable {
 		return bar;
 	}
 
-<<<<<<< HEAD
 	public ClickableTextdraw createClickableTextdraw(float x, float y, float width, float height, Color color, String name) {
 		ClickableTextdraw clickableTextdraw = ClickableTextdraw.create(this, x, y, width, height, color, name);
 		getComponents().add(clickableTextdraw);
 		return clickableTextdraw;
 	}
 
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	public Button createButton(float x, float y, String text, String name) {
 		Button button = Button.create(this, x, y, text, name);
 		getComponents().add(button);

@@ -4,11 +4,7 @@
 
   <groupId>me.alf21</groupId>
   <artifactId>textdraw-system</artifactId>
-<<<<<<< HEAD
   <version>0.4-SNAPSHOT</version>
-=======
-  <version>0.1-SNAPSHOT</version>
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
   <packaging>jar</packaging>
 
     <properties>
