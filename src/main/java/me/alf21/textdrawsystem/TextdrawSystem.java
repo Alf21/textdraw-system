@@ -8,21 +8,15 @@
 
 package me.alf21.textdrawsystem;
 
-<<<<<<< HEAD
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.player.PlayerManager;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import me.alf21.textdrawsystem.utils.PlayersTextdraw;
-<<<<<<< HEAD
 import net.gtaun.shoebill.common.dialog.DialogHandler;
 import net.gtaun.shoebill.common.dialog.InputDialog;
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import net.gtaun.shoebill.common.player.PlayerLifecycleHolder;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Player;
@@ -148,7 +142,6 @@ public class TextdrawSystem extends Plugin {
 		}
 		return false;
 	}
-<<<<<<< HEAD
 
 	public static InputDialog createInputDialog(Player player, String caption, String message, DialogHandler cancelHandler, InputDialog.ClickOkHandler okHandler) {
 		InputDialog inputDialog = InputDialog.create(player, TextdrawSystem.getInstance().getEventManager())
@@ -160,6 +153,4 @@ public class TextdrawSystem extends Plugin {
 		inputDialog.show();
 		return inputDialog;
 	}
-=======
->>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 }
