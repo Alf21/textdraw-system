@@ -30,10 +30,13 @@ public class Panel extends Dialog {
 		return new Panel(player, dialogStyles, dialogInterface);
 	}
 
+<<<<<<< HEAD
 	public static Panel create(Player player, DialogStyles dialogStyles) {
 		return new Panel(player, dialogStyles, null);
 	}
 
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	public static Panel create(Player player, DialogInterface dialogInterface) {
 		return new Panel(player, null, dialogInterface);
 	}

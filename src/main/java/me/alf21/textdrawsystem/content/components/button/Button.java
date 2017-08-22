@@ -1,7 +1,12 @@
 package me.alf21.textdrawsystem.content.components.button;
 
+<<<<<<< HEAD
 import me.alf21.textdrawsystem.TextdrawSystem;
 import me.alf21.textdrawsystem.container.Container;
+=======
+import me.alf21.textdrawsystem.container.Container;
+import me.alf21.textdrawsystem.TextdrawSystem;
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentAlignment;
 import me.alf21.textdrawsystem.content.components.ComponentData;
@@ -16,7 +21,10 @@ import java.util.ArrayList;
 /**
  * Created by Alf21 on 14.07.2016 in the project 'textdraw-system'.
  */
+<<<<<<< HEAD
 // TODO use ClickableTextdraw as BaseComponent and extend it...
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 public class Button extends Component {
 	private PlayerTextdraw playerTextdraw;
 	private ButtonHandler clickHandler;
@@ -199,6 +207,7 @@ public class Button extends Component {
 	}
 
 	public void setActivationColor(Color activationColor) {
+<<<<<<< HEAD
 		this.activationColor = activationColor;
 		if (isActivated()) {
 			boolean showed = playerTextdraw.isShowed();
@@ -208,6 +217,14 @@ public class Button extends Component {
 			if (showed)
 				playerTextdraw.show();
 		}
+=======
+		boolean showed = playerTextdraw.isShowed();
+		if (showed)
+			playerTextdraw.hide();
+		this.activationColor = activationColor;
+		if (showed)
+			playerTextdraw.show();
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	}
 
 	public Color getDeactivationColor() {
@@ -215,6 +232,7 @@ public class Button extends Component {
 	}
 
 	public void setDeactivationColor(Color deactivationColor) {
+<<<<<<< HEAD
 		this.deactivationColor = deactivationColor;
 		if (!isActivated()) {
 			boolean showed = playerTextdraw.isShowed();
@@ -224,6 +242,14 @@ public class Button extends Component {
 			if (showed)
 				playerTextdraw.show();
 		}
+=======
+		boolean showed = playerTextdraw.isShowed();
+		if (showed)
+			playerTextdraw.hide();
+		this.deactivationColor = deactivationColor;
+		if (showed)
+			playerTextdraw.show();
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	}
 
 	public Color getDeactivationBgColor() {
@@ -231,6 +257,7 @@ public class Button extends Component {
 	}
 
 	public void setDeactivationBgColor(Color deactivationBgColor) {
+<<<<<<< HEAD
 		this.deactivationBgColor = deactivationBgColor;
 		if (!isActivated()) {
 			boolean showed = playerTextdraw.isShowed();
@@ -240,6 +267,14 @@ public class Button extends Component {
 			if (showed)
 				playerTextdraw.show();
 		}
+=======
+		boolean showed = playerTextdraw.isShowed();
+		if (showed)
+			playerTextdraw.hide();
+		this.deactivationBgColor = deactivationBgColor;
+		if (showed)
+			playerTextdraw.show();
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	}
 
 	public Color getActivationBgColor() {
@@ -247,6 +282,7 @@ public class Button extends Component {
 	}
 
 	public void setActivationBgColor(Color activationBgColor) {
+<<<<<<< HEAD
 		this.activationBgColor = activationBgColor;
 		if (isActivated()) {
 			boolean showed = playerTextdraw.isShowed();
@@ -256,5 +292,13 @@ public class Button extends Component {
 			if (showed)
 				playerTextdraw.show();
 		}
+=======
+		boolean showed = playerTextdraw.isShowed();
+		if (showed)
+			playerTextdraw.hide();
+		this.activationBgColor = activationBgColor;
+		if (showed)
+			playerTextdraw.show();
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	}
 }

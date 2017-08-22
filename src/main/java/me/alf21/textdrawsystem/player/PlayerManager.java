@@ -1,5 +1,6 @@
 package me.alf21.textdrawsystem.player;
 
+<<<<<<< HEAD
 import me.alf21.textdrawsystem.TextdrawSystem;
 import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
@@ -12,12 +13,28 @@ import net.gtaun.shoebill.event.player.PlayerClickPlayerTextDrawEvent;
 import net.gtaun.shoebill.event.player.PlayerClickTextDrawEvent;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
 import net.gtaun.shoebill.event.player.PlayerKeyStateChangeEvent;
+=======
+import java.io.IOException;
+
+import me.alf21.textdrawsystem.msgBox.MsgBox;
+import me.alf21.textdrawsystem.TextdrawSystem;
+import me.alf21.textdrawsystem.container.Container;
+import me.alf21.textdrawsystem.dialogs.types.Panel;
+import me.alf21.textdrawsystem.content.components.Component;
+import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import me.alf21.textdrawsystem.utils.PlayerTextdrawData;
+import net.gtaun.shoebill.constant.PlayerKey;
+import net.gtaun.shoebill.event.player.*;
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
+<<<<<<< HEAD
 import java.io.IOException;
 
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 /**
  * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.
  */

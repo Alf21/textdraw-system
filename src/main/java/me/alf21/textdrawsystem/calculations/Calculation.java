@@ -16,8 +16,11 @@ import java.util.regex.Pattern;
  */
 public class Calculation {
 
+<<<<<<< HEAD
 	// TODO fix heightToLetterHeight and vv Calculation
 
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 	public static float letterHeightToHeight(float letterHeight) {
 		return letterHeight * 8.7f;
 	} //8.63
