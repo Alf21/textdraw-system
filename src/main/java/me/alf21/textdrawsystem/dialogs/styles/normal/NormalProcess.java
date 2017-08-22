@@ -23,7 +23,13 @@ public class NormalProcess extends Process implements Destroyable {
 
 	private NormalProcess(Dialog dialog) {
 		super(dialog);
+<<<<<<< HEAD
 
+=======
+	} //TODO REMOVE THIS CLASS AND USE Bar.class AS CONTENT COMPONENT
+
+	public static Process create(Dialog dialog) {
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 		processBarBackground = PlayerTextdraw.create(dialog.getPlayer(), 320.000000f, 133.500000f, "_");
 		processBarBackground.setAlignment(TextDrawAlign.get(2));
 		processBarBackground.setBackgroundColor(new Color(0, 0, 0, 255));
@@ -51,9 +57,13 @@ public class NormalProcess extends Process implements Destroyable {
 		processBar.setBoxColor(new Color(0, 255, 0, 255));
 		processBar.setTextSize(new Vector2D(0.000000f, max_width));
 		processBar.setSelectable(false);
+<<<<<<< HEAD
 	} //TODO REMOVE THIS CLASS AND USE Bar.class AS CONTENT COMPONENT
 
 	public static Process create(Dialog dialog) {
+=======
+
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 		return new NormalProcess(dialog);
 	}
 

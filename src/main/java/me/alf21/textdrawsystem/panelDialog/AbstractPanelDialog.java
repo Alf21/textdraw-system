@@ -22,7 +22,10 @@ import me.alf21.textdrawsystem.content.components.ComponentDataCollection;
 import me.alf21.textdrawsystem.content.components.bar.Bar;
 import me.alf21.textdrawsystem.content.components.bar.BarInterface;
 import me.alf21.textdrawsystem.content.components.button.Button;
+<<<<<<< HEAD
 import me.alf21.textdrawsystem.content.components.clickableTextdraw.ClickableTextdraw;
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
 import me.alf21.textdrawsystem.content.components.input.Input;
 import me.alf21.textdrawsystem.content.components.input.InputType;
 import me.alf21.textdrawsystem.content.components.list.List;
@@ -314,7 +317,11 @@ public abstract class AbstractPanelDialog implements Destroyable {
             components.add(bar);
     }
 
+<<<<<<< HEAD
     public void addButton(ClickableTextdraw button) {
+=======
+    public void addButton(Button button) {
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
         if (!components.contains(button))
             components.add(button);
     }
@@ -361,12 +368,15 @@ public abstract class AbstractPanelDialog implements Destroyable {
         return bar;
     }
 
+<<<<<<< HEAD
     public ClickableTextdraw createClickableTextdraw(float x, float y, float width, float height, Color color, String name) {
         ClickableTextdraw clickableTextdraw = ClickableTextdraw.create(panel.getContent(), x, y, width, height, color, name);
         getComponents().add(clickableTextdraw);
         return clickableTextdraw;
     }
 
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
     public Button createButton(float x, float y, String text, String name) {
         Button button = Button.create(panel.getContent(), x, y, text, name);
         getComponents().add(button);

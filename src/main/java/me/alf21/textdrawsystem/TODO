@@ -5,5 +5,8 @@ modify
     break or trim too long texts for boxes (only visible, not invisible)
         OR
     size the box up
+<<<<<<< HEAD
 
     TODO if is not needed a InputDialog (bcus of desc): Enter input without InputDialog direct into the input
+=======
+>>>>>>> bcb4a165b45f56cd0365363c3e448c63d534149e
