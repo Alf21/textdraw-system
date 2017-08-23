@@ -8,6 +8,7 @@
 
 package me.alf21.textdrawsystem;
 
+import me.alf21.textdrawsystem.dialogs.styles.DialogStyle;
 import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
@@ -125,6 +126,10 @@ public class TextdrawSystem extends Plugin {
 
 	public static Panel createPanel(Player player) {
 		return Panel.create(player);
+	}
+
+	public static Panel createPanel(Player player, DialogStyles dialogStyle) {
+		return Panel.create(player, dialogStyle);
 	}
 
 	public static PanelDialog createPanelDialog(Player player) {

@@ -76,18 +76,18 @@ public class Light extends DialogStyle { //TODO usable for all dialog types -> g
 		leftButtonBackground.setTextSize(new Vector2D(0.000000f, 47.000000f));
 		leftButtonBackground.setSelectable(false);
 
-		PlayerTextdraw rightButtonBackground = PlayerTextdraw.create(player, 490.000000f, 296.000000f, "_");
+		PlayerTextdraw rightButtonBackground = PlayerTextdraw.create(player, 490.000000f, 297.000000f, "_");
 		rightButtonBackground.setAlignment(TextDrawAlign.get(2));
 		rightButtonBackground.setBackgroundColor(new Color(0, 0, 0, 255));
 		rightButtonBackground.setFont(TextDrawFont.get(1));
-		rightButtonBackground.setLetterSize(new Vector2D(0.500000f, 0.999999f));
+		rightButtonBackground.setLetterSize(new Vector2D(0.500000f, 0.999998f));
 		rightButtonBackground.setColor(new Color(255, 255, 255, 255));
 		rightButtonBackground.setOutlineSize(0);
 		rightButtonBackground.setProportional(true);
 		rightButtonBackground.setShadowSize(1);
 		rightButtonBackground.setUseBox(true);
 		rightButtonBackground.setBoxColor(new Color(40, 40, 40, 255));
-		rightButtonBackground.setTextSize(new Vector2D(0.000000f, 50.000000f));
+		rightButtonBackground.setTextSize(new Vector2D(0.000000f, 47.000000f));
 		rightButtonBackground.setSelectable(false);
 
 		PlayerTextdraw leftButton = PlayerTextdraw.create(player, 148.000000f, 296.000000f, "LeftButton");
@@ -104,7 +104,7 @@ public class Light extends DialogStyle { //TODO usable for all dialog types -> g
 		leftButton.setShadowSize(1);
 		leftButton.setSelectable(true);
 
-		PlayerTextdraw rightButton = PlayerTextdraw.create(player, 490.000000f, 295.000000f, "RightButton");
+		PlayerTextdraw rightButton = PlayerTextdraw.create(player, 490.000000f, 296.000000f, "RightButton");
 		rightButton.setAlignment(TextDrawAlign.get(2));
 		rightButton.setBackgroundColor(new Color(0, 0, 0, 255));
 		rightButton.setFont(TextDrawFont.get(2));
@@ -172,6 +172,7 @@ public class Light extends DialogStyle { //TODO usable for all dialog types -> g
 		}
 		dialog.setProcess(process);
 		dialog.setTitle(title);
+		dialog.setTitleBackground(titleBackground);
 		dialog.setHoverColor(new Color(150,0,0,255));
 		dialog.setInputColor(new Color(255,255,255,50));
 		dialog.setMarkerColor(new Color(150,0,0,50));

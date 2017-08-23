@@ -17,13 +17,14 @@ import java.util.regex.Pattern;
 public class Calculation {
 
 	// TODO fix heightToLetterHeight and vv Calculation
+	public final static float LETTERHEIGHTVALUE = 8.23f; //8.63 //to have the correct y-coord position, use /10 (but incorrect samp resolution -> =8.23 && y-coord + 10)
 
 	public static float letterHeightToHeight(float letterHeight) {
-		return letterHeight * 8.7f;
-	} //8.63
+		return letterHeight * LETTERHEIGHTVALUE;
+	}
 
 	public static float heightToLetterHeight(float height) {
-		return height / 8.7f;
+		return height / LETTERHEIGHTVALUE;
 	}
 
 	private static String[] getLines(PlayerTextdraw playerTextdraw) {

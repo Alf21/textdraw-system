@@ -324,6 +324,21 @@ public abstract class Dialog implements Destroyable {
 		return dialogStyles;
 	}
 
+	public void setDialogStyles(DialogStyles dialogStyles) { //TODO Test maybe delete this and create new instance with pre init
+		boolean showed = false;
+		if (!isDestroyed()) {
+			if (isShowed()) {
+				showed = true;
+				hide();
+			}
+			destroy();
+		}
+		this.dialogStyles = dialogStyles;
+		recreate();
+		if (showed)
+			show();
+	}
+
 	public DialogInterface getDialogInterface() {
 		return dialogInterface;
 	}

@@ -36,8 +36,7 @@ public class ClickableTextdraw extends Component {
 		playerTextdraw.setUseBox(true);
 		playerTextdraw.setBoxColor(color);
 	//	playerTextdraw.setTextSize(10.0f, width);
-		playerTextdraw.setHeight(height);
-		playerTextdraw.setWidth(width);
+		playerTextdraw.setBox(width, height);
 		playerTextdraw.setSelectable(true);
 
 		clicked = false;
