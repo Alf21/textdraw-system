@@ -1,11 +1,12 @@
 package me.alf21.textdrawsystem.content.components.input;
 
-import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.TextdrawSystem;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.ComponentAlignment;
 import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.dialogs.Dialog;
+//import me.alf21.textdrawsystem.inputDialog.InputDialog;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.common.dialog.InputDialog;
 import net.gtaun.shoebill.constant.TextDrawFont;
@@ -154,6 +155,7 @@ public class Input extends Component {
 				})
 				.build()
 				.show();
+		//TODO if is not needed a InputDialog (bcus of desc): Enter input without InputDialog direct into the input
 	}
 
 	@Override

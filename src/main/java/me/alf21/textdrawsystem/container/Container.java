@@ -6,6 +6,7 @@ import me.alf21.textdrawsystem.content.components.ComponentData;
 import me.alf21.textdrawsystem.content.components.bar.Bar;
 import me.alf21.textdrawsystem.content.components.bar.BarInterface;
 import me.alf21.textdrawsystem.content.components.button.Button;
+import me.alf21.textdrawsystem.content.components.clickableTextdraw.ClickableTextdraw;
 import me.alf21.textdrawsystem.content.components.input.Input;
 import me.alf21.textdrawsystem.content.components.input.InputType;
 import me.alf21.textdrawsystem.content.components.list.List;
@@ -94,13 +95,13 @@ public class Container implements Destroyable {
 
 	public ArrayList<PlayerTextdraw> getAllPlayerTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
-		components.forEach(comp -> comp.getAllPlayerTextdraws().forEach(playerTextdraws::add));
+		components.forEach(comp -> playerTextdraws.addAll(comp.getAllPlayerTextdraws()));
 		return playerTextdraws;
 	}
 
 	public ArrayList<PlayerTextdraw> getComponentTextdraws() {
 		ArrayList<PlayerTextdraw> playerTextdraws = new ArrayList<>();
-		components.forEach(component -> component.getComponentTextdraws().forEach(playerTextdraws::add));
+		components.forEach(component -> playerTextdraws.addAll(component.getComponentTextdraws()));
 		return playerTextdraws;
 	}
 
@@ -117,6 +118,11 @@ public class Container implements Destroyable {
 	public void addBar(Bar bar) {
 		if (!components.contains(bar))
 			components.add(bar);
+	}
+
+	public void addClickableTextdraw(ClickableTextdraw clickableTextdraw) {
+		if (!components.contains(clickableTextdraw))
+			components.add(clickableTextdraw);
 	}
 
 	public void addButton(Button button) {
@@ -164,6 +170,12 @@ public class Container implements Destroyable {
 		Bar bar = Bar.create(this, position, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
 		getComponents().add(bar);
 		return bar;
+	}
+
+	public ClickableTextdraw createClickableTextdraw(float x, float y, float width, float height, Color color, String name) {
+		ClickableTextdraw clickableTextdraw = ClickableTextdraw.create(this, x, y, width, height, color, name);
+		getComponents().add(clickableTextdraw);
+		return clickableTextdraw;
 	}
 
 	public Button createButton(float x, float y, String text, String name) {

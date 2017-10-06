@@ -5,7 +5,9 @@ import me.alf21.textdrawsystem.calculations.Calculation;
 import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.content.components.button.Button;
+import me.alf21.textdrawsystem.content.components.clickableTextdraw.ClickableTextdraw;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
+import net.gtaun.shoebill.common.dialog.InputDialog;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
@@ -21,6 +23,9 @@ public class ColorPicker extends Container {
 
 	private Player player;
 	private PickedColorHandler pickedColorHandler;
+	private int alpha;
+	private Color color;
+	private boolean isShowed;
 
 	private PlayerTextdraw titleTextdraw;
 	private PlayerTextdraw leftBackgroundTextdraw, rightBackgroundTextdraw;
@@ -28,6 +33,7 @@ public class ColorPicker extends Container {
 	public ColorPicker(Player player) {
 		super(TextdrawSystem.getPanel(player), "ColorPicker");
 		this.player = player;
+		this.alpha = 255;
 		createColorPicker();
 	}
 
@@ -51,14 +57,15 @@ public class ColorPicker extends Container {
 		Color[] color = {
 				Color.DARKBLUE,
 				Color.BLUE,
+				Color.VIOLET,
 				Color.PURPLE,
 				Color.PINK,
+				Color.TEAL,
 				Color.RED,
 				Color.ORANGE,
 				Color.YELLOW,
 				Color.YELLOWGREEN,
 				Color.GREEN,
-				Color.TEAL,
 				Color.BROWN,
 				Color.GRAY,
 				Color.WHITE
@@ -75,11 +82,34 @@ public class ColorPicker extends Container {
 			button.toggleActivationEffect(false);
 			this.addButton(button);
 		}
+		Button button = Button.create(this, startX, startY + paddingY * color.length, width, "+", "Bar_Button_" + color.length);
+		button.getButtonTextdraw().setTextSize(button.getButtonTextdraw().getTextSize().getX(), button.getButtonTextdraw().getTextSize().getY() + 2);
+		button.getButtonTextdraw().setBoxColor(new Color(0, 0, 0, 150));
+		button.setClickHandler(handler -> {
+			InputDialog.ClickOkHandler clickOkHandler = (inputDialog, s) -> {
+				try {
+					int a = Integer.parseInt(s);
+					if (a >= 1 && a <= 255)
+						setAlpha(a);
+					else if (a == 0) {
+						this.hide();
+						this.destroy();
+						onPickColor(new Color(this.color.getR(), this.color.getG(), this.color.getB(), a));
+					}
+				} catch (Exception ignored) {
+
+				}
+			};
+			TextdrawSystem.createInputDialog(player, "Alpha (Opacity)", "Please enter a value between 0 and 255.\n[INFO] Enter '0' to choose select a completely transparent color.", null, clickOkHandler);
+		});
+		button.toggleActivationEffect(false);
+		this.addButton(button);
 
 		createColorContent(color[0]);
 	}
 
 	private void clearColorContent() {
+		isShowed = false;
 		ArrayList<Component> tmp = new ArrayList<>();
 		getComponents().forEach(component -> {
 			if (component.getName().contains("Content_Button_"))
@@ -93,6 +123,7 @@ public class ColorPicker extends Container {
 	}
 
 	private void showColorContent() {
+		isShowed = true;
 		getComponents().forEach(component -> {
 			if (component.getName().contains("Content_Button_"))
 				component.show();
@@ -100,6 +131,8 @@ public class ColorPicker extends Container {
 	}
 
 	private void createColorContent(Color color) {
+		this.color = color;
+
 		float startX = 85.0f, startY = 120.0f;
 		float leftWidth = Calculation.getWidth(leftBackgroundTextdraw);
 		float leftHeight = Calculation.getBoxHeight(leftBackgroundTextdraw);
@@ -112,7 +145,6 @@ public class ColorPicker extends Container {
 		int maxY = (int)( leftHeight / (defaultHeight + paddingY) ) + 1;
 
 		int maxColors = maxX * maxY;
-		int a = 255; //TODO ask for alpha later
 
 		//create horizontal colors
 		int bx, by = 0;
@@ -142,14 +174,14 @@ public class ColorPicker extends Container {
 					b = color.getB();
 				}
 				else {
-					Color tmp2 = new Color(255 - color.getR(), 255 - color.getG(), 255 - color.getB(), a);
+					Color tmp2 = new Color(255 - color.getR(), 255 - color.getG(), 255 - color.getB(), alpha);
 					r = color.getR() + (int) ( (double) tmp2.getR() / factor * (double) ( currentColorValue - (int) factor) );
 					g = color.getG() + (int) ( (double) tmp2.getG() / factor * (double) ( currentColorValue - (int) factor) );
 					b = color.getB() + (int) ( (double) tmp2.getB() / factor * (double) ( currentColorValue - (int) factor) );
 				}
 				//System.out.println("(" + r + ", " + g + ", " + b + "): bx-by: " + bx + "-" + by + "; CCV: " + currentColorValue + " (MaxColors: " + maxColors + ") -> maxX: " + maxX); //TODO sometimes it wont be reach (255, 255, 255) but (255, 254, 255), ...
-				Color tmp = new Color(r, g, b, a);
-				button.getButtonTextdraw().setBoxColor(tmp);
+				Color tmp = new Color(r, g, b, alpha);
+				button.setDeactivationBgColor(tmp);
 				button.setClickHandler(handler -> onPickColor(tmp));
 				button.toggleActivationEffect(false);
 				this.addButton(button);
@@ -206,6 +238,7 @@ public class ColorPicker extends Container {
 	public void onPickColor(Color color) {
 		if (pickedColorHandler != null)
 			pickedColorHandler.handle(this, color);
+		this.hide();
 		this.destroy();
 	}
 
@@ -264,5 +297,18 @@ public class ColorPicker extends Container {
 
 	public PlayerTextdraw getRightBackgroundTextdraw() {
 		return rightBackgroundTextdraw;
+	}
+
+	public int getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+		if (isShowed) {
+			clearColorContent();
+			createColorContent(color);
+			showColorContent();
+		}
 	}
 }

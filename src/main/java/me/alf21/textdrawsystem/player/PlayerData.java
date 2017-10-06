@@ -1,9 +1,9 @@
 package me.alf21.textdrawsystem.player;
 
-import me.alf21.textdrawsystem.container.Container;
-import me.alf21.textdrawsystem.msgBox.MsgBox;
 import me.alf21.textdrawsystem.TextdrawSystem;
+import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
+import me.alf21.textdrawsystem.msgBox.MsgBox;
 import me.alf21.textdrawsystem.utils.PlayerTextdrawData;
 import net.gtaun.shoebill.common.player.PlayerLifecycleObject;
 import net.gtaun.shoebill.data.Color;
