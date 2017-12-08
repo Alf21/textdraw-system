@@ -48,11 +48,11 @@ public class Text extends Component {
 	}
 
 	public static Text create(Container container, Vector2D vector2D, float width, String text, String name) {
-		return create(container, vector2D.getX(), vector2D.getY(), width, text, name);
+		return create(container, vector2D.x, vector2D.y, width, text, name);
 	}
 
 	public static Text create(Container container, Vector2D vector2D, String text, String name) {
-		return create(container, vector2D.getX(), vector2D.getY(), Float.NaN, text, name);
+		return create(container, vector2D.x, vector2D.y, Float.NaN, text, name);
 	}
 
 	public static Text create(Container container, Vector2D vector2D, String name) {

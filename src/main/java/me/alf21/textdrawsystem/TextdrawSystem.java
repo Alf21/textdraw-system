@@ -20,7 +20,7 @@ import net.gtaun.shoebill.common.dialog.DialogHandler;
 import net.gtaun.shoebill.common.dialog.InputDialog;
 import net.gtaun.shoebill.common.player.PlayerLifecycleHolder;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManagerNode;
@@ -81,7 +81,7 @@ public class TextdrawSystem extends Plugin {
         return LOGGER;
     }
 
-    public EventManager getEventManagerInstance() {
+    public EventManagerNode getEventManagerInstance() {
         return eventManagerNode;
     }
     
@@ -138,24 +138,24 @@ public class TextdrawSystem extends Plugin {
 
 	public static boolean hasSelectableTextdraw(Player player) {
 		for (PlayerTextdraw playerTextdraw : playerTextdraws) {
-			if (playerTextdraw.isShowed(player) && playerTextdraw.isSelectable())
+			if (playerTextdraw.isShown(player) && playerTextdraw.isSelectable())
 				return true;
 		}
 		for (PlayersTextdraw playersTextdraw : playersTextdraws) {
-			if (playersTextdraw.isShowed(player) && playersTextdraw.isSelectable())
+			if (playersTextdraw.isShown(player) && playersTextdraw.isSelectable())
 				return true;
 		}
 		return false;
 	}
 
 	public static InputDialog createInputDialog(Player player, String caption, String message, DialogHandler cancelHandler, InputDialog.ClickOkHandler okHandler) {
-		InputDialog inputDialog = InputDialog.create(player, TextdrawSystem.getInstance().getEventManager())
+		InputDialog inputDialog = InputDialog.create(TextdrawSystem.getInstance().getEventManager())
 				.caption(caption)
 				.message(message)
 				.onClickOk(okHandler)
-				.onClickCancel(cancelHandler)
+				.onCancel(cancelHandler)
 				.build();
-		inputDialog.show();
+		inputDialog.show(player);
 		return inputDialog;
 	}
 }

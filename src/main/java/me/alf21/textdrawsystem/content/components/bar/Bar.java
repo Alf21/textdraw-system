@@ -8,7 +8,7 @@ import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Timer;
+import net.gtaun.shoebill.entities.Timer;
 
 import java.util.ArrayList;
 
@@ -81,15 +81,15 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 	}
 
 	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, BarInterface barInterface, String name) {
-		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
+		return create(container, vector2D.x, vector2D.y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, barInterface, name);
 	}
 
 	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, Color minColor, Color maxColor, String name) {
-		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, name);
+		return create(container, vector2D.x, vector2D.y, minHeight, maxHeight, minWidth, maxWidth, minColor, maxColor, name);
 	}
 
 	public static Bar create(Container container, Vector2D vector2D, float minHeight, float maxHeight, float minWidth, float maxWidth, String name) {
-		return create(container, vector2D.getX(), vector2D.getY(), minHeight, maxHeight, minWidth, maxWidth, name);
+		return create(container, vector2D.x, vector2D.y, minHeight, maxHeight, minWidth, maxWidth, name);
 	}
 
 	public BarInterface getBarInterface() {
@@ -104,8 +104,8 @@ public class Bar extends Component { //TODO only calcs height to button but not 
 		this.process = process;
 		float width = ((maxWidth - minWidth) * (float) process) + minWidth;
 		float height = ((maxHeight - minHeight) * (float) process) + minHeight;
-		playerTextdraw.setTextSize(playerTextdraw.getPosition().getX() - 4 + width, getPlayerTextdraw().getTextSize().getY());
-		playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), height / 8.225f);
+		playerTextdraw.setTextSize(playerTextdraw.getPosition().x - 4 + width, getPlayerTextdraw().getTextSize().y);
+		playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().x, height / 8.225f);
 		playerTextdraw.setBoxColor(getColor());
 		barBackground.setBoxColor(new Color(getColor().getR(), getColor().getG(), getColor().getB(), 50));
 		playerTextdraw.hide();

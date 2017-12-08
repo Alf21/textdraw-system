@@ -5,7 +5,7 @@ import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
+import net.gtaun.shoebill.entities.Destroyable;
 
 /**
  * Created by Alf21 on 16.03.2016 in the project 'textdraw-system'.
@@ -43,7 +43,7 @@ public class ListItem implements Destroyable {
 
 		selected = disableAutoColoring = false;
 
-		playerTextdraw = PlayerTextdraw.create(list.getPlayer(), list.getPosition().getX(), list.getPosition().getY() + 15.0f * list.getListItems().size(), getText());
+		playerTextdraw = PlayerTextdraw.create(list.getPlayer(), list.getPosition().x, list.getPosition().y + 15.0f * list.getListItems().size(), getText());
 		playerTextdraw.setBackgroundColor(new Color(0, 0, 0, 255));
 		playerTextdraw.setFont(TextDrawFont.get(1));
 		playerTextdraw.setLetterSize(new Vector2D(0.5f, 1.0f));
@@ -53,12 +53,12 @@ public class ListItem implements Destroyable {
 		playerTextdraw.setShadowSize(0);
 		playerTextdraw.setUseBox(true);
 		playerTextdraw.setBoxColor(unselectedListItemBgColor);
-		playerTextdraw.setTextSize(new Vector2D(list.getPosition().getX() + list.getMaxWidth() - list.getListBar().getWidth() - 6f, Calculation.letterHeightToHeight(1.0f)));
+		playerTextdraw.setTextSize(new Vector2D(list.getPosition().x + list.getMaxWidth() - list.getListBar().getWidth() - 6f, Calculation.letterHeightToHeight(1.0f)));
 		playerTextdraw.setSelectable(true);
 	}
 
 	public void update(Vector2D position, int index) {
-		playerTextdraw.move(position.getX(), position.getY() + 15.0f * index);
+		playerTextdraw.move(position.x, position.y + 15.0f * index);
 	}
 
 	public String getText() {

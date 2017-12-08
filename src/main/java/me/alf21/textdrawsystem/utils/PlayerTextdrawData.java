@@ -5,16 +5,16 @@ package me.alf21.textdrawsystem.utils;
  */
 public class PlayerTextdrawData {
 
-	private net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw;
+	private net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw;
 	private long timestamp;
 
-	public PlayerTextdrawData(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw, long timestamp) {
+	public PlayerTextdrawData(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw, long timestamp) {
 		this.playerTextdraw = playerTextdraw;
 		this.timestamp = timestamp;
 	}
 
 
-	public net.gtaun.shoebill.object.PlayerTextdraw getPlayerTextdraw() {
+	public net.gtaun.shoebill.entities.PlayerTextdraw getPlayerTextdraw() {
 		return playerTextdraw;
 	}
 

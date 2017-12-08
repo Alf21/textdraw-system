@@ -8,7 +8,7 @@ import me.alf21.textdrawsystem.dialogs.styles.DialogStyles;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 

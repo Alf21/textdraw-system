@@ -15,7 +15,7 @@ public class Form implements Layout {
 		PlayerTextdraw contentBackground = content.getContentBackground();
 		float iXMax, iXMin, iYMax, iYMin;
 		Vector2D position = contentBackground.getPosition().clone();
-		float startPositionX = position.getX(), startPositionY = position.getY();
+		float startPositionX = position.x, startPositionY = position.y;
 		float width = Calculation.getWidth(contentBackground), height = Calculation.getBoxHeight(contentBackground);
 		if(contentBackground.getAlignment() == TextDrawAlign.CENTER)
 			startPositionX -= width / 2.0f;

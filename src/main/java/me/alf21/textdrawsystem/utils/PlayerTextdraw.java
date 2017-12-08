@@ -7,9 +7,9 @@ import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.TextdrawBase;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
+import net.gtaun.shoebill.entities.TextdrawBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class PlayerTextdraw implements Destroyable {
 	private static final boolean ENABLE_FRIENDLY_RESOLUTION = true;
 	private static final boolean ENABLE_MAX_TEXTDRAW_CHECK = true;
 
-	private net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw;
+	private net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw;
 	private String text;
 	private String allText;
 	private Color color, backgroundColor, boxColor;
@@ -32,7 +32,7 @@ public class PlayerTextdraw implements Destroyable {
 	private boolean proportional, useBox, selectable;
 	private int outlineSize, shadowSize;
 	private Player player;
-	private boolean showed;
+	private boolean shown;
 
 // custom
 	private int boxEnabled;
@@ -50,7 +50,7 @@ public class PlayerTextdraw implements Destroyable {
 		letterSize = new Vector2D(0.5f, 1.0f);
 		textSize = null;
 		proportional = true;
-		useBox = selectable = showed = false;
+		useBox = selectable = shown = false;
 		outlineSize = 0;
 		shadowSize = 1;
 		boxEnabled = -1;
@@ -69,11 +69,11 @@ public class PlayerTextdraw implements Destroyable {
 	}
 
 	public static PlayerTextdraw create(Player player, Vector2D vector2d) {
-		return create(player, vector2d.getX(), vector2d.getY());
+		return create(player, vector2d.x, vector2d.y);
 	}
 
 	public static PlayerTextdraw create(Player player, Vector2D vector2d, String text) {
-		return create(player, vector2d.getX(), vector2d.getY(), text);
+		return create(player, vector2d.x, vector2d.y, text);
 	}
 
 	public static PlayerTextdraw create(PlayersTextdraw playersTextdraw, Player player) {
@@ -82,7 +82,7 @@ public class PlayerTextdraw implements Destroyable {
 		return playerTextdraw;
 	}
 
-	public static PlayerTextdraw get(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public static PlayerTextdraw get(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (PlayerTextdraw playerTextdraw1 : TextdrawSystem.getPlayerTextdraws()) {
 			if (playerTextdraw1.isPlayerTextdraw(playerTextdraw))
 				return playerTextdraw1;
@@ -178,8 +178,7 @@ public class PlayerTextdraw implements Destroyable {
 
 	public void setPosition(Vector2D position) {
 		if (ENABLE_FRIENDLY_RESOLUTION) {
-			position.setX((float) Math.round(position.getX()));
-			position.setY((float) Math.round(position.getY()));
+			position.set((float) Math.round(position.x), (float) Math.round(position.y));
 		}
 		this.position = position;
 	}
@@ -266,13 +265,13 @@ public class PlayerTextdraw implements Destroyable {
 		this.shadowSize = shadowSize;
 	}
 
-	public boolean isShowed() {
-		return (showed && playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShowed()
-				|| playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShowed());
+	public boolean isShown() {
+		return (shown && playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShown()
+				|| playerTextdraw != null && !playerTextdraw.isDestroyed() && playerTextdraw.isShown());
 	}
 
-	public boolean isShowed(Player player) {
-		return this.player == player && isShowed();
+	public boolean isShown(Player player) {
+		return this.player == player && isShown();
 	}
 
 	@Override
@@ -290,7 +289,7 @@ public class PlayerTextdraw implements Destroyable {
 		newPlayerTextdraw.setShadowSize(getShadowSize());
 		if(getTextSize() != null)           newPlayerTextdraw.setTextSize(getTextSize());
 		newPlayerTextdraw.setUseBox(isUseBox());
-		if(isShowed())                      newPlayerTextdraw.show();
+		if(isShown())                      newPlayerTextdraw.show();
 		return newPlayerTextdraw;
 	}
 
@@ -308,7 +307,7 @@ public class PlayerTextdraw implements Destroyable {
 		newPlayerTextdraw.setShadowSize(getShadowSize());
 		if(getTextSize() != null)           newPlayerTextdraw.setTextSize(getTextSize());
 		newPlayerTextdraw.setUseBox(isUseBox());
-		if(isShowed())                      newPlayerTextdraw.show();
+		if(isShown())                      newPlayerTextdraw.show();
 		return newPlayerTextdraw;
 	}
 
@@ -346,18 +345,17 @@ public class PlayerTextdraw implements Destroyable {
 
 	public void move(Vector2D vector2d) {
 		if(playerTextdraw != null && !playerTextdraw.isDestroyed()) {
-			boolean showed = isShowed();
+			boolean shown = isShown();
 			if (ENABLE_FRIENDLY_RESOLUTION) {
-				vector2d.setX((float) Math.round(vector2d.getX()));
-				vector2d.setY((float) Math.round(vector2d.getY()));
+				vector2d.set((float) Math.round(vector2d.x), (float) Math.round(vector2d.y));
 			}
-			if (showed)
+			if (shown)
 				hide();
 			playerTextdraw.destroy();
-			playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(getPlayer(), vector2d);
+			playerTextdraw = net.gtaun.shoebill.entities.PlayerTextdraw.create(getPlayer(), vector2d);
 			setPosition(vector2d);
 			synchronize();
-			if (showed)
+			if (shown)
 				show();
 		}
 		else setPosition(vector2d);
@@ -370,13 +368,13 @@ public class PlayerTextdraw implements Destroyable {
 	public void changePlayer(Player player) {
 		this.player = player;
 		if(playerTextdraw != null && !playerTextdraw.isDestroyed()) {
-			boolean showed = isShowed();
-			if (showed)
+			boolean shown = isShown();
+			if (shown)
 				hide();
 			playerTextdraw.destroy();
-			playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(player, getPosition());
+			playerTextdraw = net.gtaun.shoebill.entities.PlayerTextdraw.create(player, getPosition());
 			synchronize();
-			if (showed)
+			if (shown)
 				show();
 		}
 	}
@@ -415,7 +413,7 @@ public class PlayerTextdraw implements Destroyable {
 	public void hide() {
 		if (playerTextdraw != null && !playerTextdraw.isDestroyed())
 			playerTextdraw.hide();
-		showed = false;
+		shown = false;
 	}
 
 	public void show() {
@@ -425,7 +423,7 @@ public class PlayerTextdraw implements Destroyable {
 		if (playerTextdraw == null || playerTextdraw.isDestroyed())
 			recreate();
 		playerTextdraw.show();
-		showed = true;
+		shown = true;
 	}
 
 	public int getId() {
@@ -440,7 +438,7 @@ public class PlayerTextdraw implements Destroyable {
 		else return null;
 	}
 
-	public boolean isPlayerTextdraw(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public boolean isPlayerTextdraw(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		return this.playerTextdraw == playerTextdraw;
 	}
 
@@ -458,7 +456,7 @@ public class PlayerTextdraw implements Destroyable {
 
 	public void recreate() {
 		if(playerTextdraw == null || isDestroyed()) {
-			playerTextdraw = net.gtaun.shoebill.object.PlayerTextdraw.create(player, getPosition());
+			playerTextdraw = net.gtaun.shoebill.entities.PlayerTextdraw.create(player, getPosition());
 			synchronize();
 		}
 	}
@@ -473,7 +471,7 @@ public class PlayerTextdraw implements Destroyable {
 		Collections.addAll(tmpPlayers, players);
 		PlayersTextdraw playersTextdraw = PlayersTextdraw.create(tmpPlayers, getPosition());
 		playersTextdraw.copy(this);
-		if(isShowed()) {
+		if(isShown()) {
 			hide();
 			playersTextdraw.show();
 		}
@@ -525,13 +523,13 @@ public class PlayerTextdraw implements Destroyable {
 			setTextSize(0f, 0f);
 		switch (getAlignment()) {
 			case LEFT:
-				setTextSize(getPosition().getX() - 4f + width, getTextSize().getY());
+				setTextSize(getPosition().x - 4f + width, getTextSize().y);
 				break;
 			case CENTER:
-				setTextSize(getTextSize().getX(), width - 4f); //TODO 3f?
+				setTextSize(getTextSize().x, width - 4f); //TODO 3f?
 				break;
 			case RIGHT:
-				setTextSize(getPosition().getX() - 4f - width, getTextSize().getY());
+				setTextSize(getPosition().x - 4f - width, getTextSize().y);
 				break;
 		}
 	}
@@ -541,13 +539,13 @@ public class PlayerTextdraw implements Destroyable {
 			setTextSize(0f, 0f);
 		switch (getAlignment()) {
 			case LEFT:
-				setTextSize(getTextSize().getX(), height - 4f);
+				setTextSize(getTextSize().x, height - 4f);
 				break;
 			case CENTER:
-				setTextSize(height - 4f, getTextSize().getY());
+				setTextSize(height - 4f, getTextSize().y);
 				break;
 			case RIGHT:
-				setTextSize(getTextSize().getX(), height - 4f);
+				setTextSize(getTextSize().x, height - 4f);
 				break;
 		}
 	}
@@ -558,13 +556,13 @@ public class PlayerTextdraw implements Destroyable {
 	}
 
 	public void update() {
-		if (isShowed()) {
+		if (isShown()) {
 			hide();
 			show();
 		}
 	}
 
-	public net.gtaun.shoebill.object.PlayerTextdraw getPlayerTextdraw() {
+	public net.gtaun.shoebill.entities.PlayerTextdraw getPlayerTextdraw() {
 		return playerTextdraw;
 	}
 }

@@ -15,8 +15,8 @@ import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -220,7 +220,7 @@ public class Container implements Destroyable {
 		return components;
 	}
 
-	public Component getComponent(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public Component getComponent(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (Component component : components) {
 			for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
 				if (playerTextdraws.isPlayerTextdraw(playerTextdraw))
@@ -230,7 +230,7 @@ public class Container implements Destroyable {
 		return null;
 	}
 
-	public <E extends Component> Component getComponent(Class<E> compClass, net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public <E extends Component> Component getComponent(Class<E> compClass, net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (Component component : components) {
 			if (component.getClass() == compClass)
 				for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {

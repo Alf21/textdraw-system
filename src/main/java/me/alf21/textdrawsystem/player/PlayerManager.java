@@ -12,8 +12,9 @@ import net.gtaun.shoebill.event.player.PlayerClickPlayerTextDrawEvent;
 import net.gtaun.shoebill.event.player.PlayerClickTextDrawEvent;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
 import net.gtaun.shoebill.event.player.PlayerKeyStateChangeEvent;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManagerNode;
 import net.gtaun.util.event.HandlerPriority;
 
 import java.io.IOException;
@@ -23,14 +24,14 @@ import java.io.IOException;
  */
 public class PlayerManager
 {	
-	public EventManager eventManager;
+	public EventManagerNode eventManager;
 	public PlayerData playerLifecycle;
 
 	public PlayerManager() throws IOException
 	{	
 		eventManager = TextdrawSystem.getInstance().getEventManagerInstance();
 
-		eventManager.registerHandler(PlayerClickPlayerTextDrawEvent.class, HandlerPriority.HIGHEST, e -> {
+		eventManager.registerHandler(PlayerClickPlayerTextDrawEvent.class, e -> {
 			Player player = e.getPlayer();
 			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
 			if (playerLifecycle == null)
@@ -85,9 +86,9 @@ public class PlayerManager
 			}
 
 			playerLifecycle.setPlayerTextdrawData(new PlayerTextdrawData(e.getPlayerTextdraw(), System.currentTimeMillis()));
-		});
+		}, HandlerPriority.HIGHEST);
 
-		eventManager.registerHandler(PlayerClickTextDrawEvent.class, HandlerPriority.NORMAL, e -> {
+		eventManager.registerHandler(PlayerClickTextDrawEvent.class, e -> {
 			//TODO add PlayerClickTextDrawEvent.class with same content ?
 		/*
 			Player player = e.getPlayer();
@@ -107,21 +108,23 @@ public class PlayerManager
 		*/
 			Player player = e.getPlayer();
 			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
-			playerLifecycle.toggleMouse(false);
-		});
+			if (playerLifecycle != null) {
+				playerLifecycle.toggleMouse(false);
+			}
+		}, HandlerPriority.NORMAL);
 
-		eventManager.registerHandler(PlayerClickPlayerTextDrawEvent.class, HandlerPriority.LOWEST, e -> {
+		eventManager.registerHandler(PlayerClickPlayerTextDrawEvent.class, e -> {
 			Player player = e.getPlayer();
 			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
 			if (playerLifecycle == null || playerLifecycle.getPanel() == null || playerLifecycle.getPanel().isDestroyed() || !playerLifecycle.getPanel().isShowed())
 				return;
 			playerLifecycle.setPlayerTextdrawData(null);
-		});
+		}, HandlerPriority.LOWEST);
 
 		eventManager.registerHandler(PlayerDisconnectEvent.class, (e) -> {
 			Player player = e.getPlayer();
 			playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
-			if(playerLifecycle.getPanel() != null && !playerLifecycle.getPanel().isDestroyed()) {
+			if (playerLifecycle != null && playerLifecycle.getPanel() != null && !playerLifecycle.getPanel().isDestroyed()) {
 				playerLifecycle.getPanel().hide();
 				playerLifecycle.getPanel().destroy();
 			}
@@ -147,7 +150,9 @@ public class PlayerManager
 			Player player = e.getPlayer();
 			if (player.getKeyState().isKeyPressed(PlayerKey.YES)) {
 				playerLifecycle = TextdrawSystem.getInstance().getPlayerLifecycleHolder().getObject(player, PlayerData.class);
-				playerLifecycle.toggleMouse();
+				if (playerLifecycle != null) {
+					playerLifecycle.toggleMouse();
+				}
 			}
 		});
 	}

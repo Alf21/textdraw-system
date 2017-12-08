@@ -12,7 +12,7 @@ import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 
@@ -83,10 +83,10 @@ public class ColorPicker extends Container {
 			this.addButton(button);
 		}
 		Button button = Button.create(this, startX, startY + paddingY * color.length, width, "+", "Bar_Button_" + color.length);
-		button.getButtonTextdraw().setTextSize(button.getButtonTextdraw().getTextSize().getX(), button.getButtonTextdraw().getTextSize().getY() + 2);
+		button.getButtonTextdraw().setTextSize(button.getButtonTextdraw().getTextSize().x, button.getButtonTextdraw().getTextSize().y + 2);
 		button.getButtonTextdraw().setBoxColor(new Color(0, 0, 0, 150));
 		button.setClickHandler(handler -> {
-			InputDialog.ClickOkHandler clickOkHandler = (inputDialog, s) -> {
+			InputDialog.ClickOkHandler clickOkHandler = (inputDialog, p, s) -> {
 				try {
 					int a = Integer.parseInt(s);
 					if (a >= 1 && a <= 255)

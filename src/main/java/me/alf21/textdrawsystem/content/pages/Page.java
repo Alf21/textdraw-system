@@ -4,7 +4,7 @@ import me.alf21.textdrawsystem.content.Content;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.dialogs.Dialog;
 import me.alf21.textdrawsystem.dialogs.styles.Process;
-import net.gtaun.shoebill.object.Destroyable;
+import net.gtaun.shoebill.entities.Destroyable;
 
 import java.util.ArrayList;
 

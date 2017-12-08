@@ -1,7 +1,7 @@
 package me.alf21.textdrawsystem.dialogs.styles;
 
 import me.alf21.textdrawsystem.dialogs.Dialog;
-import net.gtaun.shoebill.object.Destroyable;
+import net.gtaun.shoebill.entities.Destroyable;
 
 /**
  * Created by Alf21 on 26.02.2016 in the project 'textdraw-system'.

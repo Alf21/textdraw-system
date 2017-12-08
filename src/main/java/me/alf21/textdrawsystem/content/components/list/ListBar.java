@@ -6,8 +6,8 @@ import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
 /**
  * Created by Alf21 on 17.03.2016 in the project 'textdraw-system'.
@@ -26,7 +26,7 @@ public class ListBar implements Destroyable {
 		Vector2D position = list.getPosition();
 		float maxWidth = list.getMaxWidth(), maxHeight = list.getMaxHeight();
 
-		previous = PlayerTextdraw.create(player, position.getX() + maxWidth - width, position.getY(), "~u~");
+		previous = PlayerTextdraw.create(player, position.x + maxWidth - width, position.y, "~u~");
 		previous.setBackgroundColor(new Color(0, 0, 0, 255));
 		previous.setFont(TextDrawFont.get(1));
 		previous.setLetterSize(new Vector2D(0.5f, 1.0f));
@@ -36,10 +36,10 @@ public class ListBar implements Destroyable {
 		previous.setShadowSize(1);
 		previous.setUseBox(true);
 		previous.setBoxColor(new Color(255, 255, 255, 50));
-		previous.setTextSize(new Vector2D(position.getX() + maxWidth, Calculation.letterHeightToHeight(1.0f)));
+		previous.setTextSize(new Vector2D(position.x + maxWidth, Calculation.letterHeightToHeight(1.0f)));
 		previous.setSelectable(true);
 
-		barbg = PlayerTextdraw.create(player, position.getX() + maxWidth - width / 2, position.getY() + 15.0f, "_");
+		barbg = PlayerTextdraw.create(player, position.x + maxWidth - width / 2, position.y + 15.0f, "_");
 		barbg.setAlignment(TextDrawAlign.get(2));
 		barbg.setBackgroundColor(new Color(0, 0, 0, 255));
 		barbg.setFont(TextDrawFont.get(1));
@@ -53,7 +53,7 @@ public class ListBar implements Destroyable {
 		barbg.setTextSize(new Vector2D(11.4f, width));
 		barbg.setSelectable(false);
 
-		bar = PlayerTextdraw.create(player, position.getX() + maxWidth - width / 2, position.getY() + 15.0f, "_");
+		bar = PlayerTextdraw.create(player, position.x + maxWidth - width / 2, position.y + 15.0f, "_");
 		bar.setAlignment(TextDrawAlign.get(2));
 		bar.setBackgroundColor(new Color(0, 0, 0, 255));
 		bar.setFont(TextDrawFont.get(1));
@@ -67,7 +67,7 @@ public class ListBar implements Destroyable {
 		bar.setTextSize(new Vector2D(11.4f, width));
 		bar.setSelectable(false);
 
-		next = PlayerTextdraw.create(player, position.getX() + maxWidth - width, position.getY() + maxHeight - 15.0f, "~d~");
+		next = PlayerTextdraw.create(player, position.x + maxWidth - width, position.y + maxHeight - 15.0f, "~d~");
 		next.setBackgroundColor(new Color(0, 0, 0, 255));
 		next.setFont(TextDrawFont.get(1));
 		next.setLetterSize(new Vector2D(0.5f, 1.0f));
@@ -77,7 +77,7 @@ public class ListBar implements Destroyable {
 		next.setShadowSize(1);
 		next.setUseBox(true);
 		next.setBoxColor(new Color(255, 255, 255, 50));
-		next.setTextSize(new Vector2D(position.getX() + maxWidth, Calculation.letterHeightToHeight(1.0f)));
+		next.setTextSize(new Vector2D(position.x + maxWidth, Calculation.letterHeightToHeight(1.0f)));
 		next.setSelectable(true);
 
 		currentIndex = -1;
@@ -158,24 +158,24 @@ public class ListBar implements Destroyable {
 		int visibleListItems = list.getAmountVisibleListItems();
 		if (visibleListItems > 0) {
 			if (list.getListItems().size() - visibleListItems > 0) {
-				float   height = barbg.getPosition().getY(),
+				float   height = barbg.getPosition().y,
 						boxHeight = Calculation.getBoxHeight(barbg); //TODO calc with -4px ?
 				boxHeight -= boxHeight / (float) visibleListItems;
 
 				float barHeight = boxHeight / (float) (list.getListItems().size() - visibleListItems);
 				height += barHeight * (float) currentIndex;
 
-				boolean showed = bar.isShowed();
+				boolean showed = bar.isShown();
 				if (!bar.isDestroyed() && showed) bar.hide();
 
-				bar.move(bar.getPosition().getX(), height);
+				bar.move(bar.getPosition().x, height);
 				bar.setHeight(barHeight);
-				bar.setLetterSize(bar.getLetterSize().getX(), Calculation.heightToLetterHeight(barHeight));
+				bar.setLetterSize(bar.getLetterSize().x, Calculation.heightToLetterHeight(barHeight));
 
 				if (!bar.isDestroyed() && showed) bar.show();
 			}
 			else {
-				boolean showed = bar.isShowed();
+				boolean showed = bar.isShown();
 				if (!bar.isDestroyed() && showed) bar.hide();
 
 				bar.move(barbg.getPosition());

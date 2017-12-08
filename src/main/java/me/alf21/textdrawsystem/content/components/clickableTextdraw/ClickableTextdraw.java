@@ -90,7 +90,7 @@ public class ClickableTextdraw extends Component {
 	}
 
 	@Override
-	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public void onClick(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		if (clickHandler != null)
 			clickHandler.handle(this);
 		clicked = true;

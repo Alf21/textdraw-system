@@ -55,16 +55,16 @@ public class Calculation {
 	public static Vector2D getWidth(PlayerTextdraw playerTextdraw, double maxProcess, double process) {
 		float widthX, widthY;
 		if(playerTextdraw.getAlignment() == TextDrawAlign.CENTER) {
-			widthY = playerTextdraw.getTextSize().getY();
+			widthY = playerTextdraw.getTextSize().y;
 			widthY /= maxProcess;
 			widthY *= process;
-			widthX = playerTextdraw.getTextSize().getX();
+			widthX = playerTextdraw.getTextSize().x;
 		}
 		else {
-			widthX = playerTextdraw.getTextSize().getX();
+			widthX = playerTextdraw.getTextSize().x;
 			widthX /= maxProcess;
 			widthX *= process;
-			widthY = playerTextdraw.getTextSize().getY();
+			widthY = playerTextdraw.getTextSize().y;
 		}
 		return new Vector2D(widthX, widthY);
 	}
@@ -73,16 +73,16 @@ public class Calculation {
 		float width;
 		switch (playerTextdraw.getAlignment()) {
 			case LEFT:
-				width = playerTextdraw.getTextSize().getX() - playerTextdraw.getPosition().getX() - 4f;
+				width = playerTextdraw.getTextSize().x - playerTextdraw.getPosition().x - 4f;
 				break;
 			case CENTER:
-				width = playerTextdraw.getTextSize().getY();
+				width = playerTextdraw.getTextSize().y;
 				break;
 			case RIGHT:
-				width = Math.abs(playerTextdraw.getPosition().getX() - 4f - playerTextdraw.getTextSize().getX()); //TODO check
+				width = Math.abs(playerTextdraw.getPosition().x - 4f - playerTextdraw.getTextSize().x); //TODO check
 				break;
 			default:
-				width = playerTextdraw.getTextSize().getX();
+				width = playerTextdraw.getTextSize().x;
 				break;
 		}
 		return width;
@@ -98,9 +98,9 @@ public class Calculation {
 			for (int i = 0; i < part.toCharArray().length; i++) {
 				if (playerTextdraw.isProportional()) {
 					if (i+1 != part.toCharArray().length)
-						tmp += getLetterWidth(textDrawFont, part.toCharArray()[i]) * (playerTextdraw.getLetterSize().getX() + 0.5f);
+						tmp += getLetterWidth(textDrawFont, part.toCharArray()[i]) * (playerTextdraw.getLetterSize().x + 0.5f);
 					else
-						tmp += (getLetterWidth(textDrawFont, part.toCharArray()[i]) + 2.0f) * (playerTextdraw.getLetterSize().getX() + 0.5f);
+						tmp += (getLetterWidth(textDrawFont, part.toCharArray()[i]) + 2.0f) * (playerTextdraw.getLetterSize().x + 0.5f);
 				}
 			}
 			if (tmp > width)
@@ -131,7 +131,7 @@ public class Calculation {
 	}
 
 	public static float getBoxHeight(PlayerTextdraw playerTextdraw) {
-		return letterHeightToHeight(playerTextdraw.getLetterSize().getY()) * (float) getLines(playerTextdraw).length;
+		return letterHeightToHeight(playerTextdraw.getLetterSize().y) * (float) getLines(playerTextdraw).length;
 	}
 
 	public static float getBoxHeight(PlayersTextdraw playersTextdraw) {
@@ -139,10 +139,10 @@ public class Calculation {
 	}
 
 	public static float getBoxHeight(ArrayList<PlayerTextdraw> playerTextdraws) {
-		float minHeight = playerTextdraws.get(0).getPosition().getY(), maxHeight = getBoxHeight(playerTextdraws.get(0));
+		float minHeight = playerTextdraws.get(0).getPosition().y, maxHeight = getBoxHeight(playerTextdraws.get(0));
 		for (PlayerTextdraw playerTextdraw : playerTextdraws) {
 			float   height = getBoxHeight(playerTextdraw),
-					y = playerTextdraw.getPosition().getY();
+					y = playerTextdraw.getPosition().y;
 			if (minHeight > y)
 				minHeight = y;
 			if (maxHeight < height)

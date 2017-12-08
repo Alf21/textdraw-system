@@ -18,7 +18,7 @@ package me.alf21.textdrawsystem.event;
 
 import me.alf21.textdrawsystem.panelDialog.AbstractPanelDialog;
 import me.alf21.textdrawsystem.panelDialog.PanelDialog;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 import net.gtaun.util.event.Event;
 
 /**

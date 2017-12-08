@@ -125,7 +125,7 @@ public class List extends Component {
 	}
 
 	@Override
-	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw clickedPlayerTextdraw) {
+	public void onClick(net.gtaun.shoebill.entities.PlayerTextdraw clickedPlayerTextdraw) {
 		ListItem listItem = getListItem(clickedPlayerTextdraw);
 		if (listItem != null) {
 			if (System.currentTimeMillis() - listItem.getClicked() <= 500) {
@@ -180,7 +180,7 @@ public class List extends Component {
 		}
 	}
 
-	private ListItem getListItem(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	private ListItem getListItem(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (ListItem listItem : listItems) {
 			if (listItem.getPlayerTextdraw().isPlayerTextdraw(playerTextdraw))
 				return listItem;
@@ -190,7 +190,7 @@ public class List extends Component {
 
 	private void updateListItems() {
 		listItems.stream().filter(ListItem::isDestroyed).forEach(ListItem::recreate);
-		listItems.stream().filter(listItem -> listItem.getPlayerTextdraw().isShowed()).forEach(ListItem::hide);
+		listItems.stream().filter(listItem -> listItem.getPlayerTextdraw().isShown()).forEach(ListItem::hide);
 
 		float height = 0.0f;
 		int i = 0, currentListBarIndex = listBar.getCurrentIndex();
@@ -212,7 +212,7 @@ public class List extends Component {
 			i++;
 		}
 
-		listItems.stream().filter(listItem -> !listItem.getPlayerTextdraw().isShowed()).forEach(ListItem::destroy);
+		listItems.stream().filter(listItem -> !listItem.getPlayerTextdraw().isShown()).forEach(ListItem::destroy);
 	}
 
 	protected int getAmountVisibleListItems() {

@@ -109,7 +109,7 @@ public class Button extends Component {
 	}
 
 	@Override
-	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public void onClick(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		toggleActivated();
 		if (clickHandler != null)
 			clickHandler.handle(this);
@@ -153,7 +153,7 @@ public class Button extends Component {
 		if (!toggleActivationEffect)
 			return;
 
-		boolean visible = playerTextdraw.isShowed();
+		boolean visible = playerTextdraw.isShown();
 		if (visible) playerTextdraw.hide();
 		if (activated) {
 			playerTextdraw.setColor(activationColor);
@@ -201,7 +201,7 @@ public class Button extends Component {
 	public void setActivationColor(Color activationColor) {
 		this.activationColor = activationColor;
 		if (isActivated()) {
-			boolean showed = playerTextdraw.isShowed();
+			boolean showed = playerTextdraw.isShown();
 			if (showed)
 				playerTextdraw.hide();
 			playerTextdraw.setColor(activationColor);
@@ -217,7 +217,7 @@ public class Button extends Component {
 	public void setDeactivationColor(Color deactivationColor) {
 		this.deactivationColor = deactivationColor;
 		if (!isActivated()) {
-			boolean showed = playerTextdraw.isShowed();
+			boolean showed = playerTextdraw.isShown();
 			if (showed)
 				playerTextdraw.hide();
 			playerTextdraw.setColor(deactivationColor);
@@ -233,7 +233,7 @@ public class Button extends Component {
 	public void setDeactivationBgColor(Color deactivationBgColor) {
 		this.deactivationBgColor = deactivationBgColor;
 		if (!isActivated()) {
-			boolean showed = playerTextdraw.isShowed();
+			boolean showed = playerTextdraw.isShown();
 			if (showed)
 				playerTextdraw.hide();
 			playerTextdraw.setBoxColor(deactivationBgColor);
@@ -249,7 +249,7 @@ public class Button extends Component {
 	public void setActivationBgColor(Color activationBgColor) {
 		this.activationBgColor = activationBgColor;
 		if (isActivated()) {
-			boolean showed = playerTextdraw.isShowed();
+			boolean showed = playerTextdraw.isShown();
 			if (showed)
 				playerTextdraw.hide();
 			playerTextdraw.setBoxColor(activationBgColor);

@@ -7,8 +7,7 @@ import me.alf21.textdrawsystem.msgBox.MsgBox;
 import me.alf21.textdrawsystem.utils.PlayerTextdrawData;
 import net.gtaun.shoebill.common.player.PlayerLifecycleObject;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.util.event.EventManager;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,8 +21,8 @@ public class PlayerData extends PlayerLifecycleObject {
 	private CopyOnWriteArrayList<MsgBox> msgBoxes;
 	private CopyOnWriteArrayList<Container> containers;
 	
-	public PlayerData(EventManager manager, Player p) { 
-		super(manager, p);
+	public PlayerData(Player p) {
+		super(p);
         player = p;
 		msgBoxes = new CopyOnWriteArrayList<>();
 		containers = new CopyOnWriteArrayList<>();

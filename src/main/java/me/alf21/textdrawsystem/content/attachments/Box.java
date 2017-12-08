@@ -8,7 +8,7 @@ import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 
@@ -47,11 +47,11 @@ public class Box extends Attachment {
 		Player tmp;
 		if((tmp = component.getComponentTextdraws().get(0).getPlayer()) != super.getPlayer())
 			playerTextdraw.changePlayer(tmp);
-		playerTextdraw.move(component.getComponentPosition().getX(), component.getComponentPosition().getY());
+		playerTextdraw.move(component.getComponentPosition().x, component.getComponentPosition().y);
 		float height = Calculation.getBoxHeight(component.getComponentTextdraws()) + 4f;
 		playerTextdraw.setWidth(Calculation.getBoxWidth(component.getComponentTextdraws()) + 4f);
 		playerTextdraw.setHeight(height);
-		playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), Calculation.heightToLetterHeight(height));
+		playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().x, Calculation.heightToLetterHeight(height));
 	}
 
 	public PlayerTextdraw getBoxTextdraw() {
@@ -95,11 +95,11 @@ public class Box extends Attachment {
 
 	public void update() {
 		if(super.getComponent() != null && !isDestroyed()) {
-			playerTextdraw.move(super.getComponent().getComponentPosition().getX(), super.getComponent().getComponentPosition().getY());
+			playerTextdraw.move(super.getComponent().getComponentPosition().x, super.getComponent().getComponentPosition().y);
 			float height = Calculation.getBoxHeight(super.getComponent().getComponentTextdraws()) + 4f;
 			playerTextdraw.setWidth(Calculation.getBoxWidth(super.getComponent().getComponentTextdraws()) + 4f);
 			playerTextdraw.setHeight(height);
-			playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().getX(), height);
+			playerTextdraw.setLetterSize(playerTextdraw.getLetterSize().x, height);
 		}
 	}
 }

@@ -7,8 +7,8 @@ import me.alf21.textdrawsystem.content.attachments.Label;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -60,7 +60,7 @@ public abstract class Component implements Destroyable {
 		attachments.stream().filter(Attachment::isDestroyed).forEach(Attachment::recreate);
 	}
 
-	public void onClick(net.gtaun.shoebill.object.PlayerTextdraw clickedPlayerTextdraw) { }
+	public void onClick(net.gtaun.shoebill.entities.PlayerTextdraw clickedPlayerTextdraw) { }
 
 	public boolean isRequired() {
 		return required;

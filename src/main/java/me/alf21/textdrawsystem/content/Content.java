@@ -175,7 +175,7 @@ public class Content extends Container {
 	} //TODO add pages and dialoges
 
 	@Override
-	public Component getComponent(net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public Component getComponent(net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
 				for (PlayerTextdraw playerTextdraws : component.getAllPlayerTextdraws()) {
@@ -202,7 +202,7 @@ public class Content extends Container {
 	}
 
 	@Override
-	public <E extends Component> Component getComponent(Class<E> compClass, net.gtaun.shoebill.object.PlayerTextdraw playerTextdraw) {
+	public <E extends Component> Component getComponent(Class<E> compClass, net.gtaun.shoebill.entities.PlayerTextdraw playerTextdraw) {
 		for (Page page : pages) {
 			for (Component component : page.getComponents()) {
 				if (component.getClass() == compClass)

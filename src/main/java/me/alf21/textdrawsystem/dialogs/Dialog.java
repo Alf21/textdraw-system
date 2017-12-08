@@ -14,9 +14,10 @@ import me.alf21.textdrawsystem.panelDialog.PanelDialog;
 import me.alf21.textdrawsystem.player.PlayerData;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -53,8 +54,8 @@ public abstract class Dialog implements Destroyable {
 		if(getDialogStyles() == null)
 			this.dialogStyles = DialogStyles.NORMAL;
 		try {
-			((DialogStyle) getDialogStyles().getStyleClass().newInstance()).create(this);
-		} catch (InstantiationException | IllegalAccessException e) {
+			((DialogStyle) getDialogStyles().getStyleClass().getConstructor().newInstance()).create(this);
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		this.dialogInterface = dialogInterface;
@@ -365,11 +366,11 @@ public abstract class Dialog implements Destroyable {
 
 	public Layout getLayout() {
 		try {
-			return ((Layout) getDialogLayout().getLayoutClass().newInstance());
-		} catch (InstantiationException | IllegalAccessException e) {
+			return ((Layout) getDialogLayout().getLayoutClass().getConstructor().newInstance());
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
-		return null;
+        return null;
 	}
 
 // Page handling

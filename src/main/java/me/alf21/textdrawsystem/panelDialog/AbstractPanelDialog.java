@@ -31,7 +31,7 @@ import me.alf21.textdrawsystem.dialogs.layouts.Layout;
 import me.alf21.textdrawsystem.dialogs.types.Panel;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
+import net.gtaun.shoebill.entities.Destroyable;
 
 import java.util.ArrayList;
 

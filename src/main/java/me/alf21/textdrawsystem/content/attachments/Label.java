@@ -41,7 +41,7 @@ public class Label extends Attachment { //TODO Change to Label and base on Compo
 		super.attach(component);
 		if(getPlayer() != component.getComponentTextdraws().get(0).getPlayer())
 			playerTextdraw.changePlayer(component.getComponentTextdraws().get(0).getPlayer());
-		playerTextdraw.move(component.getComponentPosition().getX()-8f, component.getComponentPosition().getY());
+		playerTextdraw.move(component.getComponentPosition().x-8f, component.getComponentPosition().y);
 	}
 
 	public PlayerTextdraw getLabelTextdraw() {

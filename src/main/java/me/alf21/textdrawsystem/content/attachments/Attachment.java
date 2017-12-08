@@ -4,8 +4,8 @@ import me.alf21.textdrawsystem.container.Container;
 import me.alf21.textdrawsystem.content.components.Component;
 import me.alf21.textdrawsystem.utils.PlayerTextdraw;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 

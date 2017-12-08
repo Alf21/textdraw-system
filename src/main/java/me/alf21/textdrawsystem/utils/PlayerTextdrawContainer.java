@@ -1,7 +1,7 @@
 package me.alf21.textdrawsystem.utils;
 
-import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.entities.Destroyable;
+import net.gtaun.shoebill.entities.Player;
 
 import java.util.ArrayList;
 
